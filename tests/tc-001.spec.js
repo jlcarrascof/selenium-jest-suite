@@ -1,36 +1,48 @@
-const { Builder, By, until } = require('selenium-webdriver');
-const chrome = require('selenium-webdriver/chrome');
-const { expect } = require('chai');
+// tests/tc-001.spec.js
+import { Builder, By, until } from 'selenium-webdriver';
+import chrome from 'selenium-webdriver/chrome.js';
+import { expect } from 'chai';
+
+const testTimeout = 60000; // 60 segundos
+let driver;
 
 describe('TC-001: Login Functionality', function () {
-  this.timeout(60000); // hasta 60 segundos por test
+  this.timeout(testTimeout); // <- importante
 
-  let driver;
-
-  before(async () => {
+  before(async function () {
+    this.timeout(60000);
     console.log('Iniciando WebDriver...');
-    const options = new chrome.Options().addArguments('--headless');
-    driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+
+    const options = new chrome.Options();
+    options.setChromeBinaryPath("C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe"); // <- Ruta explícita
+    options.addArguments('--headless', '--disable-gpu', '--no-sandbox');
+
+    driver = await new Builder()
+      .forBrowser('chrome')
+      .setChromeOptions(options)
+      .build();
+
+    await driver.get('https://harmonychurchsuite.com/login');
   });
 
   after(async () => {
     console.log('Cerrando WebDriver...');
-    await driver.quit();
+    if (driver) await driver.quit();
   });
 
   it('should login successfully to Harmony Church Suite', async () => {
-    await driver.get('https://qa.harmonychurchsuite.com/landing');
+    const emailInput = await driver.findElement(By.name('email'));
+    await emailInput.sendKeys('fake@example.com');
 
-    const loginLink = await driver.wait(until.elementLocated(By.css('a.px-4')), 10000);
-    await loginLink.click();
+    const passwordInput = await driver.findElement(By.name('password'));
+    await passwordInput.sendKeys('fakepassword');
 
-    await driver.findElement(By.css("input[placeholder='Enter your username']")).sendKeys('javier');
-    await driver.findElement(By.css("input[placeholder='Enter your password']")).sendKeys('.qwerty123.');
-    await driver.findElement(By.css("button[type='submit']")).click();
+    const submitButton = await driver.findElement(By.css('button[type="submit"]'));
+    await submitButton.click();
 
-    const dashboardTitle = await driver.wait(until.elementLocated(By.css('h1.text-xl.font-semibold')), 10000);
-    const text = await dashboardTitle.getText();
+    await driver.wait(until.urlContains('dashboard'), 10000);
+    const currentUrl = await driver.getCurrentUrl();
 
-    expect(text).to.contain(''); // puedes ajustar según el texto esperado del dashboard
+    expect(currentUrl).to.include('dashboard');
   });
 });

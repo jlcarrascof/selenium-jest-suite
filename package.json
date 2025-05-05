@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Tests using Jest for the suite and Selenium for UI individual tests",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "jest --runInBand"
+    "test": "mocha tests/*.spec.js"
   },
   "keywords": [],
   "author": "",
