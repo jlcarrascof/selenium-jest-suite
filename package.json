@@ -1,0 +1,12 @@
+{
+  "name": "selenium-jest-suite",
+  "version": "1.0.0",
+  "description": "Tests using Jest for the suite and Selenium for UI individual tests",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
