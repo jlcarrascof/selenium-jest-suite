@@ -1,4 +1,9 @@
 module.exports = {
-    testEnvironment: 'node', // Necesario para Selenium, ya que no usa JSDOM
-    testTimeout: 30000, // 30 segundos para pruebas de UI lentas
+    testEnvironment: 'node',
+    testTimeout: 30000,
+    testMatch: ['**/tests/**/*.spec.js'], // Encuentra todos los .spec.js en tests/
+    reporters: [
+      'default',
+      ['jest-junit', { outputDirectory: 'reports', outputName: 'junit.xml' }],
+    ],
 };
