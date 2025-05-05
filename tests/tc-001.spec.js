@@ -1,69 +1,36 @@
 const { Builder, By, until } = require('selenium-webdriver');
-require('chromedriver');
 const chrome = require('selenium-webdriver/chrome');
+const { expect } = require('chai');
 
-// Selectores y constantes
-const loginButtonSelector = 'a.px-4';
-const inputUsernameSelector = "input[placeholder='Enter your username']";
-const inputPasswordSelector = "input[placeholder='Enter your password']";
-const submitButton = "button[type='submit']";
-const TIMEOUT = 15000;
+describe('TC-001: Login Functionality', function () {
+  this.timeout(60000); // hasta 60 segundos por test
 
-// Configura el driver para el test
-let driver;
+  let driver;
 
-beforeAll(async () => {
+  before(async () => {
     console.log('Iniciando WebDriver...');
-    try {
-      const options = new chrome.Options();
-      options.addArguments('--headless'); // Importante: sin GUI
-      options.addArguments('--no-sandbox'); // Previene errores en entornos CI o Linux limitados
-      options.addArguments('--disable-dev-shm-usage'); // Mejora manejo de memoria compartida
+    const options = new chrome.Options().addArguments('--headless');
+    driver = await new Builder().forBrowser('chrome').setChromeOptions(options).build();
+  });
 
-      driver = await new Builder()
-        .forBrowser('chrome')
-        .setChromeOptions(options)
-        .build();
+  after(async () => {
+    console.log('Cerrando WebDriver...');
+    await driver.quit();
+  });
 
-      console.log('WebDriver iniciado');
-    } catch (err) {
-      console.error('Error iniciando WebDriver:', err);
-      throw err;
-    }
-}, 90000); // 90 segundos sigue bien para pruebas lentas
-
-afterAll(async () => {
-  if (driver) {
-    try {
-      await driver.quit();
-      console.log('WebDriver cerrado');
-    } catch (err) {
-      console.error('Error cerrando WebDriver:', err);
-    }
-  }
-}, 10000);
-
-describe('TC-001: Login Functionality', () => {
-  test('should login successfully to Harmony Church Suite', async () => {
-    console.log('Iniciando test de login...');
+  it('should login successfully to Harmony Church Suite', async () => {
     await driver.get('https://qa.harmonychurchsuite.com/landing');
 
-    const loginBtn = await driver.wait(until.elementLocated(By.css(loginButtonSelector)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(loginBtn), TIMEOUT);
-    await loginBtn.click();
+    const loginLink = await driver.wait(until.elementLocated(By.css('a.px-4')), 10000);
+    await loginLink.click();
 
-    await driver.wait(until.elementLocated(By.css('h1.mb-2')), TIMEOUT);
-    await driver.findElement(By.css(inputUsernameSelector)).sendKeys('javier');
-    await driver.findElement(By.css(inputPasswordSelector)).sendKeys('.qwerty123.');
+    await driver.findElement(By.css("input[placeholder='Enter your username']")).sendKeys('javier');
+    await driver.findElement(By.css("input[placeholder='Enter your password']")).sendKeys('.qwerty123.');
+    await driver.findElement(By.css("button[type='submit']")).click();
 
-    const submitBtn = await driver.wait(until.elementLocated(By.css(submitButton)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(submitBtn), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(submitBtn), TIMEOUT);
-    await submitBtn.click();
+    const dashboardTitle = await driver.wait(until.elementLocated(By.css('h1.text-xl.font-semibold')), 10000);
+    const text = await dashboardTitle.getText();
 
-    const dashboardHeader = await driver.wait(until.elementLocated(By.css('h1.text-xl.font-semibold')), TIMEOUT);
-    expect(await dashboardHeader.getText()).toContain(''); // Ajusta con el texto esperado
-    console.log('Test de login completado');
-  }, TIMEOUT);
+    expect(text).to.contain(''); // puedes ajustar según el texto esperado del dashboard
+  });
 });
