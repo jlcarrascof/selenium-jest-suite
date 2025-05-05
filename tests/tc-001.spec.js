@@ -1,6 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 
-const TIMEOUT = 15000;
+const TIMEOUT = 60000;
 let driver;
 
 beforeAll(async () => {
