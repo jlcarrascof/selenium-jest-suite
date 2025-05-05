@@ -4,7 +4,7 @@
   "description": "Tests using Jest for the suite and Selenium for UI individual tests",
   "main": "index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -12,7 +12,6 @@
   "devDependencies": {
     "chai": "^5.2.0",
     "chromedriver": "^136.0.0",
-    "jest": "^29.7.0",
     "selenium-webdriver": "^4.32.0"
   }
 }
