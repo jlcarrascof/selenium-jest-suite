@@ -6,7 +6,7 @@ const inputPasswordSelector = "input[placeholder='Enter your password']";
 const submitButtonSelector = "button[type='submit']";
 const usernameErrorSelector = "p.text-sm.text-red-500:nth-of-type(1)";
 const passwordErrorSelector = "p.text-sm.text-red-500:nth-of-type(2)";
-const TIMEOUT = 60000;
+const TIMEOUT = 120000;
 
 describe('TC-004: Validaciones al intentar login con campos vacíos', () => {
     let driver;

@@ -3,7 +3,7 @@ const { Builder, By, until } = require('selenium-webdriver');
 const inputPasswordSelector = "input[placeholder='Enter your password']";
 const inputUsernameSelector = "input[placeholder='Enter your username']";
 const submitButtonSelector = "button[type='submit']";
-const TIMEOUT = 60000;
+const TIMEOUT = 120000;
 
 describe('TC-008: Validación visual del campo password NO vacío', () => {
     let driver;

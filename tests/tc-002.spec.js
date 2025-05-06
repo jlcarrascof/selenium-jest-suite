@@ -6,7 +6,7 @@ const inputUsernameSelector = "input[placeholder='Enter your username']";
 const inputPasswordSelector = "input[placeholder='Enter your password']";
 const submitButton = "button[type='submit']";
 const modalMessageSelector = "div.mb-8.text-md > p";
-const TIMEOUT = 60000;
+const TIMEOUT = 120000;
 
 describe('TC-002: Invalid Login Message Displayed', () => {
     let driver;

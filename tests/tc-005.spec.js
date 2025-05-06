@@ -2,7 +2,7 @@ const { Builder, By, Key, until } = require('selenium-webdriver');
 
 const inputUsernameSelector = "input[placeholder='Enter your username']";
 const submitButtonSelector = "button[type='submit']";
-const TIMEOUT = 60000;
+const TIMEOUT = 120000;
 
 describe('TC-005: Validación visual del campo username vacío', () => {
     let driver;

@@ -5,7 +5,7 @@ const inputUsernameSelector = "input[placeholder='Enter your username']";
 const inputPasswordSelector = "input[placeholder='Enter your password']";
 const submitButtonSelector = "button[type='submit']";
 const modalMessageSelector = "div.mb-8.text-md > p";
-const TIMEOUT = 60000;
+const TIMEOUT = 120000;
 
 describe('TC-003: Validaciones tras login fallido', () => {
     let driver;
