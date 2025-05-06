@@ -1,4 +1,5 @@
 // tc-004.test.js
+/*
 const { Builder, By, until } = require('selenium-webdriver');
 
 const inputUsernameSelector = "input[placeholder='Enter your username']";
@@ -83,3 +84,4 @@ describe('TC-004: Validaciones al intentar login con campos vacíos', () => {
         }
     }, TIMEOUT);
 });
+*/

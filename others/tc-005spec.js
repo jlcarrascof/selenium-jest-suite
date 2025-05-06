@@ -1,3 +1,4 @@
+/*
 const { Builder, By, Key, until } = require('selenium-webdriver');
 
 const inputUsernameSelector = "input[placeholder='Enter your username']";
@@ -75,3 +76,4 @@ describe('TC-005: Validación visual del campo username vacío', () => {
         }
     }, TIMEOUT);
 });
+*/

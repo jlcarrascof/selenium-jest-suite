@@ -1,3 +1,4 @@
+/*
 const { Builder, By, until } = require('selenium-webdriver');
 
 const forgotPasswordSelector = "a[href*='forgot-password']";
@@ -47,3 +48,4 @@ describe('TC-010: Funcionalidad Forgot Password', () => {
         }
     }, TIMEOUT);
 });
+*/

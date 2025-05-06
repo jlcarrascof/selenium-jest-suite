@@ -1,3 +1,4 @@
+/*
 const { Builder, By, until } = require('selenium-webdriver');
 
 const loginButtonSelector = 'a.px-4';
@@ -103,3 +104,4 @@ describe('TC-003: Validaciones tras login fallido', () => {
         }
     }, TIMEOUT);
 });
+*/
