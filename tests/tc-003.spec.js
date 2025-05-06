@@ -1,4 +1,3 @@
-// tc-003.test.js
 const { Builder, By, until } = require('selenium-webdriver');
 
 const loginButtonSelector = 'a.px-4';
@@ -23,72 +22,84 @@ describe('TC-003: Validaciones tras login fallido', () => {
         }
     });
 
-    test('debería mostrar errores, limpiar campos y reenfocar username tras login inválido', async () => {
-        await driver.get('https://qa.harmonychurchsuite.com/landing');
+    test('TC-003: Validaciones tras login fallido', async () => {
+        const errors = [];
 
-        const loginBtn = await driver.wait(until.elementLocated(By.css(loginButtonSelector)), TIMEOUT);
-        await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
-        await driver.wait(until.elementIsEnabled(loginBtn), TIMEOUT);
-        await loginBtn.click();
+        try {
+            await driver.get('https://qa.harmonychurchsuite.com/landing');
 
-        await driver.wait(until.elementLocated(By.css('h1.mb-2')), TIMEOUT);
-        const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
-        const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
-        await usernameInput.sendKeys('javier');
-        await passwordInput.sendKeys('.123.');
+            // Paso 1 - Hacer clic en Login
+            const loginBtn = await driver.findElement(By.css(loginButtonSelector));
+            await loginBtn.click();
 
-        const submitBtn = await driver.wait(until.elementLocated(By.css(submitButtonSelector)), TIMEOUT);
-        await driver.wait(until.elementIsVisible(submitBtn), TIMEOUT);
-        await driver.wait(until.elementIsEnabled(submitBtn), TIMEOUT);
-        await submitBtn.click();
+            // Esperar a que aparezcan los inputs
+            await driver.wait(until.elementLocated(By.css(inputUsernameSelector)), 5000);
+            await driver.wait(until.elementLocated(By.css(inputPasswordSelector)), 5000);
 
-        // Paso 1: Verificar modal de error
-        const modalMessage = await driver.wait(until.elementLocated(By.css(modalMessageSelector)), TIMEOUT);
-        const messageText = await modalMessage.getText();
-        if (messageText.includes('Invalid credentials')) {
-            console.log('[chrome] Paso 1 - Modal "Invalid credentials": PASSED');
-        } else {
-            console.log('[chrome] Paso 1 - Modal "Invalid credentials": FAILED');
-            throw new Error('No se encontró el mensaje esperado en el modal.');
-        }
+            const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
+            const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
 
-        await driver.sleep(1500);
+            await usernameInput.sendKeys('javier');
+            await passwordInput.sendKeys('.123.');
+            await driver.findElement(By.css(submitButtonSelector)).click();
 
-        // Paso 2: Campos vacíos
-        const usernameValue = await usernameInput.getAttribute('value');
-        const passwordValue = await passwordInput.getAttribute('value');
-        if (usernameValue === '' && passwordValue === '') {
-            console.log('[chrome] Paso 2 - Limpieza de campos: PASSED');
-        } else {
-            console.log('[chrome] Paso 2 - Limpieza de campos: FAILED');
-            throw new Error('Los campos no fueron limpiados tras el error.');
-        }
+            // Esperar mensaje del modal
+            await driver.wait(until.elementLocated(By.css(modalMessageSelector)), 5000);
 
-        // Paso 3: Foco en username
-        const activeElementName = await driver.executeScript(
-            "return document.activeElement.getAttribute('placeholder')"
-        );
-        if (activeElementName === 'Enter your username') {
-            console.log('[chrome] Paso 3 - Foco en username: PASSED');
-        } else {
-            console.log('[chrome] Paso 3 - Foco en username: FAILED');
-            throw new Error('El foco no volvió al input de username.');
-        }
+            const modalMessage = await driver.findElement(By.css(modalMessageSelector));
+            const text = await modalMessage.getText();
 
-        // Paso 4: No errores visuales persistentes
-        const possibleErrors = await driver.findElements(By.xpath("//p[contains(text(),'Invalid credentials')]"));
-        let anyVisible = false;
-        for (let el of possibleErrors) {
-            if (await el.isDisplayed()) {
-                anyVisible = true;
-                break;
+            if (text.includes('Invalid credentials')) {
+                console.log('[chrome] Paso 1 - Modal "Invalid credentials": PASSED');
+            } else {
+                console.log('[chrome] Paso 1 - Modal "Invalid credentials": FAILED');
+                errors.push('No apareció el mensaje "Invalid credentials"');
             }
+
+            await driver.sleep(1500); // Dar tiempo a cualquier limpieza visual
+
+            // Paso 2 - Validar limpieza de campos
+            const usernameValue = await usernameInput.getAttribute('value');
+            const passwordValue = await passwordInput.getAttribute('value');
+
+            if (usernameValue === '' && passwordValue === '') {
+                console.log('[chrome] Paso 2 - Limpieza de campos: PASSED');
+            } else {
+                console.log('[chrome] Paso 2 - Limpieza de campos: FAILED');
+                errors.push('Los campos no fueron limpiados tras el error.');
+            }
+
+            // Paso 3 - Verificar foco en campo username
+            const activeElement = await driver.executeScript("return document.activeElement.getAttribute('placeholder')");
+            if (activeElement === 'Enter your username') {
+                console.log('[chrome] Paso 3 - Foco en username: PASSED');
+            } else {
+                console.log('[chrome] Paso 3 - Foco en username: FAILED');
+                errors.push('El foco no volvió al campo username.');
+            }
+
+            // Paso 4 - Validar que el error visual desapareció
+            const possibleErrors = await driver.findElements(By.xpath("//p[contains(text(),'Invalid credentials')]"));
+            let anyVisible = false;
+            for (let el of possibleErrors) {
+                if (await el.isDisplayed()) {
+                    anyVisible = true;
+                    break;
+                }
+            }
+            if (!anyVisible) {
+                console.log('[chrome] Paso 4 - No hay errores visuales: PASSED');
+            } else {
+                console.log('[chrome] Paso 4 - No hay errores visuales: FAILED');
+                errors.push('El mensaje de error sigue siendo visible.');
+            }
+
+        } catch (err) {
+            errors.push('Excepción durante la ejecución: ' + err.message);
         }
-        if (!anyVisible) {
-            console.log('[chrome] Paso 4 - No hay errores visuales: PASSED');
-        } else {
-            console.log('[chrome] Paso 4 - No hay errores visuales: FAILED');
-            throw new Error('El mensaje de error sigue visible.');
+
+        if (errors.length > 0) {
+            throw new Error('Errores encontrados:\n' + errors.join('\n'));
         }
-    }, 30000); // timeout del test individual
+    }, TIMEOUT);
 });
