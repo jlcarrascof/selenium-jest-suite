@@ -30,7 +30,7 @@ describe('TC-006: Validación visual del campo username no vacío', () => {
             const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
 
             // Ingresar un username válido
-            await usernameInput.sendKeys('usuarioDemo');
+            await usernameInput.sendKeys('javier'); // Username válido
             await driver.sleep(500); // Pausa para renderizar
 
             // Validación 1: El placeholder ya no debe estar visible (porque hay texto)
