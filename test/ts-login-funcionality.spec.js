@@ -44,8 +44,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await driver.findElement(By.css(inputPasswordSelector)).sendKeys(password);
 
     const submitLoginBtn = await driver.wait(until.elementLocated(By.css(submitButton)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(submitBtn), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(submitBtn), TIMEOUT);
+    await driver.wait(until.elementIsVisible(submitLoginBtn), TIMEOUT);
+    await driver.wait(until.elementIsEnabled(submitLoginBtn), TIMEOUT);
     await submitLoginBtn.click();
   }
 
