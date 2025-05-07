@@ -1,7 +1,6 @@
 const { Builder, By, until } = require('selenium-webdriver');
 
 const TIMEOUT = 120000;
-const TIMESLEEP = 15000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
@@ -39,7 +38,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await driver.wait(until.elementIsEnabled(loginBtn), TIMEOUT);
     await loginBtn.click();
 
-    await driver.wait(until.elementLocated(By.css('h1.mb-2')), TIMEOUT);
     await driver.findElement(By.css(inputUsernameSelector)).sendKeys(username);
     await driver.findElement(By.css(inputPasswordSelector)).sendKeys(password);
 
@@ -60,9 +58,10 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const modalMessage = await driver.wait(until.elementLocated(By.css(modalMessageSelector)), TIMEOUT);
     const modalMessageText = await modalMessage.getText();
 
-    const actualResult1 = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
-    const expectedResult1 = true;
-    expect(actualResult1).toBe(expectedResult1);
+    const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
 
   }
 
