@@ -8,6 +8,7 @@ const VALID_PASSWORD = '.qwerty123.';
 const INVALID_USERNAME = 'maria';
 const INVALID_PASSWORD = '12345';
 const CURRENT_BROWSER = 'chrome';
+const modalMessageSelector = 'div.mb-8.text-md > p';
 
 let driver;
 
@@ -30,7 +31,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const inputUsernameSelector = "input[placeholder='Enter your username']";
     const inputPasswordSelector = "input[placeholder='Enter your password']";
     const submitButton = "button[type='submit']";
-    const modalMessageSelector = 'div.mb-8.text-md > p';
 
     await driver.get(BASE_URL);
 
