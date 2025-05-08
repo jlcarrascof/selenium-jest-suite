@@ -5,7 +5,7 @@ const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
 const INVALID_USERNAME = 'maria';
-const INVALID_PASSWORD = '12345';
+const INVALID_PASSWORD = '.12345.qwerty.';
 const CURRENT_BROWSER = 'chrome';
 const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
@@ -88,7 +88,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     if (password !== '') await passwordInput.sendKeys(password);
 
     await usernameInput.click();
-    await driver.sleep(300);
     await passwordInput.click();
 
     const submitBtn = await driver.findElement(By.css(submitBtnSelector));
@@ -99,7 +98,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       TIMEOUT
     );
 
-    expect(await errorElement.isDisplayed()).toBe(true);
+    const actualText = (await errorElement.getText()).trim();
+    expect(actualText).toBe(expectedErrorText);
   }
 
   test('TC-001: Valid credentials should login successfully', async () => {
@@ -141,7 +141,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   test('TC-006: Should display error message when password is empty', async () => {
     await loginExpectingEmptyFieldError(
       { username: VALID_USERNAME, password: EMPTY_PASSWORD },
-      'Password must be at least 8 characters'
+      'Password is required'
     );
   });
 
