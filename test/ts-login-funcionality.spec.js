@@ -66,6 +66,36 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
 
   }
+  async function loginExpectingDisabledSubmitBtn({ username, password }) {
+    // Selectors
+    const loginBtnSelector = 'a.px-4';
+    const inputUsernameSelector = "input[placeholder='Enter your username']";
+    const inputPasswordSelector = "input[placeholder='Enter your password']";
+    const submitBtnSelector = "button[type='submit']";
+
+    await driver.get(BASE_URL);
+
+    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), 10000);
+    await driver.wait(until.elementIsVisible(loginBtn), 10000);
+    await loginBtn.click();
+
+    const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
+    const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
+
+    await usernameInput.clear();
+    await passwordInput.clear();
+
+    if (username !== '') await usernameInput.sendKeys(username);
+    if (password !== '') await passwordInput.sendKeys(password);
+
+    await usernameInput.click();
+    await passwordInput.click();
+
+    const submitBtn = await driver.findElement(By.css(submitBtnSelector));
+    const isEnabled = await submitBtn.isEnabled();
+
+    expect(isEnabled).toBe(false);
+  }
 
   async function loginExpectingEmptyFieldError({ username, password }, expectedErrorText) {
 
@@ -102,33 +132,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualText).toBe(expectedErrorText);
   }
 
-  async function loginExpectingDisabledSubmitBtn({ username, password }) {
-    // Selectors
-    const loginBtnSelector = 'a.px-4';
-    const inputUsernameSelector = "input[placeholder='Enter your username']";
-    const inputPasswordSelector = "input[placeholder='Enter your password']";
-    const submitBtnSelector = "button[type='submit']";
-
-    await driver.get(BASE_URL);
-
-    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), 10000);
-    await driver.wait(until.elementIsVisible(loginBtn), 10000);
-    await loginBtn.click();
-
-    const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
-    const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
-
-    if (username !== '') await usernameInput.sendKeys(username);
-
-    await usernameInput.click();
-    await passwordInput.click();
-
-    const submitBtn = await driver.findElement(By.css(submitBtnSelector));
-    const isEnabled = await submitBtn.isEnabled();
-
-    expect(isEnabled).toBe(false);
-  }
-
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await login(VALID_USERNAME, VALID_PASSWORD);
@@ -158,15 +161,16 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginWithInvalidCredentials(INVALID_USERNAME, INVALID_PASSWORD);
   });
 
-  test('TC-005: Should display error message when username is empty', async () => {
-    await loginExpectingEmptyFieldError(
-      { username: EMPTY_USERNAME, password: VALID_PASSWORD },
-      'Username is required'
-    );
+  test('TC-005: Submit button should be disabled when username is empty', async () => {
+    await loginExpectingDisabledSubmitBtn({ username: EMPTY_USERNAME, password: VALID_PASSWORD });
   });
 
   test('TC-006: Should keep submit button disabled when password is empty', async () => {
     await loginExpectingDisabledSubmitBtn({ username: VALID_USERNAME, password: EMPTY_PASSWORD });
+  });
+
+  test('TC-007: Submit button should be disabled when both fields are empty', async () => {
+    await loginExpectingDisabledSubmitBtn({ username: EMPTY_USERNAME, password: EMPTY_PASSWORD });
   });
 
 });
