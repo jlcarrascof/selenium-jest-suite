@@ -67,19 +67,39 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   }
 
-  async function loginExpectingEmptyFieldError(username, password, expectedMessage, errorSelector) {
-    await login(username, password);
+  async function loginExpectingEmptyFieldError({ username, password }, expectedErrorText) {
 
-    try {
-      const SHORT_TIMEOUT = 5000;
+    // Selectors
+    const loginBtnSelector = 'a.px-4';
+    const inputUsernameSelector = "input[placeholder='Enter your username']";
+    const inputPasswordSelector = "input[placeholder='Enter your password']";
+    const submitBtnSelector = "button[type='submit']";
 
-      const errorElement = await driver.wait(until.elementLocated(By.css(errorSelector)), SHORT_TIMEOUT);
-      const errorText = await errorElement.getText();
+    await driver.get(BASE_URL);
 
-      expect(errorText).toBe(expectedMessage);
-    } catch (error) {
-      throw new Error(`Expected error message "${expectedMessage}" was not found within ${SHORT_TIMEOUT / 1000} seconds.`);
-    }
+    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
+    await loginBtn.click();
+
+    const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
+    const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
+
+    if (username !== '') await usernameInput.sendKeys(username);
+    if (password !== '') await passwordInput.sendKeys(password);
+
+    await usernameInput.click();
+    await driver.sleep(300);
+    await passwordInput.click();
+
+    const submitBtn = await driver.findElement(By.css(submitBtnSelector));
+    await submitBtn.click();
+
+    const errorElement = await driver.wait(
+      until.elementLocated(By.xpath(`//*[text()='${expectedErrorText}']`)),
+      TIMEOUT
+    );
+
+    expect(await errorElement.isDisplayed()).toBe(true);
   }
 
   test('TC-001: Valid credentials should login successfully', async () => {
@@ -111,11 +131,11 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginWithInvalidCredentials(INVALID_USERNAME, INVALID_PASSWORD);
   });
 
-  test('TC-005: Empty username with valid password should show "Username is required" error message', async () => {
-    const errorSelector = 'p.text-sm.text-hdanger-active';
-    const expectedMessage = 'Username is required';
-
-    await loginExpectingEmptyFieldError(EMPTY_USERNAME, VALID_PASSWORD, expectedMessage, errorSelector);
+  test('TC-005: Should display error message when username is empty', async () => {
+    await loginExpectingEmptyFieldError(
+      { username: EMPTY_USERNAME, password: VALID_PASSWORD },
+      'Username is required'
+    );
   });
 
 });
