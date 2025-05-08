@@ -102,6 +102,33 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualText).toBe(expectedErrorText);
   }
 
+  async function loginExpectingDisabledSubmitBtn({ username, password }) {
+    // Selectors
+    const loginBtnSelector = 'a.px-4';
+    const inputUsernameSelector = "input[placeholder='Enter your username']";
+    const inputPasswordSelector = "input[placeholder='Enter your password']";
+    const submitBtnSelector = "button[type='submit']";
+
+    await driver.get(BASE_URL);
+
+    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), 10000);
+    await driver.wait(until.elementIsVisible(loginBtn), 10000);
+    await loginBtn.click();
+
+    const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
+    const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
+
+    if (username !== '') await usernameInput.sendKeys(username);
+
+    await usernameInput.click();
+    await passwordInput.click();
+
+    const submitBtn = await driver.findElement(By.css(submitBtnSelector));
+    const isEnabled = await submitBtn.isEnabled();
+
+    expect(isEnabled).toBe(false);
+  }
+
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await login(VALID_USERNAME, VALID_PASSWORD);
@@ -138,11 +165,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     );
   });
 
-  test('TC-006: Should display error message when password is empty', async () => {
-    await loginExpectingEmptyFieldError(
-      { username: VALID_USERNAME, password: EMPTY_PASSWORD },
-      'Password is required'
-    );
+  test('TC-006: Should keep submit button disabled when password is empty', async () => {
+    await loginExpectingDisabledSubmitBtn({ username: VALID_USERNAME, password: EMPTY_PASSWORD });
   });
 
 });
