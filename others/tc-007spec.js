@@ -1,4 +1,3 @@
-/*
 const { Builder, By, until } = require('selenium-webdriver');
 
 const inputPasswordSelector = "input[placeholder='Enter your password']";
@@ -70,4 +69,3 @@ describe('TC-007: Validación visual del campo password vacío', () => {
         }
     }, TIMEOUT);
 });
-*/
