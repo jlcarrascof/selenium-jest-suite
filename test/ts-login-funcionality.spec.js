@@ -1,10 +1,19 @@
 const { Builder, By, until } = require('selenium-webdriver');
 
 const TIMEOUT = 120000;
+const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
+const VALID_USERNAME = 'javier';
+const VALID_PASSWORD = '.qwerty123.';
+const INVALID_USERNAME = 'maria';
+const INVALID_PASSWORD = '12345';
+const CURRENT_BROWSER = 'chrome';
+const EMPTY_USERNAME = '';
+const EMPTY_PASSWORD = '';
+
 let driver;
 
 beforeAll(async () => {
-  driver = await new Builder().forBrowser('chrome').build();
+  driver = await new Builder().forBrowser(CURRENT_BROWSER).build();
   await driver.manage().setTimeouts({ implicit: TIMEOUT });
 });
 
@@ -14,57 +23,93 @@ afterAll(async () => {
   }
 });
 
+
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-  test('TC-001: Valid credentials should login successfully', async () => {
-    await driver.get('https://qa.harmonychurchsuite.com/landing');
+  async function login(username, password) {
 
-    const loginBtn = await driver.wait(until.elementLocated(By.css('a.px-4')), TIMEOUT);
-    await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
-    await loginBtn.click();
-
-    await driver.wait(until.elementLocated(By.css('h1.mb-2')), TIMEOUT);
-    await driver.findElement(By.css("input[placeholder='Enter your username']")).sendKeys('javier');
-    await driver.findElement(By.css("input[placeholder='Enter your password']")).sendKeys('.qwerty123.');
-
-    const submitBtn = await driver.findElement(By.css("button[type='submit']"));
-    await driver.wait(until.elementIsVisible(submitBtn), TIMEOUT);
-    await submitBtn.click();
-
-    const dashboardTitle = await driver.wait(
-      until.elementLocated(By.css('h1.text-xl.font-semibold')), TIMEOUT
-    );
-
-    let actualResult = await dashboardTitle.getText();
-    expect(actualResult).toMatch(/dashboard/i);
-  });
-
-  test('TC-002: Invalid credentials should display error message', async () => {
-    const loginButtonSelector = 'a.px-4';
+    // Selectors
+    const loginBtnSelector = 'a.px-4';
     const inputUsernameSelector = "input[placeholder='Enter your username']";
     const inputPasswordSelector = "input[placeholder='Enter your password']";
-    const submitButton = "button[type='submit']";
-    const modalMessageSelector = "div.mb-8.text-md > p";
+    const submitBtnSelector = "button[type='submit']";
 
-    await driver.get('https://qa.harmonychurchsuite.com/landing');
+    await driver.get(BASE_URL);
 
-    const loginBtn = await driver.wait(until.elementLocated(By.css(loginButtonSelector)), TIMEOUT);
+    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), TIMEOUT);
     await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
     await driver.wait(until.elementIsEnabled(loginBtn), TIMEOUT);
     await loginBtn.click();
 
-    await driver.wait(until.elementLocated(By.css('h1.mb-2')), TIMEOUT);
-    await driver.findElement(By.css(inputUsernameSelector)).sendKeys('maria');
-    await driver.findElement(By.css(inputPasswordSelector)).sendKeys('.qwerty123.');
+    await driver.findElement(By.css(inputUsernameSelector)).sendKeys(username);
+    await driver.findElement(By.css(inputPasswordSelector)).sendKeys(password);
 
-    const submitBtn = await driver.wait(until.elementLocated(By.css(submitButton)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(submitBtn), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(submitBtn), TIMEOUT);
-    await submitBtn.click();
+    const submitLoginBtn = await driver.wait(until.elementLocated(By.css(submitBtnSelector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(submitLoginBtn), TIMEOUT);
+    await driver.wait(until.elementIsEnabled(submitLoginBtn), TIMEOUT);
+    await submitLoginBtn.click();
+  }
 
+  async function loginWithInvalidCredentials(username, password) {
+    await login(username, password);
+
+    // Selectors
+    const modalMessageSelector = 'div.mb-8.text-md > p';
+
+    // Step 1:
+    const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
     const modalMessage = await driver.wait(until.elementLocated(By.css(modalMessageSelector)), TIMEOUT);
-    const messageText = await modalMessage.getText();
+    const modalMessageText = await modalMessage.getText();
 
-    let actualResult  = messageText.includes('Invalid credentials');
-    expect(actualResult).toBe(true);
-    });
+    const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
+
+  }
+
+  async function loginExpectingEmptyFieldError(username, password, expectedMessage, errorSelector) {
+    await login(username, password);
+
+    const errorElement = await driver.wait(until.elementLocated(By.css(errorSelector)), TIMEOUT);
+    const errorText = await errorElement.getText();
+
+    expect(errorText).toBe(expectedMessage);
+  }
+
+  test('TC-001: Valid credentials should login successfully', async () => {
+
+    await login(VALID_USERNAME, VALID_PASSWORD);
+
+    // Selectors
+    const dashboardTitleSelector = 'h1.text-xl.font-semibold';
+
+    const dashboardTitle = await driver.wait(
+      until.elementLocated(By.css(dashboardTitleSelector)), TIMEOUT
+    );
+
+    const actualResult = await dashboardTitle.getText();
+    const expectedResult = /dashboard/i;
+
+    expect(actualResult).toMatch(expectedResult);
+  });
+
+  test('TC-002: Invalid credentials (valid username, invalid password)  should display error message', async () => {
+    await loginWithInvalidCredentials(VALID_USERNAME, INVALID_PASSWORD);
+  });
+
+  test('TC-003: Invalid credentials (invalid username, valid password)  should display error message', async () => {
+    await loginWithInvalidCredentials(INVALID_USERNAME, VALID_PASSWORD);
+  });
+
+  test('TC-004: Invalid credentials (invalid username, invalid password)', async () => {
+    await loginWithInvalidCredentials(INVALID_USERNAME, INVALID_PASSWORD);
+  });
+
+  test('TC-005: Empty username with valid password should show "Username is required" error message', async () => {
+    const errorSelector = 'p.text-sm.text-hdanger-active';
+    const expectedMessage = 'Username is required';
+
+    await loginExpectingEmptyFieldError(EMPTY_USERNAME, VALID_PASSWORD, expectedMessage, errorSelector);
+  });
+
 });
