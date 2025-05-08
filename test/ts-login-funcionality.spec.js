@@ -70,10 +70,16 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   async function loginExpectingEmptyFieldError(username, password, expectedMessage, errorSelector) {
     await login(username, password);
 
-    const errorElement = await driver.wait(until.elementLocated(By.css(errorSelector)), TIMEOUT);
-    const errorText = await errorElement.getText();
+    try {
+      const SHORT_TIMEOUT = 5000;
 
-    expect(errorText).toBe(expectedMessage);
+      const errorElement = await driver.wait(until.elementLocated(By.css(errorSelector)), SHORT_TIMEOUT);
+      const errorText = await errorElement.getText();
+
+      expect(errorText).toBe(expectedMessage);
+    } catch (error) {
+      throw new Error(`Expected error message "${expectedMessage}" was not found within ${SHORT_TIMEOUT / 1000} seconds.`);
+    }
   }
 
   test('TC-001: Valid credentials should login successfully', async () => {
