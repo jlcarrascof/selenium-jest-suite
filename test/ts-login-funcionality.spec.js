@@ -7,6 +7,8 @@ const VALID_PASSWORD = '.qwerty123.';
 const INVALID_USERNAME = 'maria';
 const INVALID_PASSWORD = '12345';
 const CURRENT_BROWSER = 'chrome';
+const EMPTY_USERNAME = '';
+const EMPTY_PASSWORD = '';
 
 let driver;
 
@@ -65,6 +67,15 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   }
 
+  async function loginExpectingEmptyFieldError(username, password, expectedMessage, errorSelector) {
+    await login(username, password);
+
+    const errorElement = await driver.wait(until.elementLocated(By.css(errorSelector)), TIMEOUT);
+    const errorText = await errorElement.getText();
+
+    expect(errorText).toBe(expectedMessage);
+  }
+
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await login(VALID_USERNAME, VALID_PASSWORD);
@@ -93,4 +104,12 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   test('TC-004: Invalid credentials (invalid username, invalid password)', async () => {
     await loginWithInvalidCredentials(INVALID_USERNAME, INVALID_PASSWORD);
   });
+
+  test('TC-005: Empty username with valid password should show "Username is required" error message', async () => {
+    const errorSelector = 'p.text-sm.text-hdanger-active';
+    const expectedMessage = 'Username is required';
+
+    await loginExpectingEmptyFieldError(EMPTY_USERNAME, VALID_PASSWORD, expectedMessage, errorSelector);
+  });
+
 });
