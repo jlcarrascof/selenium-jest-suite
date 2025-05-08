@@ -75,8 +75,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     await driver.get(BASE_URL);
 
-    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), 10000);
-    await driver.wait(until.elementIsVisible(loginBtn), 10000);
+    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
     await loginBtn.click();
 
     const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
