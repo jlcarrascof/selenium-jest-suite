@@ -138,4 +138,11 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     );
   });
 
+  test('TC-006: Should display error message when password is empty', async () => {
+    await loginExpectingEmptyFieldError(
+      { username: VALID_USERNAME, password: EMPTY_PASSWORD },
+      'Password must be at least 8 characters'
+    );
+  });
+
 });
