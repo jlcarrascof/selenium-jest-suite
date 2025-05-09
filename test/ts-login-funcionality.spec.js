@@ -42,7 +42,7 @@ class LoginHelper {
        await driver.findElement(By.css(inputUsernameSelector)).sendKeys(username);
        await driver.findElement(By.css(inputPasswordSelector)).sendKeys(password);
   }
-  
+
   static async loginBtnClick() {
 
     // Selectors
@@ -156,17 +156,17 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   test('TC-005: Login Submit button should be disabled when username is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, VALID_PASSWORD );
+    await LoginHelper.loginBtnExpectedToBeDisabled({ username: EMPTY_USERNAME, password: VALID_PASSWORD });
   });
 
   test('TC-006: Login Submit button should be disabled when password is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled(VALID_USERNAME, EMPTY_PASSWORD);
+    await LoginHelper.loginBtnExpectedToBeDisabled({ username: VALID_USERNAME, password: EMPTY_PASSWORD });
   });
 
   test('TC-007: Login Submit button should be disabled when username and password are empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, EMPTY_PASSWORD );
+    await LoginHelper.loginBtnExpectedToBeDisabled({ username: EMPTY_USERNAME, password: EMPTY_PASSWORD });
   });
 
     /*
@@ -178,18 +178,18 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
           try {
               await driver.get('https://qa.harmonychurchsuite.com/landing');
               await driver.findElement(By.css('a.px-4')).click();
-  
+
               // Esperar hasta que el campo username esté presente
               await driver.wait(until.elementLocated(By.css(inputUsernameSelector)), 10000);
               const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
-  
+
               // Paso 1: Foco en username
               await usernameInput.click();
-  
+
               // Paso 2: Quitar el foco presionando TAB
               await usernameInput.sendKeys(Key.TAB);
               await driver.sleep(1000);
-  
+
               // Validación 1: placeholder
               const usernamePlaceholder = await usernameInput.getAttribute('placeholder');
               if (usernamePlaceholder === 'Enter your username') {
@@ -197,7 +197,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
               } else {
                   errors.push('Placeholder username incorrecto');
               }
-  
+
               // Validación 2: mensaje de validación "Username is required"
               try {
                   const usernameError = await driver.findElement(By.xpath("//*[text()='Username is required']"));
@@ -209,7 +209,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
               } catch {
                   errors.push('"Username is required" no fue encontrado');
               }
-  
+
               // Validación 3: botón login deshabilitado
               const submitButton = await driver.findElement(By.css(submitButtonSelector));
               const isDisabled = !(await submitButton.isEnabled());
@@ -218,11 +218,11 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
               } else {
                   errors.push('El botón Login no está deshabilitado');
               }
-  
+
           } catch (err) {
               errors.push('Excepción durante la ejecución: ' + err.message);
           }
-  
+
           if (errors.length > 0) {
               throw new Error('Errores encontrados:\n' + errors.join('\n'));
           }
@@ -276,16 +276,16 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
           try {
               await driver.get('https://qa.harmonychurchsuite.com/landing');
               await driver.findElement(By.css('a.px-4')).click();
-  
+
               await driver.wait(until.elementLocated(By.css(inputPasswordSelector)), 10000);
               const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
-  
+
               // Foco y blur sin escribir
               await passwordInput.click();
               await driver.sleep(300);
               await passwordInput.sendKeys('\t'); // Simula perder el foco
               await driver.sleep(800); // Espera renderizado del mensaje
-  
+
               // 1. Placeholder correcto
               const placeholder = await passwordInput.getAttribute('placeholder');
               if (placeholder === 'Enter your password') {
@@ -293,7 +293,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
               } else {
                   errors.push('Placeholder incorrecto');
               }
-  
+
               // 2. Debe decir "Password is required" pero está mal implementado
               const errorMsgElements = await driver.findElements(By.xpath("//*[text()='Password is required']"));
               if (errorMsgElements.length > 0) {
@@ -301,7 +301,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
               } else {
                   errors.push('NO se muestra el mensaje "Password is required"');
               }
-  
+
               // 3. Botón debe estar deshabilitado
               const submitBtn = await driver.findElement(By.css(submitButtonSelector));
               const isEnabled = await submitBtn.isEnabled();
@@ -310,11 +310,11 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
               } else {
                   errors.push('El botón Login está habilitado cuando no debería');
               }
-  
+
           } catch (err) {
               errors.push('Excepción durante la ejecución: ' + err.message);
           }
-  
+
           if (errors.length > 0) {
               throw new Error('Errores encontrados:\n' + errors.join('\n'));
           }
