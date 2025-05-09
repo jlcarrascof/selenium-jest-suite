@@ -13,25 +13,10 @@ class LoginHelper {
   static async initDriver() {
       this.driver = await new Builder().forBrowser(this.currentBrowser).build();
       await this.driver.manage().setTimeouts({ implicit: this.timeout });
-  }
+    }
 
-  static async getDriver() {
-      return this.driver;
-  }
-
-
-  static async landingPageLoginBtnClick() {
-    // Selectors
-    const loginBtnSelector = 'a.px-4';
-
-    await driver.get(BASE_URL);
-
-    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), TIMEOUT);
-
-    await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(loginBtn), TIMEOUT);
-
-    await loginBtn.click();
+    static async getDriver() {
+        return this.driver;
   }
 
   static async enterFieldsUsernameAndPassword(username, password) {
@@ -98,7 +83,7 @@ class LoginHelper {
   }
 }
 
-const TIMEOUT = 120000;
+const TIMEOUT = 30000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
