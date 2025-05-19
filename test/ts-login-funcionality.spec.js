@@ -90,64 +90,6 @@ class LoginHelper {
     expect(actualResult).toBe(expectedResult);
   }
 
-  static async forgotPasswordLinkClick() {
-    // Selectors
-    const forgotPasswordLinkSelector = "form > div.flex.flex-row.gap-2.justify-between > a"; // Selector using DevTools
-
-    // Finding the link "Forgot Password" using the selector above
-    const forgotPasswordLink = await driver.wait(until.elementLocated(By.css(forgotPasswordLinkSelector)), TIMEOUT);
-    // The link must be enabled and visible
-    await driver.wait(until.elementIsVisible(forgotPasswordLink), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(forgotPasswordLink), TIMEOUT);
-
-    // Click on "Forgot Password"
-    await forgotPasswordLink.click();
-
-    // Wait 15 segundos for a possible redirection
-    // await driver.sleep(5000);
-
-    // Capture the actual URL for validation purposes.
-    return await driver.getCurrentUrl();
-  }
-
-  static async newAccountLinkClick() {
-    // Selectors
-    const newAccountLinkSelector = "a[href*='user-signup']";
-
-    // Localizar el enlace "New Account"
-    const newAccountLink = await driver.wait(until.elementLocated(By.css(newAccountLinkSelector)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(newAccountLink), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(newAccountLink), TIMEOUT);
-
-    // Click on "New Account"
-    await newAccountLink.click();
-
-    // Esperar 2 segundos para la redirección
-    await driver.sleep(2000);
-
-    // Devolver la URL actual
-    return await driver.getCurrentUrl();
-  }
-
-  static async contactUsLinkClick() {
-    // Selectors
-    const contactUsLinkSelector = "button.font-semibold.text-hprimary";
-
-    // Localizar el botón "Contact Us"
-    const contactUsLink = await driver.wait(until.elementLocated(By.css(contactUsLinkSelector)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(contactUsLink), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(contactUsLink), TIMEOUT);
-
-    // Click on "Contact Us"
-    await contactUsLink.click();
-
-    // Esperar 2 segundos para la redirección
-    await driver.sleep(2000);
-
-    // Devolver la URL actual
-    return await driver.getCurrentUrl();
-  }
-
   static async loginClickLink(selector, waitTime) {
     // Locate the element
     const element = await driver.wait(until.elementLocated(By.css(selector)), TIMEOUT);
