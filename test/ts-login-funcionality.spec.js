@@ -77,8 +77,8 @@ class LoginHelper {
 
   static async loginBtnExpectedToBeDisabled({ username, password }) {
 
-      // Selectors
-      const submitLoginBtnSelector = "button[type='submit']";
+    // Selectors
+    const submitLoginBtnSelector = "button[type='submit']";
 
     await LoginHelper.enterFieldsUsernameAndPassword(username, password);
 
@@ -98,7 +98,7 @@ class LoginHelper {
   }
 }
 
-const TIMEOUT = 120000;
+const TIMEOUT = 30000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
