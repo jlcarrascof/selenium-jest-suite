@@ -191,13 +191,13 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const expectedUrl = `${BASE_URL}/recover-password`; // Example of url expected
     const selector = 'form > div.flex.flex-row.gap-2.justify-between > a'
     await LoginHelper.landingPageLoginBtnClick();
-    const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
+    const actualUrl = await LoginHelper.loginClickLink(selector, 0);
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
   test('TC-011: Clicking New Account link should redirect to registration page', async () => {
-    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; // URL esperada
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; // expected URL
     const selector = "a[href*='user-signup']";
     await LoginHelper.landingPageLoginBtnClick();
     const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
@@ -206,10 +206,10 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   });
 
   test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
-    const expectedUrl = `${BASE_URL}/contact-us`; // expected URL
+    const expectedUrl = `${BASE_URL}/contact-us`; // example of expected URL
     const selector = "button.font-semibold.text-hprimary";
     await LoginHelper.landingPageLoginBtnClick();
-    const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
+    const actualUrl = await LoginHelper.loginClickLink(selector, 0);
 
     expect(actualUrl).toBe(expectedUrl);
   });
