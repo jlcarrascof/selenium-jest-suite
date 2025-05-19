@@ -1,4 +1,4 @@
-const { Builder, By, until } = require('selenium-webdriver');
+const { Builder, By, until, Key } = require('selenium-webdriver');
 
 class LoginHelper {
   static currentBrowser;
@@ -108,6 +108,44 @@ class LoginHelper {
     return await driver.getCurrentUrl();
   }
 
+  static async navigateWithTabsInOrder(controls) {
+
+    // 2. Reset focus to <body> so the very first TAB goes to the first control
+    await this.driver.executeScript('document.body.focus();');
+    await this.driver.sleep(200);
+
+    let sentTabs = 0;
+
+    for (const { selector, name, tabCount, isXPath = false } of controls) {
+      // Only send the new TABs needed
+      const tabsToSend = tabCount - sentTabs;
+      sentTabs = tabCount;
+
+      for (let i = 0; i < tabsToSend; i++) {
+        await this.driver.actions().sendKeys(Key.TAB).perform();
+        await this.driver.sleep(150);
+      }
+
+      // Locate expected element via CSS or XPath
+      const expected = isXPath
+        ? await this.driver.findElement(By.xpath(selector))
+        : await this.driver.findElement(By.css(selector));
+
+      // Assert it’s the focused element
+      const isFocused = await this.driver.executeScript(
+        'return arguments[0] === document.activeElement;',
+        expected
+      );
+
+      if (!isFocused) {
+        throw new Error(
+          `Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs`
+        );
+      }
+      console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
+    }
+  }
+
   static async disposeDriver() {
       if (this.driver) {
           await this.driver.quit();
@@ -204,6 +242,73 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
+
+  test('TC-012: Tab order should follow expected focus sequence', async () => {
+    const controls = [
+      {
+        selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
+        name: 'Sign in with Google',
+        tabCount: 1,
+        isXPath: true
+      },
+      {
+        selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
+        name: 'Sign in with Apple',
+        tabCount: 2,
+        isXPath: true
+      },
+      {
+        selector: 'input[placeholder="Enter your username"]',
+        name: 'Username',
+        tabCount: 3
+      },
+      {
+        selector: 'input[placeholder="Enter your password"]',
+        name: 'Password',
+        tabCount: 4
+      },
+      {
+        selector: "//input[@placeholder='Enter your password']/following-sibling::button",
+        name: 'Password Toggle',
+        tabCount: 5,
+        isXPath: true
+      },
+      {
+        selector: 'input#checkbox[type="checkbox"]',
+        name: 'Remember Me',
+        tabCount: 6
+      },
+      {
+        selector: "//a[normalize-space(.)='Forgot Password?']",
+        name: 'Forgot Password',
+        tabCount: 7,
+        isXPath: true
+      },
+      {
+        selector: "//a[normalize-space(.)='New Account']",
+        name: 'New Account',
+        tabCount: 8,
+        isXPath: true
+      },
+      {
+        selector: 'menu-context-language button.dropdown-toggle',
+        name: 'Language Selector',
+        tabCount: 9
+      },
+      {
+        selector: "//button[normalize-space(.)='Contact Us']",
+        name: 'Contact Us',
+        tabCount: 10,
+        isXPath: true
+      }
+    ];
+
+    await LoginHelper.landingPageLoginBtnClick();
+    // This function send TABs in order,
+    // asserting focus at each step
+    await LoginHelper.navigateWithTabsInOrder(controls);
+  });
+
 
   test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
     const expectedUrl = `${BASE_URL}/contact-us`; // example of expected URL
