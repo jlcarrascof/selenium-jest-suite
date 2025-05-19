@@ -92,24 +92,77 @@ class LoginHelper {
 
   static async forgotPasswordLinkClick() {
     // Selectors
-    const forgotPasswordLinkSelector = "a[href='/recover-password']"; // Ajusta el selector según el HTML real
-    const recoverPasswordPageSelector = "#recover-password-form"; // Ajusta según el elemento distintivo de la página de recuperación
+    const forgotPasswordLinkSelector = "form > div.flex.flex-row.gap-2.justify-between > a"; // Selector using DevTools
 
-    // Ir a la pantalla de login
-    await driver.get(BASE_URL);
-    await driver.wait(until.elementLocated(By.css('input[placeholder="Enter your username"]')), TIMEOUT); // Verifica que la pantalla de login cargó
-
-    // Localizar y hacer clic en el enlace "Forgot Password?"
+    // Finding the link "Forgot Password" using the selector above
     const forgotPasswordLink = await driver.wait(until.elementLocated(By.css(forgotPasswordLinkSelector)), TIMEOUT);
+    // The link must be enabled and visible
     await driver.wait(until.elementIsVisible(forgotPasswordLink), TIMEOUT);
     await driver.wait(until.elementIsEnabled(forgotPasswordLink), TIMEOUT);
+
+    // Click on "Forgot Password"
     await forgotPasswordLink.click();
 
-    // Verificar redirección a la página de recuperación
-    const recoverPasswordElement = await driver.wait(until.elementLocated(By.css(recoverPasswordPageSelector)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(recoverPasswordElement), TIMEOUT);
+    // Wait 15 segundos for a possible redirection
+    // await driver.sleep(5000);
 
-    // Devolver la URL actual para validación
+    // Capture the actual URL for validation purposes.
+    return await driver.getCurrentUrl();
+  }
+
+  static async newAccountLinkClick() {
+    // Selectors
+    const newAccountLinkSelector = "a[href*='user-signup']";
+
+    // Localizar el enlace "New Account"
+    const newAccountLink = await driver.wait(until.elementLocated(By.css(newAccountLinkSelector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(newAccountLink), TIMEOUT);
+    await driver.wait(until.elementIsEnabled(newAccountLink), TIMEOUT);
+
+    // Click on "New Account"
+    await newAccountLink.click();
+
+    // Esperar 2 segundos para la redirección
+    await driver.sleep(2000);
+
+    // Devolver la URL actual
+    return await driver.getCurrentUrl();
+  }
+
+  static async contactUsLinkClick() {
+    // Selectors
+    const contactUsLinkSelector = "button.font-semibold.text-hprimary";
+
+    // Localizar el botón "Contact Us"
+    const contactUsLink = await driver.wait(until.elementLocated(By.css(contactUsLinkSelector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(contactUsLink), TIMEOUT);
+    await driver.wait(until.elementIsEnabled(contactUsLink), TIMEOUT);
+
+    // Click on "Contact Us"
+    await contactUsLink.click();
+
+    // Esperar 2 segundos para la redirección
+    await driver.sleep(2000);
+
+    // Devolver la URL actual
+    return await driver.getCurrentUrl();
+  }
+
+  static async loginClickLink(selector, waitTime) {
+    // Locate the element
+    const element = await driver.wait(until.elementLocated(By.css(selector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(element), TIMEOUT);
+    await driver.wait(until.elementIsEnabled(element), TIMEOUT);
+
+    // Click on the element
+    await element.click();
+
+    // Wait for redirection
+    if (waitTime > 0) {
+      await driver.sleep(waitTime);
+    }
+
+    // return the actual URL
     return await driver.getCurrentUrl();
   }
 
@@ -193,15 +246,33 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   });
 
   test('TC-010: Clicking Forgot Password link should redirect to recovery page', async () => {
+    const expectedUrl = `${BASE_URL}/recover-password`; // Example of url expected
+    const selector = 'form > div.flex.flex-row.gap-2.justify-between > a'
     await LoginHelper.landingPageLoginBtnClick();
-
-    const expectedUrl = `${BASE_URL}/recover-password`; // Ajusta según la URL real de la página de recuperación
-    const actualUrl = await LoginHelper.forgotPasswordLinkClick();
+    const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
-  /*
+  test('TC-011: Clicking New Account link should redirect to registration page', async () => {
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; // URL esperada
+    const selector = "a[href*='user-signup']";
+    await LoginHelper.landingPageLoginBtnClick();
+    const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+  test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
+    const expectedUrl = `${BASE_URL}/contact-us`; // expected URL
+    const selector = "button.font-semibold.text-hprimary";
+    await LoginHelper.landingPageLoginBtnClick();
+    const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+/*
 
       test('TC-008: Mostrar error al dejar vacío el campo username y quitar el foco', async () => {
           const errors = [];
