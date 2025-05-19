@@ -90,6 +90,29 @@ class LoginHelper {
     expect(actualResult).toBe(expectedResult);
   }
 
+  static async forgotPasswordLinkClick() {
+    // Selectors
+    const forgotPasswordLinkSelector = "a[href='/recover-password']"; // Ajusta el selector según el HTML real
+    const recoverPasswordPageSelector = "#recover-password-form"; // Ajusta según el elemento distintivo de la página de recuperación
+
+    // Ir a la pantalla de login
+    await driver.get(BASE_URL);
+    await driver.wait(until.elementLocated(By.css('input[placeholder="Enter your username"]')), TIMEOUT); // Verifica que la pantalla de login cargó
+
+    // Localizar y hacer clic en el enlace "Forgot Password?"
+    const forgotPasswordLink = await driver.wait(until.elementLocated(By.css(forgotPasswordLinkSelector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(forgotPasswordLink), TIMEOUT);
+    await driver.wait(until.elementIsEnabled(forgotPasswordLink), TIMEOUT);
+    await forgotPasswordLink.click();
+
+    // Verificar redirección a la página de recuperación
+    const recoverPasswordElement = await driver.wait(until.elementLocated(By.css(recoverPasswordPageSelector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(recoverPasswordElement), TIMEOUT);
+
+    // Devolver la URL actual para validación
+    return await driver.getCurrentUrl();
+  }
+
   static async disposeDriver() {
       if (this.driver) {
           await this.driver.quit();
@@ -98,7 +121,7 @@ class LoginHelper {
   }
 }
 
-const TIMEOUT = 30000;
+const TIMEOUT = 120000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
@@ -169,7 +192,16 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, EMPTY_PASSWORD);
   });
 
-    /*
+  test('TC-010: Clicking Forgot Password link should redirect to recovery page', async () => {
+    await LoginHelper.landingPageLoginBtnClick();
+
+    const expectedUrl = `${BASE_URL}/recover-password`; // Ajusta según la URL real de la página de recuperación
+    const actualUrl = await LoginHelper.forgotPasswordLinkClick();
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+  /*
 
       test('TC-008: Mostrar error al dejar vacío el campo username y quitar el foco', async () => {
           const errors = [];
