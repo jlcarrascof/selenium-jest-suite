@@ -75,10 +75,10 @@ class LoginHelper {
 
   }
 
-  static async loginBtnExpectedToBeDisabled({ username, password }) {
+  static async loginBtnExpectedToBeDisabled(username, password) {
 
-      // Selectors
-      const submitLoginBtnSelector = "button[type='submit']";
+    // Selectors
+    const submitLoginBtnSelector = "button[type='submit']";
 
     await LoginHelper.enterFieldsUsernameAndPassword(username, password);
 
@@ -98,7 +98,7 @@ class LoginHelper {
   }
 }
 
-const TIMEOUT = 120000;
+const TIMEOUT = 30000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
@@ -156,17 +156,17 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   test('TC-005: Login Submit button should be disabled when username is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled({ username: EMPTY_USERNAME, password: VALID_PASSWORD });
+    await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, VALID_PASSWORD);
   });
 
   test('TC-006: Login Submit button should be disabled when password is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled({ username: VALID_USERNAME, password: EMPTY_PASSWORD });
+    await LoginHelper.loginBtnExpectedToBeDisabled(VALID_USERNAME, EMPTY_PASSWORD);
   });
 
   test('TC-007: Login Submit button should be disabled when username and password are empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled({ username: EMPTY_USERNAME, password: EMPTY_PASSWORD });
+    await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, EMPTY_PASSWORD);
   });
 
     /*
