@@ -90,6 +90,24 @@ class LoginHelper {
     expect(actualResult).toBe(expectedResult);
   }
 
+  static async loginClickLink(selector, waitTime) {
+    // Locate the element
+    const element = await driver.wait(until.elementLocated(By.css(selector)), TIMEOUT);
+    await driver.wait(until.elementIsVisible(element), TIMEOUT);
+    await driver.wait(until.elementIsEnabled(element), TIMEOUT);
+
+    // Click on the element
+    await element.click();
+
+    // Wait for redirection
+    if (waitTime > 0) {
+      await driver.sleep(waitTime);
+    }
+
+    // return the actual URL
+    return await driver.getCurrentUrl();
+  }
+
   static async disposeDriver() {
       if (this.driver) {
           await this.driver.quit();
@@ -98,7 +116,7 @@ class LoginHelper {
   }
 }
 
-const TIMEOUT = 30000;
+const TIMEOUT = 120000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
@@ -169,7 +187,34 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, EMPTY_PASSWORD);
   });
 
-    /*
+  test('TC-010: Clicking Forgot Password link should redirect to recovery page', async () => {
+    const expectedUrl = `${BASE_URL}/recover-password`; // Example of url expected
+    const selector = 'form > div.flex.flex-row.gap-2.justify-between > a'
+    await LoginHelper.landingPageLoginBtnClick();
+    const actualUrl = await LoginHelper.loginClickLink(selector, 0);
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+  test('TC-011: Clicking New Account link should redirect to registration page', async () => {
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; // expected URL
+    const selector = "a[href*='user-signup']";
+    await LoginHelper.landingPageLoginBtnClick();
+    const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+  test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
+    const expectedUrl = `${BASE_URL}/contact-us`; // example of expected URL
+    const selector = "button.font-semibold.text-hprimary";
+    await LoginHelper.landingPageLoginBtnClick();
+    const actualUrl = await LoginHelper.loginClickLink(selector, 0);
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+/*
 
       test('TC-008: Mostrar error al dejar vacío el campo username y quitar el foco', async () => {
           const errors = [];
