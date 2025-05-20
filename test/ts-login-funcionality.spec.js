@@ -101,7 +101,7 @@ class LoginHelper {
     // return the actual URL
     return await this.driver.getCurrentUrl();
   }
-               
+
   static async canNavigateWithTabsInOrder(controls) {
 
     // Reset focus to <body> so the very first TAB goes to the first control
@@ -203,7 +203,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   test('TC-003: Invalid credentials (invalid username, valid password) should display error message', async () => {
     await LoginHelper.landingPageLoginBtnClick();
     const modalMessageText = await LoginHelper.loginWithInvalidCredentialsMessageTextError(INVALID_USERNAME, VALID_PASSWORD);
-    
+
     const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
     const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
     const expectedResult = true;
@@ -214,7 +214,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   test('TC-004: Invalid credentials (invalid username, invalid password) should display error message', async () => {
     await LoginHelper.landingPageLoginBtnClick();
     const modalMessageText = await LoginHelper.loginWithInvalidCredentialsMessageTextError(INVALID_USERNAME, INVALID_PASSWORD);
-    
+
     const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
     const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
     const expectedResult = true;
@@ -224,7 +224,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   test('TC-005: Login Submit button should be disabled when username is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    
+
     const actualResult = await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, VALID_PASSWORD);
     const expectedResult = true;
 
@@ -257,7 +257,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await LoginHelper.landingPageLoginBtnClick();
 
     const actualUrl = await LoginHelper.loginClickLink(selector, 0);
-    const expectedUrl = `${BASE_URL}/recover-password`; 
+    const expectedUrl = `${BASE_URL}/recover-password`;
 
     expect(actualUrl).toBe(expectedUrl);
   });
@@ -270,7 +270,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await LoginHelper.landingPageLoginBtnClick();
 
     const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
-    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; 
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
 
     expect(actualUrl).toBe(expectedUrl);
   });
