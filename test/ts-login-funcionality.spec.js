@@ -24,12 +24,12 @@ class LoginHelper {
     // Selectors
     const loginBtnSelector = 'a.px-4';
 
-    await driver.get(BASE_URL);
+    await this.driver.get(BASE_URL);
 
-    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), TIMEOUT);
+    const loginBtn = await this.driver.wait(until.elementLocated(By.css(loginBtnSelector)), TIMEOUT);
 
-    await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(loginBtn), TIMEOUT);
+    await this.driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
+    await this.driver.wait(until.elementIsEnabled(loginBtn), TIMEOUT);
 
     await loginBtn.click();
   }
@@ -39,8 +39,8 @@ class LoginHelper {
        const inputUsernameSelector = "input[placeholder='Enter your username']";
        const inputPasswordSelector = "input[placeholder='Enter your password']";
 
-       await driver.findElement(By.css(inputUsernameSelector)).sendKeys(username);
-       await driver.findElement(By.css(inputPasswordSelector)).sendKeys(password);
+       await this.driver.findElement(By.css(inputUsernameSelector)).sendKeys(username);
+       await this.driver.findElement(By.css(inputPasswordSelector)).sendKeys(password);
   }
 
   static async loginBtnClick() {
@@ -48,30 +48,25 @@ class LoginHelper {
     // Selectors
     const submitBtnSelector = "button[type='submit']";
 
-    const submitLoginBtn = await driver.wait(until.elementLocated(By.css(submitBtnSelector)), TIMEOUT);
+    const submitLoginBtn = await this.driver.wait(until.elementLocated(By.css(submitBtnSelector)), TIMEOUT);
 
-    await driver.wait(until.elementIsVisible(submitLoginBtn), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(submitLoginBtn), TIMEOUT);
+    await this.driver.wait(until.elementIsVisible(submitLoginBtn), TIMEOUT);
+    await this.driver.wait(until.elementIsEnabled(submitLoginBtn), TIMEOUT);
 
     await submitLoginBtn.click();
   }
 
-  static async loginWithInvalidCredentials(username, password) {
+    static async loginWithInvalidCredentialsMessageTextError(username, password) {
     // Selectors
     const modalMessageSelector = 'div.mb-8.text-md > p';
 
     await LoginHelper.enterFieldsUsernameAndPassword(username, password);
-    await LoginHelper.loginBtnClick(username, password);
+    await LoginHelper.loginBtnClick();
 
-    const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
-
-    const modalMessage = await driver.wait(until.elementLocated(By.css(modalMessageSelector)), TIMEOUT);
+    const modalMessage = await this.driver.wait(until.elementLocated(By.css(modalMessageSelector)), TIMEOUT);
     const modalMessageText = await modalMessage.getText();
 
-    const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    return modalMessageText;
 
   }
 
@@ -82,35 +77,34 @@ class LoginHelper {
 
     await LoginHelper.enterFieldsUsernameAndPassword(username, password);
 
-    const submitLoginBtn = await driver.findElement(By.css(submitLoginBtnSelector));
+    const submitLoginBtn = await this.driver.findElement(By.css(submitLoginBtnSelector));
 
-    const actualResult = await submitLoginBtn.isEnabled();
-    const expectedResult = false;
+    const isDisabled = !(await submitLoginBtn.isEnabled());
 
-    expect(actualResult).toBe(expectedResult);
+   return isDisabled;
   }
 
   static async loginClickLink(selector, waitTime) {
     // Locate the element
     const element = await driver.wait(until.elementLocated(By.css(selector)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(element), TIMEOUT);
-    await driver.wait(until.elementIsEnabled(element), TIMEOUT);
+    await this.driver.wait(until.elementIsVisible(element), TIMEOUT);
+    await this.driver.wait(until.elementIsEnabled(element), TIMEOUT);
 
     // Click on the element
     await element.click();
 
     // Wait for redirection
     if (waitTime > 0) {
-      await driver.sleep(waitTime);
+      await this.driver.sleep(waitTime);
     }
 
     // return the actual URL
-    return await driver.getCurrentUrl();
+    return await this.driver.getCurrentUrl();
   }
 
-  static async navigateWithTabsInOrder(controls) {
+  static async canNavegateWithTabsInOrder(controls) {
 
-    // 2. Reset focus to <body> so the very first TAB goes to the first control
+    // Reset focus to <body> so the very first TAB goes to the first control
     await this.driver.executeScript('document.body.focus();');
     await this.driver.sleep(200);
 
@@ -138,11 +132,13 @@ class LoginHelper {
       );
 
       if (!isFocused) {
-        throw new Error(
-          `Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs`
-        );
+        console.log(`Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs`);
       }
-      console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
+      else{
+        console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
+      }
+
+      return isFocused;
     }
   }
 
@@ -169,7 +165,7 @@ let driver;
 beforeAll(async () => {
   LoginHelper.init(CURRENT_BROWSER, TIMEOUT);
   await LoginHelper.initDriver()
-  driver = await LoginHelper.getDriver();
+  this.driver = await LoginHelper.getDriver();
 });
 
 afterAll(async () => {
@@ -180,14 +176,14 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   test('TC-001: Valid credentials should login successfully', async () => {
 
-    // Selectors
+    // Selector
     const dashboardUrlSelector = 'h1.text-xl.font-semibold';
 
     await LoginHelper.landingPageLoginBtnClick();
     await LoginHelper.enterFieldsUsernameAndPassword(VALID_USERNAME, VALID_PASSWORD);
-    await LoginHelper.loginBtnClick(VALID_USERNAME, VALID_PASSWORD);
+    await LoginHelper.loginBtnClick();
 
-    const dashboardUrl = await driver.wait(until.elementLocated(By.css(dashboardUrlSelector)), TIMEOUT);
+    const dashboardUrl = await this.driver.wait(until.elementLocated(By.css(dashboardUrlSelector)), TIMEOUT);
 
     const actualResult = await dashboardUrl.getText();
     const expectedResult = /dashboard/i
@@ -195,50 +191,88 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toMatch(expectedResult);
   });
 
-  test('TC-002: Invalid credentials (valid username, invalid password)  should display error message', async () => {
+  test('TC-002: Invalid credentials (valid username, invalid password) should display error message', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginWithInvalidCredentials(VALID_USERNAME, INVALID_PASSWORD);
+    const modalMessageText = await LoginHelper.loginWithInvalidCredentialsMessageTextError(VALID_USERNAME, INVALID_PASSWORD);
+
+    const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
+    const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
   })
 
-  test('TC-003: Invalid credentials (invalid username, valid password)  should display error message', async () => {
+  test('TC-003: Invalid credentials (invalid username, valid password) should display error message', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginWithInvalidCredentials(INVALID_USERNAME, VALID_PASSWORD);
-  });
+    const modalMessageText = await LoginHelper.loginWithInvalidCredentialsMessageTextError(INVALID_USERNAME, VALID_PASSWORD);
+    
+    const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
+    const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
+    const expectedResult = true;
 
-  test('TC-004: Invalid credentials (invalid username, invalid password)', async () => {
+    expect(actualResult).toBe(expectedResult);
+  })
+
+  test('TC-004: Invalid credentials (invalid username, invalid password) should display error message', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginWithInvalidCredentials(INVALID_USERNAME, INVALID_PASSWORD);
-  });
+    const modalMessageText = await LoginHelper.loginWithInvalidCredentialsMessageTextError(INVALID_USERNAME, INVALID_PASSWORD);
+    
+    const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
+    const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
+  })
 
   test('TC-005: Login Submit button should be disabled when username is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, VALID_PASSWORD);
+    
+    const actualResult = await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, VALID_PASSWORD);
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-006: Login Submit button should be disabled when password is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled(VALID_USERNAME, EMPTY_PASSWORD);
+
+    const actualResult = await LoginHelper.loginBtnExpectedToBeDisabled(VALID_USERNAME, EMPTY_PASSWORD);
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-007: Login Submit button should be disabled when username and password are empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, EMPTY_PASSWORD);
+
+    const actualResult = await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, EMPTY_PASSWORD);
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-010: Clicking Forgot Password link should redirect to recovery page', async () => {
-    const expectedUrl = `${BASE_URL}/recover-password`; // Example of url expected
+    // Selectors
+
     const selector = 'form > div.flex.flex-row.gap-2.justify-between > a'
+
     await LoginHelper.landingPageLoginBtnClick();
+
     const actualUrl = await LoginHelper.loginClickLink(selector, 0);
+    const expectedUrl = `${BASE_URL}/recover-password`; 
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
   test('TC-011: Clicking New Account link should redirect to registration page', async () => {
-    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; // expected URL
+    // Selector
+
     const selector = "a[href*='user-signup']";
+
     await LoginHelper.landingPageLoginBtnClick();
+
     const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; 
 
     expect(actualUrl).toBe(expectedUrl);
   });
@@ -304,17 +338,23 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     ];
 
     await LoginHelper.landingPageLoginBtnClick();
-    // This function send TABs in order,
-    // asserting focus at each step
-    await LoginHelper.navigateWithTabsInOrder(controls);
+
+    const actualResult =  await LoginHelper.canNavegateWithTabsInOrder(controls);
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
   });
 
 
   test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
-    const expectedUrl = `${BASE_URL}/contact-us`; // example of expected URL
+    // Selector
+
     const selector = "button.font-semibold.text-hprimary";
+
     await LoginHelper.landingPageLoginBtnClick();
+    
     const actualUrl = await LoginHelper.loginClickLink(selector, 0);
+    const expectedUrl = `${BASE_URL}/contact-us`; // example of expected URL
 
     expect(actualUrl).toBe(expectedUrl);
   });
