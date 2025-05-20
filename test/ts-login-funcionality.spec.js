@@ -86,7 +86,7 @@ class LoginHelper {
 
   static async loginClickLink(selector, waitTime) {
     // Locate the element
-    const element = await driver.wait(until.elementLocated(By.css(selector)), TIMEOUT);
+    const element = await this.driver.wait(until.elementLocated(By.css(selector)), TIMEOUT);
     await this.driver.wait(until.elementIsVisible(element), TIMEOUT);
     await this.driver.wait(until.elementIsEnabled(element), TIMEOUT);
 
@@ -101,8 +101,8 @@ class LoginHelper {
     // return the actual URL
     return await this.driver.getCurrentUrl();
   }
-
-  static async canNavegateWithTabsInOrder(controls) {
+               
+  static async canNavigateWithTabsInOrder(controls) {
 
     // Reset focus to <body> so the very first TAB goes to the first control
     await this.driver.executeScript('document.body.focus();');
@@ -159,8 +159,6 @@ const INVALID_PASSWORD = '.12345.qwerty.';
 const CURRENT_BROWSER = 'chrome';
 const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
-
-let driver;
 
 beforeAll(async () => {
   LoginHelper.init(CURRENT_BROWSER, TIMEOUT);
@@ -339,7 +337,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     await LoginHelper.landingPageLoginBtnClick();
 
-    const actualResult =  await LoginHelper.canNavegateWithTabsInOrder(controls);
+    const actualResult =  await LoginHelper.canNavigateWithTabsInOrder(controls);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
@@ -352,7 +350,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const selector = "button.font-semibold.text-hprimary";
 
     await LoginHelper.landingPageLoginBtnClick();
-    
+
     const actualUrl = await LoginHelper.loginClickLink(selector, 0);
     const expectedUrl = `${BASE_URL}/contact-us`; // example of expected URL
 
