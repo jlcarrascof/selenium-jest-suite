@@ -101,7 +101,7 @@ class LoginHelper {
     // return the actual URL
     return await this.driver.getCurrentUrl();
   }
-               
+
   static async canNavigateWithTabsInOrder(controls) {
 
     // Reset focus to <body> so the very first TAB goes to the first control
@@ -203,7 +203,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   test('TC-003: Invalid credentials (invalid username, valid password) should display error message', async () => {
     await LoginHelper.landingPageLoginBtnClick();
     const modalMessageText = await LoginHelper.loginWithInvalidCredentialsMessageTextError(INVALID_USERNAME, VALID_PASSWORD);
-    
+
     const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
     const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
     const expectedResult = true;
@@ -214,7 +214,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   test('TC-004: Invalid credentials (invalid username, invalid password) should display error message', async () => {
     await LoginHelper.landingPageLoginBtnClick();
     const modalMessageText = await LoginHelper.loginWithInvalidCredentialsMessageTextError(INVALID_USERNAME, INVALID_PASSWORD);
-    
+
     const INVALID_CREDENTIALS_MESSAGE = 'Invalid credentials.';
     const actualResult = modalMessageText === INVALID_CREDENTIALS_MESSAGE;
     const expectedResult = true;
@@ -224,7 +224,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   test('TC-005: Login Submit button should be disabled when username is empty', async () => {
     await LoginHelper.landingPageLoginBtnClick();
-    
+
     const actualResult = await LoginHelper.loginBtnExpectedToBeDisabled(EMPTY_USERNAME, VALID_PASSWORD);
     const expectedResult = true;
 
@@ -256,8 +256,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     await LoginHelper.landingPageLoginBtnClick();
 
-    const actualUrl = await LoginHelper.loginClickLink(selector, 0);
-    const expectedUrl = `${BASE_URL}/recover-password`; 
+    const actualUrl = await LoginHelper.loginClickLink(selector, TIMEOUT);
+    const expectedUrl = `${BASE_URL}/recover-password`;
 
     expect(actualUrl).toBe(expectedUrl);
   });
@@ -269,8 +269,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     await LoginHelper.landingPageLoginBtnClick();
 
-    const actualUrl = await LoginHelper.loginClickLink(selector, 2000);
-    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; 
+    const actualUrl = await LoginHelper.loginClickLink(selector, TIMEOUT);
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
 
     expect(actualUrl).toBe(expectedUrl);
   });
@@ -351,262 +351,10 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     await LoginHelper.landingPageLoginBtnClick();
 
-    const actualUrl = await LoginHelper.loginClickLink(selector, 0);
+    const actualUrl = await LoginHelper.loginClickLink(selector, TIMEOUT);
     const expectedUrl = `${BASE_URL}/contact-us`; // example of expected URL
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
-/*
-
-      test('TC-008: Mostrar error al dejar vacío el campo username y quitar el foco', async () => {
-          const errors = [];
-          const inputUsernameSelector = "input[placeholder='Enter your username']";
-          const submitButtonSelector = "button[type='submit']";
-          try {
-              await driver.get('https://qa.harmonychurchsuite.com/landing');
-              await driver.findElement(By.css('a.px-4')).click();
-
-              // Esperar hasta que el campo username esté presente
-              await driver.wait(until.elementLocated(By.css(inputUsernameSelector)), 10000);
-              const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
-
-              // Paso 1: Foco en username
-              await usernameInput.click();
-
-              // Paso 2: Quitar el foco presionando TAB
-              await usernameInput.sendKeys(Key.TAB);
-              await driver.sleep(1000);
-
-              // Validación 1: placeholder
-              const usernamePlaceholder = await usernameInput.getAttribute('placeholder');
-              if (usernamePlaceholder === 'Enter your username') {
-                  console.log('[chrome] Placeholder username: PASSED');
-              } else {
-                  errors.push('Placeholder username incorrecto');
-              }
-
-              // Validación 2: mensaje de validación "Username is required"
-              try {
-                  const usernameError = await driver.findElement(By.xpath("//*[text()='Username is required']"));
-                  if (await usernameError.isDisplayed()) {
-                      console.log('[chrome] Mensaje de error username: PASSED');
-                  } else {
-                      errors.push('No se muestra "Username is required"');
-                  }
-              } catch {
-                  errors.push('"Username is required" no fue encontrado');
-              }
-
-              // Validación 3: botón login deshabilitado
-              const submitButton = await driver.findElement(By.css(submitButtonSelector));
-              const isDisabled = !(await submitButton.isEnabled());
-              if (isDisabled) {
-                  console.log('[chrome] Botón Login deshabilitado: PASSED');
-              } else {
-                  errors.push('El botón Login no está deshabilitado');
-              }
-
-          } catch (err) {
-              errors.push('Excepción durante la ejecución: ' + err.message);
-          }
-
-          if (errors.length > 0) {
-              throw new Error('Errores encontrados:\n' + errors.join('\n'));
-          }
-        });
-
-    test('TC-009: No mostrar errores al ingresar un username válido', async () => {
-        const errors = [];
-        const inputUsernameSelector = "input[placeholder='Enter your username']";
-        const submitButtonSelector = "button[type='submit']";
-        try {
-            await driver.get('https://qa.harmonychurchsuite.com/landing');
-            await driver.findElement(By.css('a.px-4')).click();
-
-            await driver.wait(until.elementLocated(By.css(inputUsernameSelector)), 10000);
-            const usernameInput = await driver.findElement(By.css(inputUsernameSelector));
-
-            // Ingresar un username válido
-            await usernameInput.sendKeys('javier'); // Username válido
-            await driver.sleep(500); // Pausa para renderizar
-
-            // Validación 1: El placeholder ya no debe estar visible (porque hay texto)
-            const placeholderAttr = await usernameInput.getAttribute('placeholder');
-            const valueAttr = await usernameInput.getAttribute('value');
-            if (valueAttr && placeholderAttr === 'Enter your username') {
-                console.log('[chrome] Placeholder oculto tras texto: PASSED');
-            } else {
-                errors.push('El placeholder aún es visible o el valor no se ingresó');
-            }
-
-            // Validación 2: No debe haber mensaje de validación
-            const usernameErrors = await driver.findElements(By.xpath("//*[text()='Username is required']"));
-            if (usernameErrors.length === 0) {
-                console.log('[chrome] Sin mensaje de error: PASSED');
-            } else {
-                errors.push('Se muestra un mensaje de error innecesario');
-            }
-
-        } catch (err) {
-            errors.push('Excepción durante la ejecución: ' + err.message);
-        }
-
-        if (errors.length > 0) {
-            throw new Error('Errores encontrados:\n' + errors.join('\n'));
-        }
-        });
-
-    test('TC-010: Mostrar mensaje de error si se deja vacío el campo password', async () => {
-          const errors = [];
-          const inputPasswordSelector = "input[placeholder='Enter your password']";
-          const submitButtonSelector = "button[type='submit']";
-          try {
-              await driver.get('https://qa.harmonychurchsuite.com/landing');
-              await driver.findElement(By.css('a.px-4')).click();
-
-              await driver.wait(until.elementLocated(By.css(inputPasswordSelector)), 10000);
-              const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
-
-              // Foco y blur sin escribir
-              await passwordInput.click();
-              await driver.sleep(300);
-              await passwordInput.sendKeys('\t'); // Simula perder el foco
-              await driver.sleep(800); // Espera renderizado del mensaje
-
-              // 1. Placeholder correcto
-              const placeholder = await passwordInput.getAttribute('placeholder');
-              if (placeholder === 'Enter your password') {
-                  console.log('[chrome] Placeholder correcto: PASSED');
-              } else {
-                  errors.push('Placeholder incorrecto');
-              }
-
-              // 2. Debe decir "Password is required" pero está mal implementado
-              const errorMsgElements = await driver.findElements(By.xpath("//*[text()='Password is required']"));
-              if (errorMsgElements.length > 0) {
-                  console.log('[chrome] Mensaje correcto: PASSED');
-              } else {
-                  errors.push('NO se muestra el mensaje "Password is required"');
-              }
-
-              // 3. Botón debe estar deshabilitado
-              const submitBtn = await driver.findElement(By.css(submitButtonSelector));
-              const isEnabled = await submitBtn.isEnabled();
-              if (!isEnabled) {
-                  console.log('[chrome] Botón deshabilitado: PASSED');
-              } else {
-                  errors.push('El botón Login está habilitado cuando no debería');
-              }
-
-          } catch (err) {
-              errors.push('Excepción durante la ejecución: ' + err.message);
-          }
-
-          if (errors.length > 0) {
-              throw new Error('Errores encontrados:\n' + errors.join('\n'));
-          }
-        });
-
- test('TC-011: Ingresar password válido y verificar comportamiento visual', async () => {
-        const errors = [];
-const inputPasswordSelector = "input[placeholder='Enter your password']";
-const inputUsernameSelector = "input[placeholder='Enter your username']";
-const submitButtonSelector = "button[type='submit']";
-        try {
-            await driver.get('https://qa.harmonychurchsuite.com/landing');
-            await driver.findElement(By.css('a.px-4')).click();
-
-            await driver.wait(until.elementLocated(By.css(inputUsernameSelector)), 10000);
-            await driver.findElement(By.css(inputUsernameSelector)).sendKeys('javier'); // Username válido
-
-            const passwordInput = await driver.findElement(By.css(inputPasswordSelector));
-            await passwordInput.sendKeys('.qwerty.'); // Password válido
-            await driver.sleep(1000); // Esperamos renderizado
-
-            // 1. Placeholder debería seguir presente pero no visible (comportamiento del navegador)
-            const placeholder = await passwordInput.getAttribute('placeholder');
-            if (placeholder === 'Enter your password') {
-                console.log('[chrome] Placeholder correcto (oculto al escribir): PASSED');
-            } else {
-                errors.push('Placeholder incorrecto');
-            }
-
-            // 2. No debe aparecer mensaje de validación
-            const errorElements = await driver.findElements(By.xpath("//*[contains(text(),'Password is required')]"));
-            if (errorElements.length === 0) {
-                console.log('[chrome] Sin mensaje de validación: PASSED');
-            } else {
-                errors.push('Mensaje de validación visible cuando no debería');
-            }
-
-            // 3. Verificar que la máscara esté funcionando (tipo password)
-            const inputType = await passwordInput.getAttribute('type');
-            if (inputType === 'password') {
-                console.log('[chrome] Campo enmascarado correctamente: PASSED');
-            } else {
-                errors.push('El campo password no está enmascarado');
-            }
-
-        } catch (err) {
-            errors.push('Excepción durante la ejecución: ' + err.message);
-        }
-
-        if (errors.length > 0) {
-            throw new Error('Errores encontrados:\n' + errors.join('\n'));
-        }
-        });
-
-         test("TC-010: Redirigir a la página de recuperación de password al hacer click en 'Forgot Password?'", async () => {
-        const errors = [];
-const forgotPasswordSelector = "a[href*='forgot-password']";
-        try {
-            await driver.get('https://qa.harmonychurchsuite.com/landing');
-            await driver.findElement(By.css('a.px-4')).click();
-
-            await driver.wait(until.elementLocated(By.css(forgotPasswordSelector)), 10000);
-            const forgotLink = await driver.findElement(By.css(forgotPasswordSelector));
-            await forgotLink.click();
-
-            await driver.sleep(3000); // Esperar redirección
-
-            const currentUrl = await driver.getCurrentUrl();
-            if (!currentUrl.includes('forgot-password')) {
-                errors.push(`No se redirigió correctamente. URL actual: ${currentUrl}`);
-            } else {
-                console.log('[chrome] Redirección a recuperación de contraseña: PASSED');
-            }
-
-        } catch (err) {
-            errors.push('Excepción durante la ejecución: ' + err.message);
-        }
-
-        if (errors.length > 0) {
-            throw new Error('Errores encontrados:\n' + errors.join('\n'));
-        }
-  });
-
-  test('TC-012: "New Account" link should redirect to registration form', async () => {
-    // Selectors
-
-    const loginBtnSelector = 'a.px-4';
-    const newAccountLinkSelector = 'a[href="/user-signup"]';
-    const registrationFormFieldSelector = 'input[placeholder="Enter your name"]';
-
-    await driver.get(BASE_URL);
-
-    const loginBtn = await driver.wait(until.elementLocated(By.css(loginBtnSelector)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(loginBtn), TIMEOUT);
-    await loginBtn.click();
-
-    // Click in 'New Account'
-    const newAccountLink = await driver.wait(until.elementLocated(By.css(newAccountLinkSelector)), TIMEOUT);
-    await driver.wait(until.elementIsVisible(newAccountLink), TIMEOUT);
-    await newAccountLink.click();
-
-    // Wait for the registration form to load
-    const registrationField = await driver.wait(until.elementLocated(By.css(registrationFormFieldSelector)), TIMEOUT);
-    expect(await registrationField.isDisplayed()).toBe(true);
-  });
-*/
 });
