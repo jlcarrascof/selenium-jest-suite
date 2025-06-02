@@ -1,69 +1,221 @@
+const DriverFactory = require('./factories/driverFactory');
+const LandingPage = require('./pages/LandingPage');
+const LoginPage = require('./pages/LoginPage');
+const { By, until } = require('selenium-webdriver');
 
-const { Builder } = require('selenium-webdriver');
-const PageFactory = require('../factories/PageFactory');
-const { getValidCredentials, getInvalidCredentials } = require('../data/credentials');
-const { checkTabOrder } = require('../utils/accessibility');
-const { logStep } = require('../utils/testLogger');
+const TIMEOUT = 120000;
+const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
+const VALID_USERNAME = 'javier';
+const VALID_PASSWORD = '.qwerty123.';
+const INVALID_USERNAME = 'maria';
+const INVALID_PASSWORD = '.12345.qwerty.';
+const CURRENT_BROWSER = 'chrome';
+const EMPTY_USERNAME = '';
+const EMPTY_PASSWORD = '';
 
 let driver;
-let landingPage, loginPage;
+let landingPage;
+let loginPage;
 
 beforeAll(async () => {
-  driver = await new Builder().forBrowser('chrome').build();
-  landingPage = PageFactory.getLandingPage(driver);
-  loginPage = PageFactory.getLoginPage(driver);
+  const driverFactory = new DriverFactory(CURRENT_BROWSER, TIMEOUT);
+  driver = await driverFactory.initDriver();
+  landingPage = new LandingPage(driver, BASE_URL, TIMEOUT);
+  loginPage = new LoginPage(driver, TIMEOUT);
 });
 
 afterAll(async () => {
-  await driver.quit();
+  if (driver) {
+    await driver.quit();
+  }
 });
 
-describe('🧪 Login Flow - Harmony Church', () => {
+describe('Test Suite: Login Functionality of Harmony Church', () => {
+  test('TC-001: Valid credentials should login successfully', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
 
-  test('🔐 Successful login redirects to dashboard', async () => {
-    const { email, password } = getValidCredentials();
-    await landingPage.goToLogin();
-    await loginPage.loginWith(email, password);
-    expect(await loginPage.isRedirectedToDashboard()).toBe(true);
+    const dashboardElement = await driver.wait(
+      until.elementLocated(By.css('h1.text-xl.font-semibold')),
+      TIMEOUT
+    );
+    const actualResult = await dashboardElement.getText();
+    const expectedResult = /dashboard/i;
+
+    expect(actualResult).toMatch(expectedResult);
   });
 
-  test('❌ Login fails with wrong password', async () => {
-    const { email } = getValidCredentials();
-    const { password: wrongPassword } = getInvalidCredentials();
-    await landingPage.goToLogin();
-    await loginPage.loginWith(email, wrongPassword);
-    expect(await loginPage.getErrorMessage()).toContain('Invalid credentials');
+  test('TC-002: Invalid credentials (valid username, invalid password) should display error message', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(INVALID_PASSWORD);
+    await loginPage.clickSubmit();
+
+    const modalText = await loginPage.getModalMessageText();
+    const expectedText = 'Invalid credentials.';
+    expect(modalText).toBe(expectedText);
   });
 
-  test('⚠️ Login form shows validation errors', async () => {
-    await landingPage.goToLogin();
-    await loginPage.submitEmptyForm();
-    expect(await loginPage.getEmailValidationMessage()).toContain('required');
-    expect(await loginPage.getPasswordValidationMessage()).toContain('required');
+  test('TC-003: Invalid credentials (invalid username, valid password) should display error message', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(INVALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+
+    const modalText = await loginPage.getModalMessageText();
+    const expectedText = 'Invalid credentials.';
+    expect(modalText).toBe(expectedText);
   });
 
-  test('🔘 Login button is disabled until fields are filled', async () => {
-    await landingPage.goToLogin();
-    expect(await loginPage.isLoginButtonEnabled()).toBe(false);
-    await loginPage.fillEmail('user@example.com');
-    await loginPage.fillPassword('secret123');
-    expect(await loginPage.isLoginButtonEnabled()).toBe(true);
+  test('TC-004: Invalid credentials (invalid username, invalid password) should display error message', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(INVALID_USERNAME);
+    await loginPage.enterPassword(INVALID_PASSWORD);
+    await loginPage.clickSubmit();
+
+    const modalText = await loginPage.getModalMessageText();
+    const expectedText = 'Invalid credentials.';
+    expect(modalText).toBe(expectedText);
   });
 
-  test('⌨️ Tab navigation order is correct', async () => {
-    await landingPage.goToLogin();
-    const tabOrder = await checkTabOrder(driver, [
-      loginPage.selectors.emailInput,
-      loginPage.selectors.passwordInput,
-      loginPage.selectors.rememberMeCheckbox,
-      loginPage.selectors.loginButton,
-    ]);
-    expect(tabOrder).toBe(true);
+  test('TC-005: Login Submit button should be disabled when username is empty', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(EMPTY_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+
+    const isDisabled = await loginPage.isSubmitButtonDisabled();
+    expect(isDisabled).toBe(true);
   });
 
-  test('🔗 Forgot password link navigates correctly', async () => {
-    await landingPage.goToLogin();
-    await loginPage.clickForgotPassword();
-    expect(await loginPage.isOnForgotPasswordPage()).toBe(true);
+  test('TC-006: Login Submit button should be disabled when password is empty', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(EMPTY_PASSWORD);
+
+    const isDisabled = await loginPage.isSubmitButtonDisabled();
+    expect(isDisabled).toBe(true);
+  });
+
+  test('TC-007: Login Submit button should be disabled when username and password are empty', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(EMPTY_USERNAME);
+    await loginPage.enterPassword(EMPTY_PASSWORD);
+
+    const isDisabled = await loginPage.isSubmitButtonDisabled();
+    expect(isDisabled).toBe(true);
+  });
+
+  test('TC-010: Clicking Forgot Password link should redirect to recovery page', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+
+    const actualUrl = await loginPage.clickLink(
+      'form > div.flex.flex-row.gap-2.justify-between > a',
+      TIMEOUT
+    );
+    const expectedUrl = `${BASE_URL}/recover-password`;
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+  test('TC-011: Clicking New Account link should redirect to registration page', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+
+    const actualUrl = await loginPage.clickLink(
+      "a[href*='user-signup']",
+      TIMEOUT
+    );
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+  test('TC-012: Tab order should follow expected focus sequence', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+
+    const controls = [
+      {
+        selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
+        name: 'Sign in with Google',
+        tabCount: 1,
+        isXPath: true
+      },
+      {
+        selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
+        name: 'Sign in with Apple',
+        tabCount: 2,
+        isXPath: true
+      },
+      {
+        selector: 'input[placeholder="Enter your username"]',
+        name: 'Username',
+        tabCount: 3
+      },
+      {
+        selector: 'input[placeholder="Enter your password"]',
+        name: 'Password',
+        tabCount: 4
+      },
+      {
+        selector: "//input[@placeholder='Enter your password']/following-sibling::button",
+        name: 'Password Toggle',
+        tabCount: 5,
+        isXPath: true
+      },
+      {
+        selector: 'input#checkbox[type="checkbox"]',
+        name: 'Remember Me',
+        tabCount: 6
+      },
+      {
+        selector: "//a[normalize-space(.)='Forgot Password?']",
+        name: 'Forgot Password',
+        tabCount: 7,
+        isXPath: true
+      },
+      {
+        selector: "//a[normalize-space(.)='New Account']",
+        name: 'New Account',
+        tabCount: 8,
+        isXPath: true
+      },
+      {
+        selector: 'menu-context-language button.dropdown-toggle',
+        name: 'Language Selector',
+        tabCount: 9
+      },
+      {
+        selector: "//button[normalize-space(.)='Contact Us']",
+        name: 'Contact Us',
+        tabCount: 10,
+        isXPath: true
+      }
+    ];
+
+    for (let control of controls) {
+      const actualResult = await loginPage.canNavigateWithTabsInOrder([control]);
+      expect(actualResult).toBe(true);
+    }
+  });
+
+  test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+
+    const actualUrl = await loginPage.clickLink(
+      "button.font-semibold.text-hprimary",
+      TIMEOUT
+    );
+    const expectedUrl = `${BASE_URL}/contact-us`;
+    expect(actualUrl).toBe(expectedUrl);
   });
 });
