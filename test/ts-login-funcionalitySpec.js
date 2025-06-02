@@ -263,8 +263,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   });
 
   test('TC-011: Clicking New Account link should redirect to registration page', async () => {
-    // Selector
-
     const selector = "a[href*='user-signup']";
 
     await LoginHelper.landingPageLoginBtnClick();
