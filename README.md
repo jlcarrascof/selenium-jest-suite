@@ -127,11 +127,3 @@ This refactored test suite is built to:
 - Follow **professional best practices**
 
 ---
-
-## 👨‍🏫 Ideal for:
-
-- UI Testing Courses & Tutorials
-- Test Automation Portfolio
-- Scalable Enterprise QA Projects
-
----
