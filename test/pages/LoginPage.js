@@ -7,10 +7,10 @@ export class LoginPage {
   constructor(driver) {
     this.driver = driver;
     this.selectors = {
-      emailInput: By.css('input[name="email"]'),
-      passwordInput: By.css('input[name="password"]'),
-      submitButton: By.css('button[type="submit"]'),
-      errorMessage: By.css('[data-testid="error-message"]'),
+      emailInput: By.css("input[placeholder='Enter your username']"),
+      passwordInput: By.css("input[placeholder='Enter your password']"),
+      submitButton: By.css("button[type='submit']"),
+      errorMessage: By.css('div.mb-8.text-md > p'),
       loader: By.css('[data-testid="loader"]'),
     };
   }

@@ -7,7 +7,7 @@ export class LandingPage {
   constructor(driver) {
     this.driver = driver;
     this.selectors = {
-      loginLink: By.css('a[href="/login"]'),
+      loginLink: By.css('a.px-4'),
     };
   }
 
