@@ -1,11 +1,6 @@
 const { By, until } = require('selenium-webdriver');
 
 class LandingPage {
-  /**
-   * @param {WebDriver} driver
-   * @param {string} baseUrl
-   * @param {number} timeout
-   */
   constructor(driver, baseUrl, timeout) {
     this.driver = driver;
     this.baseUrl = baseUrl;
@@ -13,9 +8,6 @@ class LandingPage {
     this.loginBtnSelector = 'a.px-4'; // exact selector from original
   }
 
-  /**
-   * Navigates to the landing page URL.
-   */
   async open() {
     await this.driver.get(this.baseUrl);
   }

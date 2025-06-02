@@ -1,6 +1,5 @@
 const DriverFactory = require('./factories/driverFactory');
-const LandingPage = require('./pages/LandingPage');
-const LoginPage = require('./pages/LoginPage');
+const PageFactory = require('./factories/pagesFactory');
 const { By, until } = require('selenium-webdriver');
 
 const TIMEOUT = 120000;
@@ -20,8 +19,8 @@ let loginPage;
 beforeAll(async () => {
   const driverFactory = new DriverFactory(CURRENT_BROWSER, TIMEOUT);
   driver = await driverFactory.initDriver();
-  landingPage = new LandingPage(driver, BASE_URL, TIMEOUT);
-  loginPage = new LoginPage(driver, TIMEOUT);
+  landingPage = PageFactory.createPage('landing', driver, BASE_URL, TIMEOUT);
+  loginPage = PageFactory.createPage('login', driver, BASE_URL, TIMEOUT);
 });
 
 afterAll(async () => {
