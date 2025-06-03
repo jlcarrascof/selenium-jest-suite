@@ -152,57 +152,67 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     const controls = [
       {
-        // selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
+        // Selector for the login button using XPath
+        selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
         name: 'Sign in with Google',
         tabCount: 1,
         isXPath: true
       },
       {
-        // selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
+        // Selector for the Apple sign-in button using XPath
+        selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
         name: 'Sign in with Apple',
         tabCount: 2,
         isXPath: true
       },
       {
-        // selector: 'input[placeholder="Enter your username"]',
+        // Selector for the username input
+        selector: 'input[placeholder="Enter your username"]',
         name: 'Username',
         tabCount: 3
       },
       {
-        // selector: 'input[placeholder="Enter your password"]',
+        // Selector for the password input
+        selector: 'input[placeholder="Enter your password"]',
         name: 'Password',
         tabCount: 4
       },
       {
-        //selector: "//input[@placeholder='Enter your password']/following-sibling::button",
+        // Selector for the password toggle button using XPath
+        selector: "//input[@placeholder='Enter your password']/following-sibling::button",
         name: 'Password Toggle',
         tabCount: 5,
         isXPath: true
       },
       {
-        //selector: 'input#checkbox[type="checkbox"]',
+        // Selector for the Remember Me checkbox
+        selector: 'input#checkbox[type="checkbox"]',
         name: 'Remember Me',
         tabCount: 6
       },
       {
-        // selector: "//a[normalize-space(.)='Forgot Password?']",
+        // Selector for the Forgot Password link using XPath
+        selector: "//a[normalize-space(.)='Forgot Password?']",
         name: 'Forgot Password',
         tabCount: 7,
         isXPath: true
       },
       {
-        // selector: "//a[normalize-space(.)='New Account']",
+        // Selector for the New Account link using XPath
+        selector: "//a[normalize-space(.)='New Account']",
         name: 'New Account',
         tabCount: 8,
         isXPath: true
       },
       {
-        // selector: 'menu-context-language button.dropdown-toggle',
+        // Selector for the Language Selector dropdown
+        selector: 'menu-context-language button.dropdown-toggle',
         name: 'Language Selector',
         tabCount: 9
       },
       {
-        // selector: "//button[normalize-space(.)='Contact Us']",
+        // Selector for the Contact Us button using XPath
+        selector: "//button[normalize-space(.)='Contact Us']",
         name: 'Contact Us',
         tabCount: 10,
         isXPath: true
