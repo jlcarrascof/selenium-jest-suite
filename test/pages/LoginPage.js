@@ -1,5 +1,7 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
+const WAIT_TIME = 2000;
+const TAB_WAIT_TIME = 1000;
 
 class LoginPage {
   constructor(driver, timeout) {
@@ -73,7 +75,7 @@ class LoginPage {
 
   async canNavigateWithTabsInOrder(controls) {
     await this.driver.executeScript('document.body.focus();');
-    await this.driver.sleep(200);
+    await this.driver.sleep(WAIT_TIME);
     let sentTabs = 0;
 
     for (const { selector, name, tabCount, isXPath = false } of controls) {
@@ -82,7 +84,7 @@ class LoginPage {
 
       for (let i = 0; i < tabsToSend; i++) {
         await this.driver.actions().sendKeys(Key.TAB).perform();
-        await this.driver.sleep(150);
+        await this.driver.sleep(TAB_WAIT_TIME);
       }
 
       const expected = isXPath

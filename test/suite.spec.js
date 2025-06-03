@@ -11,6 +11,7 @@ const INVALID_PASSWORD = '.12345.qwerty.';
 const CURRENT_BROWSER = 'chrome';
 const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
+const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 
 let driver;
 let landingPage;
@@ -38,7 +39,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginPage.clickSubmit();
 
     const dashboardElement = await driver.wait(
-      until.elementLocated(By.css('h1.text-xl.font-semibold')),
+      until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)),
       TIMEOUT
     );
     const actualResult = await dashboardElement.getText();
@@ -56,6 +57,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     const modalText = await loginPage.getModalMessageText();
     const expectedText = 'Invalid credentials.';
+
     expect(modalText).toBe(expectedText);
   });
 
@@ -68,6 +70,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     const modalText = await loginPage.getModalMessageText();
     const expectedText = 'Invalid credentials.';
+
     expect(modalText).toBe(expectedText);
   });
 
@@ -80,6 +83,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     const modalText = await loginPage.getModalMessageText();
     const expectedText = 'Invalid credentials.';
+
     expect(modalText).toBe(expectedText);
   });
 
@@ -90,6 +94,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginPage.enterPassword(VALID_PASSWORD);
 
     const isDisabled = await loginPage.isSubmitButtonDisabled();
+
     expect(isDisabled).toBe(true);
   });
 
@@ -100,6 +105,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginPage.enterPassword(EMPTY_PASSWORD);
 
     const isDisabled = await loginPage.isSubmitButtonDisabled();
+
     expect(isDisabled).toBe(true);
   });
 
@@ -110,6 +116,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginPage.enterPassword(EMPTY_PASSWORD);
 
     const isDisabled = await loginPage.isSubmitButtonDisabled();
+
     expect(isDisabled).toBe(true);
   });
 
@@ -122,6 +129,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       TIMEOUT
     );
     const expectedUrl = `${BASE_URL}/recover-password`;
+
     expect(actualUrl).toBe(expectedUrl);
   });
 
@@ -134,6 +142,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       TIMEOUT
     );
     const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
+
     expect(actualUrl).toBe(expectedUrl);
   });
 
@@ -143,57 +152,57 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     const controls = [
       {
-        selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
+        // selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
         name: 'Sign in with Google',
         tabCount: 1,
         isXPath: true
       },
       {
-        selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
+        // selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
         name: 'Sign in with Apple',
         tabCount: 2,
         isXPath: true
       },
       {
-        selector: 'input[placeholder="Enter your username"]',
+        // selector: 'input[placeholder="Enter your username"]',
         name: 'Username',
         tabCount: 3
       },
       {
-        selector: 'input[placeholder="Enter your password"]',
+        // selector: 'input[placeholder="Enter your password"]',
         name: 'Password',
         tabCount: 4
       },
       {
-        selector: "//input[@placeholder='Enter your password']/following-sibling::button",
+        //selector: "//input[@placeholder='Enter your password']/following-sibling::button",
         name: 'Password Toggle',
         tabCount: 5,
         isXPath: true
       },
       {
-        selector: 'input#checkbox[type="checkbox"]',
+        //selector: 'input#checkbox[type="checkbox"]',
         name: 'Remember Me',
         tabCount: 6
       },
       {
-        selector: "//a[normalize-space(.)='Forgot Password?']",
+        // selector: "//a[normalize-space(.)='Forgot Password?']",
         name: 'Forgot Password',
         tabCount: 7,
         isXPath: true
       },
       {
-        selector: "//a[normalize-space(.)='New Account']",
+        // selector: "//a[normalize-space(.)='New Account']",
         name: 'New Account',
         tabCount: 8,
         isXPath: true
       },
       {
-        selector: 'menu-context-language button.dropdown-toggle',
+        // selector: 'menu-context-language button.dropdown-toggle',
         name: 'Language Selector',
         tabCount: 9
       },
       {
-        selector: "//button[normalize-space(.)='Contact Us']",
+        // selector: "//button[normalize-space(.)='Contact Us']",
         name: 'Contact Us',
         tabCount: 10,
         isXPath: true
@@ -202,6 +211,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     for (let control of controls) {
       const actualResult = await loginPage.canNavigateWithTabsInOrder([control]);
+
       expect(actualResult).toBe(true);
     }
   });
@@ -215,6 +225,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       TIMEOUT
     );
     const expectedUrl = `${BASE_URL}/contact-us`;
+
     expect(actualUrl).toBe(expectedUrl);
   });
 });
