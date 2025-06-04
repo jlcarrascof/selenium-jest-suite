@@ -57,7 +57,7 @@ class LoginPage {
     return !(await submitBtn.isEnabled());
   }
 
-  async clickLink(selector, waitTime) {
+  async clickLink(selector) {
     const element = await this.driver.wait(
       until.elementLocated(By.css(selector)),
       this.timeout
@@ -65,12 +65,6 @@ class LoginPage {
     await this.driver.wait(until.elementIsVisible(element), this.timeout);
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
-
-    if (waitTime > 0) {
-      await this.driver.sleep(waitTime);
-    }
-
-    return await this.driver.getCurrentUrl();
   }
 
   async canNavigateWithTabsInOrder(controls) {

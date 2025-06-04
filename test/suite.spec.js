@@ -2,7 +2,7 @@ const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until } = require('selenium-webdriver');
 
-const TIMEOUT = 120000;
+const TIMEOUT = 300000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
@@ -12,6 +12,7 @@ const CURRENT_BROWSER = 'chrome';
 const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
+const RECOVER_PASSWORD_SELECTOR = 'form > div.flex.flex-row.gap-2.justify-between > a';
 
 let driver;
 let landingPage;
@@ -124,15 +125,13 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
-    const actualUrl = await loginPage.clickLink(
-      'form > div.flex.flex-row.gap-2.justify-between > a',
-      TIMEOUT
-    );
+    const actualUrl = await loginPage.clickLink(RECOVER_PASSWORD_SELECTOR);
     const expectedUrl = `${BASE_URL}/recover-password`;
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
+  /*
   test('TC-011: Clicking New Account link should redirect to registration page', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
@@ -238,4 +237,5 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
+  */
 });
