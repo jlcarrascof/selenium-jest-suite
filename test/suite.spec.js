@@ -13,7 +13,7 @@ const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 const RECOVER_PASSWORD_SELECTOR = 'form > div.flex.flex-row.gap-2.justify-between > a';
-const NEW_ACCOUNT_SELECTOR = 'a[href*="user-signup"]';
+const NEW_ACCOUNT_SELECTOR = "a[href*='user-signup']";
 
 let driver;
 let landingPage;
