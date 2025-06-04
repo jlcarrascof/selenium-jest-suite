@@ -13,6 +13,7 @@ const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 const RECOVER_PASSWORD_SELECTOR = 'form > div.flex.flex-row.gap-2.justify-between > a';
+const NEW_ACCOUNT_SELECTOR = 'a[href*="user-signup"]';
 
 let driver;
 let landingPage;
@@ -131,20 +132,17 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   });
 
-  /*
   test('TC-011: Clicking New Account link should redirect to registration page', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
-    const actualUrl = await loginPage.clickLink(
-      "a[href*='user-signup']",
-      TIMEOUT
-    );
+    const actualUrl = await loginPage.clickLink(NEW_ACCOUNT_SELECTOR);
     const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
+  /*
   test('TC-012: Tab order should follow expected focus sequence', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
