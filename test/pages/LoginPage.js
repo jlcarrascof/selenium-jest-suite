@@ -1,8 +1,8 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
 const WAIT_TIME = 10000;
-const TAB_WAIT_TIME = 500; // tiempo de espera entre pulsaciones de TAB
-const TIMEOUT = 20000; // 20 seconds
+const TAB_WAIT_TIME = 500; // wait time after each TAB key press
+
 
 class LoginPage {
   constructor(driver, timeout) {
@@ -67,8 +67,8 @@ class LoginPage {
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
 
-    // Esperar a que cambie de URL (básico con delay, o mejor con waitUntil)
-    await this.driver.sleep(WAIT_TIME); // opción simple para redirección
+    // wait for the page to load
+    await this.driver.sleep(WAIT_TIME);
     const url = await this.driver.getCurrentUrl();
     return url;
   }
@@ -81,7 +81,7 @@ class LoginPage {
 
     for (const { selector, name, tabCount, isXPath = false } of controls) {
       try {
-        // Esperar a que el elemento esté presente y visible
+        // wait for the element to be located and visible
         const locator = isXPath ? By.xpath(selector) : By.css(selector);
         const expectedElement = await this.driver.wait(
           until.elementLocated(locator),
@@ -94,7 +94,7 @@ class LoginPage {
           `Elemento "${name}" no está visibles con selector: ${selector}`
         );
 
-        // Enviar las pulsaciones de TAB necesarias
+        // send TABs to reach the expected element
         const tabsToSend = tabCount - sentTabs;
         sentTabs = tabCount;
 
@@ -103,7 +103,7 @@ class LoginPage {
           await this.driver.sleep(TAB_WAIT_TIME);
         }
 
-        // Verificar el elemento activo
+        // verify if the expected element is focused
         const activeElement = await this.driver.switchTo().activeElement();
         const isFocused = await this.driver.executeScript(
           'return arguments[0] === document.activeElement;',
@@ -120,7 +120,7 @@ class LoginPage {
           console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
         }
       } catch (error) {
-        console.error(`Error al verificar "${name}" con selector ${selector}:`, error.message);
+        console.error(`Error to focus "${name}" with selector ${selector}:`, error.message);
         allPassed = false;
       }
     }
