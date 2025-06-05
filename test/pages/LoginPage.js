@@ -1,7 +1,8 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const WAIT_TIME = 2000;
-const TAB_WAIT_TIME = 1000;
+const WAIT_TIME = 10000;
+const TAB_WAIT_TIME = 500; // wait time after each TAB key press
+
 
 class LoginPage {
   constructor(driver, timeout) {
@@ -57,7 +58,7 @@ class LoginPage {
     return !(await submitBtn.isEnabled());
   }
 
-  async clickLink(selector, waitTime) {
+  async clickLink(selector) {
     const element = await this.driver.wait(
       until.elementLocated(By.css(selector)),
       this.timeout
@@ -66,46 +67,65 @@ class LoginPage {
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
 
-    if (waitTime > 0) {
-      await this.driver.sleep(waitTime);
-    }
-
-    return await this.driver.getCurrentUrl();
+    // wait for the page to load
+    await this.driver.sleep(WAIT_TIME);
+    const url = await this.driver.getCurrentUrl();
+    return url;
   }
 
   async canNavigateWithTabsInOrder(controls) {
+    const { By, Key, until } = require('selenium-webdriver');
     await this.driver.executeScript('document.body.focus();');
-    await this.driver.sleep(WAIT_TIME);
     let sentTabs = 0;
+    let allPassed = true;
 
     for (const { selector, name, tabCount, isXPath = false } of controls) {
-      const tabsToSend = tabCount - sentTabs;
-      sentTabs = tabCount;
-
-      for (let i = 0; i < tabsToSend; i++) {
-        await this.driver.actions().sendKeys(Key.TAB).perform();
-        await this.driver.sleep(TAB_WAIT_TIME);
-      }
-
-      const expected = isXPath
-        ? await this.driver.findElement(By.xpath(selector))
-        : await this.driver.findElement(By.css(selector));
-
-      const isFocused = await this.driver.executeScript(
-        'return arguments[0] === document.activeElement;',
-        expected
-      );
-
-      if (!isFocused) {
-        console.log(
-          `Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs`
+      try {
+        // wait for the element to be located and visible
+        const locator = isXPath ? By.xpath(selector) : By.css(selector);
+        const expectedElement = await this.driver.wait(
+          until.elementLocated(locator),
+          this.timeout,
+          `Elemento "${name}" no encontrado con selector: ${selector}`
         );
-      } else {
-        console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
-      }
+        await this.driver.wait(
+          until.elementIsVisible(expectedElement),
+          this.timeout,
+          `Elemento "${name}" no está visibles con selector: ${selector}`
+        );
 
-      return isFocused;
+        // send TABs to reach the expected element
+        const tabsToSend = tabCount - sentTabs;
+        sentTabs = tabCount;
+
+        for (let i = 0; i < tabsToSend; i++) {
+          await this.driver.actions().sendKeys(Key.TAB).perform();
+          await this.driver.sleep(TAB_WAIT_TIME);
+        }
+
+        // verify if the expected element is focused
+        const activeElement = await this.driver.switchTo().activeElement();
+        const isFocused = await this.driver.executeScript(
+          'return arguments[0] === document.activeElement;',
+          expectedElement
+        );
+
+        if (!isFocused) {
+          const activeElementHTML = await activeElement.getAttribute('outerHTML');
+          console.log(
+            `❌ Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs, but focus is on: ${activeElementHTML}`
+          );
+          allPassed = false;
+        } else {
+          console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
+        }
+      } catch (error) {
+        console.error(`Error to focus "${name}" with selector ${selector}:`, error.message);
+        allPassed = false;
+      }
     }
+
+    return allPassed;
   }
 }
 

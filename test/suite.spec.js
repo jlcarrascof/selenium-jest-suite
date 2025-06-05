@@ -12,6 +12,9 @@ const CURRENT_BROWSER = 'chrome';
 const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
+const RECOVER_PASSWORD_SELECTOR = 'form > div.flex.flex-row.gap-2.justify-between > a';
+const NEW_ACCOUNT_SELECTOR = "a[href*='user-signup']";
+const CONTACT_US_SELECTOR = "button.font-semibold.text-hprimary";
 
 let driver;
 let landingPage;
@@ -120,98 +123,82 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(isDisabled).toBe(true);
   });
 
-  test('TC-010: Clicking Forgot Password link should redirect to recovery page', async () => {
+  test('TC-008: Clicking Forgot Password link should redirect to recovery page', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
-    const actualUrl = await loginPage.clickLink(
-      'form > div.flex.flex-row.gap-2.justify-between > a',
-      TIMEOUT
-    );
+    const actualUrl = await loginPage.clickLink(RECOVER_PASSWORD_SELECTOR);
     const expectedUrl = `${BASE_URL}/recover-password`;
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
-  test('TC-011: Clicking New Account link should redirect to registration page', async () => {
+  test('TC-009: Clicking New Account link should redirect to registration page', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
-    const actualUrl = await loginPage.clickLink(
-      "a[href*='user-signup']",
-      TIMEOUT
-    );
+    const actualUrl = await loginPage.clickLink(NEW_ACCOUNT_SELECTOR);
     const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
 
     expect(actualUrl).toBe(expectedUrl);
   });
 
-  test('TC-012: Tab order should follow expected focus sequence', async () => {
+  test('TC-010: Tab order should follow expected focus sequence', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
     const controls = [
       {
-        // Selector for the login button using XPath
         selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
         name: 'Sign in with Google',
         tabCount: 1,
         isXPath: true
       },
       {
-        // Selector for the Apple sign-in button using XPath
         selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
         name: 'Sign in with Apple',
         tabCount: 2,
         isXPath: true
       },
       {
-        // Selector for the username input
         selector: 'input[placeholder="Enter your username"]',
         name: 'Username',
         tabCount: 3
       },
       {
-        // Selector for the password input
         selector: 'input[placeholder="Enter your password"]',
         name: 'Password',
         tabCount: 4
       },
       {
-        // Selector for the password toggle button using XPath
         selector: "//input[@placeholder='Enter your password']/following-sibling::button",
         name: 'Password Toggle',
         tabCount: 5,
         isXPath: true
       },
       {
-        // Selector for the Remember Me checkbox
         selector: 'input#checkbox[type="checkbox"]',
         name: 'Remember Me',
         tabCount: 6
       },
       {
-        // Selector for the Forgot Password link using XPath
         selector: "//a[normalize-space(.)='Forgot Password?']",
         name: 'Forgot Password',
         tabCount: 7,
         isXPath: true
       },
       {
-        // Selector for the New Account link using XPath
         selector: "//a[normalize-space(.)='New Account']",
         name: 'New Account',
         tabCount: 8,
         isXPath: true
       },
       {
-        // Selector for the Language Selector dropdown
         selector: 'menu-context-language button.dropdown-toggle',
         name: 'Language Selector',
         tabCount: 9
       },
       {
-        // Selector for the Contact Us button using XPath
         selector: "//button[normalize-space(.)='Contact Us']",
         name: 'Contact Us',
         tabCount: 10,
@@ -219,21 +206,15 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       }
     ];
 
-    for (let control of controls) {
-      const actualResult = await loginPage.canNavigateWithTabsInOrder([control]);
-
-      expect(actualResult).toBe(true);
-    }
+    const actualResult = await loginPage.canNavigateWithTabsInOrder(controls);
+    expect(actualResult).toBe(true);
   });
 
-  test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
+  test('TC-011: Clicking Contact Us button should redirect to contact page', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
-    const actualUrl = await loginPage.clickLink(
-      "button.font-semibold.text-hprimary",
-      TIMEOUT
-    );
+    const actualUrl = await loginPage.clickLink(CONTACT_US_SELECTOR);
     const expectedUrl = `${BASE_URL}/contact-us`;
 
     expect(actualUrl).toBe(expectedUrl);
