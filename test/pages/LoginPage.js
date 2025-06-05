@@ -1,6 +1,8 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
 const WAIT_TIME = 1000;
+const TAB_WAIT_TIME = 100;
+const TIMEOUT = 20000; // 20 seconds
 
 class LoginPage {
   constructor(driver, timeout) {
@@ -75,6 +77,7 @@ class LoginPage {
     await this.driver.executeScript('document.body.focus();');
     await this.driver.sleep(WAIT_TIME);
     let sentTabs = 0;
+    let allPassed = true;
 
     for (const { selector, name, tabCount, isXPath = false } of controls) {
       const tabsToSend = tabCount - sentTabs;
@@ -82,7 +85,7 @@ class LoginPage {
 
       for (let i = 0; i < tabsToSend; i++) {
         await this.driver.actions().sendKeys(Key.TAB).perform();
-        await this.driver.sleep(WAIT_TIME);
+        await this.driver.sleep(TAB_WAIT_TIME);
       }
 
       const expected = isXPath
@@ -96,14 +99,15 @@ class LoginPage {
 
       if (!isFocused) {
         console.log(
-          `Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs`
+          `❌ Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs`
         );
+        allPassed = false;
       } else {
         console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
       }
-
-      return isFocused;
     }
+
+    return allPassed;
   }
 }
 

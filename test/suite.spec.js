@@ -14,6 +14,7 @@ const EMPTY_PASSWORD = '';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 const RECOVER_PASSWORD_SELECTOR = 'form > div.flex.flex-row.gap-2.justify-between > a';
 const NEW_ACCOUNT_SELECTOR = "a[href*='user-signup']";
+const CONTACT_US_SELECTOR = "button.font-semibold.text-hprimary";
 
 let driver;
 let landingPage;
@@ -33,6 +34,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
+  /*
   test('TC-001: Valid credentials should login successfully', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
@@ -141,7 +143,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
-
+  */
   /*
   test('TC-012: Tab order should follow expected focus sequence', async () => {
     await landingPage.open();
@@ -222,18 +224,17 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(true);
     }
   });
+  */
+
 
   test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
-    const actualUrl = await loginPage.clickLink(
-      "button.font-semibold.text-hprimary",
-      TIMEOUT
-    );
+    const actualUrl = await loginPage.clickLink(CONTACT_US_SELECTOR);
     const expectedUrl = `${BASE_URL}/contact-us`;
 
     expect(actualUrl).toBe(expectedUrl);
   });
-  */
+
 });

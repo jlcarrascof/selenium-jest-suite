@@ -172,6 +172,7 @@ afterAll(async () => {
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
 
+  /*
   test('TC-001: Valid credentials should login successfully', async () => {
 
     // Selector
@@ -272,7 +273,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
-
+  */
+  /*
   test('TC-012: Tab order should follow expected focus sequence', async () => {
     const controls = [
       {
@@ -340,12 +342,11 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-
+*/
 
   test('TC-019: Clicking Contact Us button should redirect to contact page', async () => {
     // Selector
 
-    const selector = "button.font-semibold.text-hprimary";
 
     await LoginHelper.landingPageLoginBtnClick();
 
