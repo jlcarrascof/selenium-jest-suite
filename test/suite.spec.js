@@ -2,7 +2,7 @@ const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until } = require('selenium-webdriver');
 
-const TIMEOUT = 300000;
+const TIMEOUT = 120000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
