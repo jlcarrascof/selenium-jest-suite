@@ -86,12 +86,12 @@ class LoginPage {
         const expectedElement = await this.driver.wait(
           until.elementLocated(locator),
           this.timeout,
-          `Elemento "${name}" no encontrado con selector: ${selector}`
+          `Element "${name}" not found with selector: ${selector}`
         );
         await this.driver.wait(
           until.elementIsVisible(expectedElement),
           this.timeout,
-          `Elemento "${name}" no está visibles con selector: ${selector}`
+          `Element "${name}" not visible with selector: ${selector}`
         );
 
         // send TABs to reach the expected element
