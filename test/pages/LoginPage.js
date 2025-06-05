@@ -1,7 +1,6 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const WAIT_TIME = 2000;
-const TAB_WAIT_TIME = 1000;
+const WAIT_TIME = 1000;
 
 class LoginPage {
   constructor(driver, timeout) {
@@ -65,6 +64,11 @@ class LoginPage {
     await this.driver.wait(until.elementIsVisible(element), this.timeout);
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
+
+    // Esperar a que cambie de URL (básico con delay, o mejor con waitUntil)
+    await this.driver.sleep(WAIT_TIME); // opción simple para redirección
+    const url = await this.driver.getCurrentUrl();
+    return url;
   }
 
   async canNavigateWithTabsInOrder(controls) {
@@ -78,7 +82,7 @@ class LoginPage {
 
       for (let i = 0; i < tabsToSend; i++) {
         await this.driver.actions().sendKeys(Key.TAB).perform();
-        await this.driver.sleep(TAB_WAIT_TIME);
+        await this.driver.sleep(WAIT_TIME);
       }
 
       const expected = isXPath
