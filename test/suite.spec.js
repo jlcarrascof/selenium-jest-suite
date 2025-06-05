@@ -151,66 +151,56 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     const controls = [
       {
-        // Selector for the login button using XPath
         selector: "//button[contains(normalize-space(.),'Sign in with Google')]",
         name: 'Sign in with Google',
         tabCount: 1,
         isXPath: true
       },
       {
-        // Selector for the Apple sign-in button using XPath
         selector: "//button[contains(normalize-space(.),'Sign in with Apple')]",
         name: 'Sign in with Apple',
         tabCount: 2,
         isXPath: true
       },
       {
-        // Selector for the username input
         selector: 'input[placeholder="Enter your username"]',
         name: 'Username',
         tabCount: 3
       },
       {
-        // Selector for the password input
         selector: 'input[placeholder="Enter your password"]',
         name: 'Password',
         tabCount: 4
       },
       {
-        // Selector for the password toggle button using XPath
         selector: "//input[@placeholder='Enter your password']/following-sibling::button",
         name: 'Password Toggle',
         tabCount: 5,
         isXPath: true
       },
       {
-        // Selector for the Remember Me checkbox
         selector: 'input#checkbox[type="checkbox"]',
         name: 'Remember Me',
         tabCount: 6
       },
       {
-        // Selector for the Forgot Password link using XPath
         selector: "//a[normalize-space(.)='Forgot Password?']",
         name: 'Forgot Password',
         tabCount: 7,
         isXPath: true
       },
       {
-        // Selector for the New Account link using XPath
         selector: "//a[normalize-space(.)='New Account']",
         name: 'New Account',
         tabCount: 8,
         isXPath: true
       },
       {
-        // Selector for the Language Selector dropdown
         selector: 'menu-context-language button.dropdown-toggle',
         name: 'Language Selector',
         tabCount: 9
       },
       {
-        // Selector for the Contact Us button using XPath
         selector: "//button[normalize-space(.)='Contact Us']",
         name: 'Contact Us',
         tabCount: 10,
@@ -218,11 +208,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       }
     ];
 
-    for (let control of controls) {
-      const actualResult = await loginPage.canNavigateWithTabsInOrder([control]);
-
-      expect(actualResult).toBe(true);
-    }
+    const actualResult = await loginPage.canNavigateWithTabsInOrder(controls);
+    expect(actualResult).toBe(true);
   });
 
   /*
