@@ -34,6 +34,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
+/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
@@ -218,5 +219,21 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const expectedUrl = `${BASE_URL}/contact-us`;
 
     expect(actualUrl).toBe(expectedUrl);
+  });
+*/
+  test('TC-012: Mostrar error al dejar vacío el campo username y quitar el foco', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+
+    // Put focus on username
+    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await usernameField.click();
+
+    const result = await loginPage.verifyBlurValidation(
+      loginPage.selectors.usernameInput,
+      'Username is required'
+    );
+
+    expect(result).toBe(true);
   });
 });

@@ -13,7 +13,8 @@ class LoginPage {
       usernameInput: "input[placeholder='Enter your username']",
       passwordInput: "input[placeholder='Enter your password']",
       submitButton: "button[type='submit']",
-      modalMessage: 'div.mb-8.text-md > p'
+      modalMessage: 'div.mb-8.text-md > p',
+      usernameError: 'p.text-sm.text-hdanger-active'
     };
   }
 
@@ -126,6 +127,69 @@ class LoginPage {
     }
 
     return allPassed;
+  }
+
+  async verifyBlurValidation(selector, expectedValidation = '', isXPath = false, checkClass = false, expectedClass = '') {
+    const { By, until } = require('selenium-webdriver');
+    try {
+      // Localizar el elemento
+      const locator = isXPath ? By.xpath(selector) : By.css(selector);
+      const element = await this.driver.wait(
+        until.elementLocated(locator),
+        this.timeout,
+        `Element with selector ${selector} not found`
+      );
+      await this.driver.wait(until.elementIsVisible(element), this.timeout);
+
+      // Enfocar el elemento
+      await element.click();
+      // Simular pérdida de foco con TAB
+      await this.driver.actions().sendKeys(Key.TAB).perform();
+      await this.driver.sleep(TAB_WAIT_TIME);
+
+      // Depuración: Imprimir el DOM cercano al input
+      const parentHTML = await this.driver.executeScript(
+        `return document.querySelector('${selector}').parentElement.outerHTML;`
+      );
+      console.log(`DOM cercano al input (${selector}):`, parentHTML);
+
+      if (checkClass) {
+        // Verificar una clase CSS específica
+        const classList = await element.getAttribute('class');
+        console.log(`Clases del elemento (${selector}):`, classList);
+        return classList.includes(expectedClass);
+      } else if (expectedValidation) {
+        // Verificar mensaje de error
+        const errorSelector = isXPath
+          ? `//p[contains(@class, 'text-sm') and contains(@class, 'text-hdanger-active') and contains(text(), '${expectedValidation}')]`
+          : `p.text-sm.text-hdanger-active`;
+        const validationElement = await this.driver.wait(
+          until.elementLocated(By.css(errorSelector)),
+          this.timeout,
+          `Validation message "${expectedValidation}" not found for ${selector}`
+        );
+        await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
+        const actualValidation = await validationElement.getText();
+        console.log(`Mensaje de validación encontrado: ${actualValidation}`);
+        return actualValidation === expectedValidation;
+      } else {
+        // Verificar ausencia de mensaje de error
+        const errorSelector = isXPath
+          ? `//p[contains(@class, 'text-sm') and contains(@class, 'text-hdanger-active')]`
+          : `p.text-sm.text-hdanger-active`;
+        try {
+          await this.driver.wait(until.elementLocated(By.css(errorSelector)), 1000);
+          console.log(`Mensaje de error encontrado cuando no debería: ${selector}`);
+          return false;
+        } catch (error) {
+          console.log(`No se encontró mensaje de error, como se esperaba: ${selector}`);
+          return true;
+        }
+      }
+    } catch (error) {
+      console.error(`Error verifying onBlur for ${selector}:`, error.message);
+      return false;
+    }
   }
 }
 
