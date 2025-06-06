@@ -236,4 +236,20 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(result).toBe(true);
   });
+
+  test('TC-013: Username field should not display error message when is not empty', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(VALID_USERNAME);
+
+    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await usernameField.click();
+
+    const result = await loginPage.verifyBlurValidation(
+      loginPage.selectors.usernameInput // Without expectedValidation
+    );
+
+    expect(result).toBe(true);
+  });
+
 });
