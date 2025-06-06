@@ -2,7 +2,7 @@
 const { By, until, Key } = require('selenium-webdriver');
 const WAIT_TIME = 10000;
 const TAB_WAIT_TIME = 500; // wait time after each TAB key press
-
+const TIMEOUT_XPATH_SELECTOR = 500; // timeout for XPath selectors
 
 class LoginPage {
   constructor(driver, timeout) {
@@ -13,7 +13,8 @@ class LoginPage {
       usernameInput: "input[placeholder='Enter your username']",
       passwordInput: "input[placeholder='Enter your password']",
       submitButton: "button[type='submit']",
-      modalMessage: 'div.mb-8.text-md > p'
+      modalMessage: 'div.mb-8.text-md > p',
+      usernameError: "//p[contains(normalize-space(.),'Username is required')]"
     };
   }
 
@@ -86,12 +87,12 @@ class LoginPage {
         const expectedElement = await this.driver.wait(
           until.elementLocated(locator),
           this.timeout,
-          `Elemento "${name}" no encontrado con selector: ${selector}`
+          `Element "${name}" not found with selector: ${selector}`
         );
         await this.driver.wait(
           until.elementIsVisible(expectedElement),
           this.timeout,
-          `Elemento "${name}" no está visibles con selector: ${selector}`
+          `Element "${name}" not visible with selector: ${selector}`
         );
 
         // send TABs to reach the expected element
@@ -126,6 +127,65 @@ class LoginPage {
     }
 
     return allPassed;
+  }
+
+  async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
+    const { By, until } = require('selenium-webdriver');
+    try {
+      // Locate the element using the provided selector
+      const locator = isXPath ? By.xpath(selector) : By.css(selector);
+      const element = await this.driver.wait(
+        until.elementLocated(locator),
+        this.timeout,
+        `Element with selector ${selector} not found`
+      );
+      await this.driver.wait(until.elementIsVisible(element), this.timeout);
+
+      await element.click();
+      await this.driver.actions().sendKeys(Key.TAB).perform();
+      // await this.driver.sleep(TAB_WAIT_TIME);
+
+      // Depuración: Verificar dónde está el foco
+      const activeElement = await this.driver.switchTo().activeElement();
+      const activeSelector = await activeElement.getAttribute('placeholder') || await activeElement.getTagName();
+      console.log(`Foco después del TAB: ${activeSelector}`);
+
+      if (expectedValidation) {
+        const errorSelector = selector === this.selectors.usernameInput
+          ? this.selectors.usernameError
+          : this.selectors.passwordError;
+        const validationElement = await this.driver.wait(
+          until.elementLocated(By.xpath(errorSelector)),
+          this.timeout,
+          `Validation message "${expectedValidation}" not found`
+        );
+        await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
+        const actualValidation = await validationElement.getText();
+        return actualValidation === expectedValidation;
+      } else {
+        const errorSelector = selector === this.selectors.usernameInput
+        ? this.selectors.usernameError
+        : this.selectors.passwordError;
+
+        console.log(`Verificando ausencia de mensaje con selector: ${errorSelector}`);
+        const elements = await this.driver.findElements(By.xpath(errorSelector));
+        if (elements.length === 0) {
+          console.log(`✅ No hay mensaje de error visible, como se esperaba.`);
+          return true;
+        } else {
+          const errorText = await elements[0].getText();
+          console.log(`❌ Mensaje encontrado cuando no debería: ${errorText}`);
+          return false;
+        }
+      }
+    } catch (error) {
+      console.error(`Error verifying onBlur for ${selector}:`, error.message);
+      return false;
+    } finally {
+      // Limpiar el foco para evitar retrasos
+      await this.driver.executeScript('document.activeElement.blur();');
+      console.log('Foco limpiado');
+    }
   }
 }
 

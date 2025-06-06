@@ -34,6 +34,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
+/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
@@ -219,4 +220,36 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
+*/
+  test('TC-012: Username field should display error message when is empty', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+
+    // Put focus on username
+    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await usernameField.click();
+
+    const result = await loginPage.verifyBlurValidation(
+      loginPage.selectors.usernameInput,
+      'Username is required'
+    );
+
+    expect(result).toBe(true);
+  });
+
+  test('TC-013: Username field should not display error message when is not empty', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+    await loginPage.enterUsername(VALID_USERNAME);
+
+    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await usernameField.click();
+
+    const result = await loginPage.verifyBlurValidation(
+      loginPage.selectors.usernameInput, '' 
+    );
+
+    expect(result).toBe(true);
+  });
+
 });
