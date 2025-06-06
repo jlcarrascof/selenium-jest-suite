@@ -34,7 +34,6 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
@@ -220,7 +219,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
-*/
+
   test('TC-012: Username field should display error message when is empty', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
