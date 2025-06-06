@@ -14,7 +14,8 @@ class LoginPage {
       passwordInput: "input[placeholder='Enter your password']",
       submitButton: "button[type='submit']",
       modalMessage: 'div.mb-8.text-md > p',
-      usernameError: "//p[contains(normalize-space(.),'Username is required')]"
+      usernameError: "//p[contains(normalize-space(.),'Username is required')]",
+      passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]",
     };
   }
 
@@ -130,9 +131,8 @@ class LoginPage {
   }
 
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
-    const { By, until } = require('selenium-webdriver');
+    const { By, Key, until } = require('selenium-webdriver');
     try {
-      // Locate the element using the provided selector
       const locator = isXPath ? By.xpath(selector) : By.css(selector);
       const element = await this.driver.wait(
         until.elementLocated(locator),
@@ -143,12 +143,6 @@ class LoginPage {
 
       await element.click();
       await this.driver.actions().sendKeys(Key.TAB).perform();
-      // await this.driver.sleep(TAB_WAIT_TIME);
-
-      // Depuración: Verificar dónde está el foco
-      const activeElement = await this.driver.switchTo().activeElement();
-      const activeSelector = await activeElement.getAttribute('placeholder') || await activeElement.getTagName();
-      console.log(`Foco después del TAB: ${activeSelector}`);
 
       if (expectedValidation) {
         const errorSelector = selector === this.selectors.usernameInput
@@ -164,27 +158,14 @@ class LoginPage {
         return actualValidation === expectedValidation;
       } else {
         const errorSelector = selector === this.selectors.usernameInput
-        ? this.selectors.usernameError
-        : this.selectors.passwordError;
-
-        console.log(`Verificando ausencia de mensaje con selector: ${errorSelector}`);
+          ? this.selectors.usernameError
+          : this.selectors.passwordError;
         const elements = await this.driver.findElements(By.xpath(errorSelector));
-        if (elements.length === 0) {
-          console.log(`✅ No hay mensaje de error visible, como se esperaba.`);
-          return true;
-        } else {
-          const errorText = await elements[0].getText();
-          console.log(`❌ Mensaje encontrado cuando no debería: ${errorText}`);
-          return false;
-        }
+        return elements.length === 0;
       }
     } catch (error) {
       console.error(`Error verifying onBlur for ${selector}:`, error.message);
       return false;
-    } finally {
-      // Limpiar el foco para evitar retrasos
-      await this.driver.executeScript('document.activeElement.blur();');
-      console.log('Foco limpiado');
     }
   }
 }

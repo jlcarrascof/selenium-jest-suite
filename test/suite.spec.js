@@ -1,6 +1,6 @@
 const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
-const { By, until } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver');
 
 const TIMEOUT = 120000;
 const BASE_URL = 'https://qa.harmonychurchsuite.com/landing';
@@ -34,7 +34,6 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
@@ -220,7 +219,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
-*/
+
   test('TC-012: Username field should display error message when is empty', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
@@ -237,19 +236,40 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(result).toBe(true);
   });
 
-  test('TC-013: Username field should not display error message when is not empty', async () => {
+  test('TC-013: Password field should display error message when is empty', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
     await loginPage.enterUsername(VALID_USERNAME);
 
-    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
-    await usernameField.click();
+    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
+    await passwordField.click(); // Click on the password field to trigger blur event
 
     const result = await loginPage.verifyBlurValidation(
-      loginPage.selectors.usernameInput, '' 
+      loginPage.selectors.passwordInput, // Password field
+      'Password must be at least 8 characters' // Expected error message
     );
 
     expect(result).toBe(true);
   });
 
+  test('TC-014: Username field and Password field should display error messages when both fields are empty', async () => {
+    await landingPage.open();
+    await landingPage.clickLoginButton();
+
+    // Put focus on username
+    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await usernameField.click();
+    await driver.actions().sendKeys(Key.TAB).perform();
+
+    // Put focus on password
+    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
+    await passwordField.click();
+
+    const result = await loginPage.verifyBlurValidation(
+      loginPage.selectors.passwordInput,
+      'Password must be at least 8 characters'
+    );
+
+    expect(result).toBe(true);
+  });
 });
