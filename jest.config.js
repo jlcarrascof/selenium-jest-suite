@@ -1,3 +1,3 @@
 module.exports = {
-    testTimeout: 120000 // Increase timeout for all tests
+    testTimeout: 60000 // Increase timeout for all tests
 };

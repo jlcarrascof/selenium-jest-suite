@@ -246,7 +246,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await usernameField.click();
 
     const result = await loginPage.verifyBlurValidation(
-      loginPage.selectors.usernameInput // Without expectedValidation
+      loginPage.selectors.usernameInput, '' 
     );
 
     expect(result).toBe(true);
