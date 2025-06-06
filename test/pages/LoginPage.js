@@ -2,7 +2,7 @@
 const { By, until, Key } = require('selenium-webdriver');
 const WAIT_TIME = 10000;
 const TAB_WAIT_TIME = 500; // wait time after each TAB key press
-
+const TIMEOUT_XPATH_SELECTOR = 1000; // timeout for XPath selectors
 
 class LoginPage {
   constructor(driver, timeout) {
@@ -14,7 +14,8 @@ class LoginPage {
       passwordInput: "input[placeholder='Enter your password']",
       submitButton: "button[type='submit']",
       modalMessage: 'div.mb-8.text-md > p',
-      usernameError: 'p.text-sm.text-hdanger-active'
+      /*usernameError: '/html/body/app-root/div/tenant-user-sign-in/app-authentication-layout/div/section[1]/form/div[1]/p'*/
+      usernameError: "//p[contains(normalize-space(.),'Username is required')]"
     };
   }
 
@@ -129,7 +130,7 @@ class LoginPage {
     return allPassed;
   }
 
-  async verifyBlurValidation(selector, expectedValidation = '', isXPath = false, checkClass = false, expectedClass = '') {
+  async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
     const { By, until } = require('selenium-webdriver');
     try {
       // Localizar el elemento
@@ -141,49 +142,31 @@ class LoginPage {
       );
       await this.driver.wait(until.elementIsVisible(element), this.timeout);
 
-      // Enfocar el elemento
       await element.click();
-      // Simular pérdida de foco con TAB
       await this.driver.actions().sendKeys(Key.TAB).perform();
       await this.driver.sleep(TAB_WAIT_TIME);
 
-      // Depuración: Imprimir el DOM cercano al input
-      const parentHTML = await this.driver.executeScript(
-        `return document.querySelector('${selector}').parentElement.outerHTML;`
-      );
-      console.log(`DOM cercano al input (${selector}):`, parentHTML);
-
-      if (checkClass) {
-        // Verificar una clase CSS específica
-        const classList = await element.getAttribute('class');
-        console.log(`Clases del elemento (${selector}):`, classList);
-        return classList.includes(expectedClass);
-      } else if (expectedValidation) {
-        // Verificar mensaje de error
-        const errorSelector = isXPath
-          ? `//p[contains(@class, 'text-sm') and contains(@class, 'text-hdanger-active') and contains(text(), '${expectedValidation}')]`
-          : `p.text-sm.text-hdanger-active`;
+      if (expectedValidation) {
+        const errorSelector = selector === this.selectors.usernameInput
+          ? this.selectors.usernameError
+          : this.selectors.passwordError;
         const validationElement = await this.driver.wait(
-          until.elementLocated(By.css(errorSelector)),
+          until.elementLocated(By.xpath(errorSelector)),
           this.timeout,
-          `Validation message "${expectedValidation}" not found for ${selector}`
+          `Validation message "${expectedValidation}" not found`
         );
         await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
         const actualValidation = await validationElement.getText();
-        console.log(`Mensaje de validación encontrado: ${actualValidation}`);
         return actualValidation === expectedValidation;
       } else {
-        // Verificar ausencia de mensaje de error
-        const errorSelector = isXPath
-          ? `//p[contains(@class, 'text-sm') and contains(@class, 'text-hdanger-active')]`
-          : `p.text-sm.text-hdanger-active`;
+        const errorSelector = selector === this.selectors.usernameInput
+          ? this.selectors.usernameError
+          : this.selectors.passwordError;
         try {
-          await this.driver.wait(until.elementLocated(By.css(errorSelector)), 1000);
-          console.log(`Mensaje de error encontrado cuando no debería: ${selector}`);
+          await this.driver.wait(until.elementLocated(By.xpath(errorSelector)), TIMEOUT_XPATH_SELECTOR);
           return false;
-        } catch (error) {
-          console.log(`No se encontró mensaje de error, como se esperaba: ${selector}`);
-          return true;
+        } catch {
+          return true; // No error message should be present
         }
       }
     } catch (error) {

@@ -221,7 +221,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   });
 */
-  test('TC-012: Mostrar error al dejar vacío el campo username y quitar el foco', async () => {
+  test('TC-012: Username field should display error message when is empty', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 
