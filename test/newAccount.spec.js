@@ -45,4 +45,38 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     );
     expect(result).toBe(true);
   });
+
+  test('TC-003: Email field should display error message when is empty', async () => {
+    await newAccountPage.open();
+    const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
+    await emailField.click();
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.emailInput,
+      'Please enter a valid email'
+    );
+    expect(result).toBe(true);
+  });
+
+  test('TC-004: Username field should display error message when is empty', async () => {
+    await newAccountPage.open();
+    const usernameField = await driver.findElement(By.css(newAccountPage.selectors.usernameInput));
+    await usernameField.click();
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.usernameInput,
+      'Username is required'
+    );
+    expect(result).toBe(true);
+  });
+
+  test('TC-005: Password field should display error message when is empty', async () => {
+    await newAccountPage.open();
+    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
+    await passwordField.click();
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.passwordInput,
+      'Password must be at least 8 characters'
+    );
+    expect(result).toBe(true);
+  });
+
 });

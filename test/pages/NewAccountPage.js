@@ -20,7 +20,7 @@ class NewAccountPage {
       surnameError: "//p[contains(normalize-space(.),'Surname is required')]",
       emailError: "//p[contains(normalize-space(.),'Please enter a valid email')]",
       usernameError: "//p[contains(normalize-space(.),'Username is required')]",
-      passwordError: "//p[contains(normalize-space(.),'Password is required')]"
+      passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]"
     };
 
     this.errorMapping = {
