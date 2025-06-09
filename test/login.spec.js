@@ -210,7 +210,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(true);
   });
 
-  test('TC-011: Clicking Contact Us button should redirect to contact page', async () => {
+  test('TC-011: Clicking Contact Us link should redirect to contact page', async () => {
     await landingPage.open();
     await landingPage.clickLoginButton();
 

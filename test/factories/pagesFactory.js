@@ -1,5 +1,6 @@
 const LandingPage = require('../pages/LandingPage');
 const LoginPage = require('../pages/LoginPage');
+const NewAccountPage = require('../pages/NewAccountPage');
 
 class PageFactory {
   static createPage(pageName, driver, baseUrl, timeout) {
@@ -8,6 +9,8 @@ class PageFactory {
         return new LandingPage(driver, baseUrl, timeout);
       case 'login':
         return new LoginPage(driver, timeout);
+      case 'newAccount':
+        return new NewAccountPage(driver, baseUrl, timeout);
       default:
         throw new Error(`Page not found: ${pageName}`);
     }

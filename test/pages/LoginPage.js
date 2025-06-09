@@ -2,7 +2,6 @@
 const { By, until, Key } = require('selenium-webdriver');
 const WAIT_TIME = 10000;
 const TAB_WAIT_TIME = 500; // wait time after each TAB key press
-const TIMEOUT_XPATH_SELECTOR = 500; // timeout for XPath selectors
 
 class LoginPage {
   constructor(driver, timeout) {
