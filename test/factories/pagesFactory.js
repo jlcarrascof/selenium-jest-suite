@@ -1,5 +1,6 @@
 const LandingPage = require('../pages/LandingPage');
 const LoginPage = require('../pages/LoginPage');
+const NewAccountPage = require('../pages/NewAccountPage');
 
 class PageFactory {
   static createPage(pageName, driver, baseUrl, timeout) {
