@@ -23,7 +23,14 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   test('TC-001: Name field should display error message when is empty', async () => {
     await newAccountPage.open();
 
-    const result = await newAccountPage.verifyBlurValidation('name', 'Name is required');
+    // Put focus on name
+    const nameField = await driver.findElement(By.css(newAccountPage.selectors.nameInput));
+    await nameField.click();
+
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.nameInput,
+      'Name is required'
+    );
 
     expect(result).toBe(true);
   });

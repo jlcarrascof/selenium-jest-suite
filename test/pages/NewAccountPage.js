@@ -8,62 +8,57 @@ class NewAccountPage {
     this.timeout = timeout;
 
     this.selectors = {
-      name: "input[placeholder='Enter your name']",
+      nameInput: "input[placeholder='Enter your name']",
       surname: "input[placeholder='Enter your surname']",
       email: "input[placeholder='Email']",
       username: "input[placeholder='Username']",
       password: "input[placeholder='Password']",
       confirmPassword: "input[placeholder='Confirm Password']",
       termsCheckbox: "input[type='checkbox']",
-      createButton: "button[type='submit']"
-    };
-
-    this.validationMessages = {
-      name: "Name is required",
-      surname: "Enter your surname",
-      email: "Please enter a valid email",
-      username: "Username is required",
-      password: "Enter your password",
-      confirmPassword: "Confirm password"
+      createButton: "button[type='submit']",
+      nameError: "//p[contains(normalize-space(.),'Name is required')]"
     };
   }
 
   async open() {
     await this.driver.get(this.baseUrl);
-    await this.driver.wait(until.urlContains(this.baseUrl), this.timeout);
   }
 
-  async verifyBlurValidation(fieldName, expectedValidation) {
-    const selector = this.selectors[`${fieldName}Input`];
-    console.log(`👉 Selector encontrado para ${fieldName}:`, selector);
-
-    if (!selector || typeof selector !== 'string') {
-      throw new Error(`❌ Selector inválido para el campo "${fieldName}". Revisa this.selectors`);
-    }
-    const input = await this.driver.findElement(By.css(selector));
-
-    // Trigger blur with TAB
-    await input.click();
-    await this.driver.actions().sendKeys(Key.TAB).perform();
-    await this.driver.sleep(500);
-
-    // XPath robusto para mensajes de error
-    const errorSelector = `//p[contains(@class, 'text-sm') and contains(@class, 'text-hdanger') and normalize-space()='${expectedValidation}']`;
-
-    console.log(`🔍 Buscando mensaje de validación con XPath: ${errorSelector}`);
-
+  async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
+    const { By, Key, until } = require('selenium-webdriver');
     try {
-      const errorElement = await this.driver.wait(
-        until.elementLocated(By.xpath(errorSelector)),
-        WAIT_TIME
+      const locator = isXPath ? By.xpath(selector) : By.css(selector);
+      const element = await this.driver.wait(
+        until.elementLocated(locator),
+        this.timeout,
+        `Element with selector ${selector} not found`
       );
+      await this.driver.wait(until.elementIsVisible(element), this.timeout);
 
-      const actualValidation = await errorElement.getText();
-      console.log(`✅ Texto de validación encontrado: "${actualValidation}"`);
+      await element.click();
+      await this.driver.actions().sendKeys(Key.TAB).perform();
 
-      return actualValidation === expectedValidation;
+      if (expectedValidation) {
+        const errorSelector = selector === this.selectors.nameInput
+          ? this.selectors.nameError
+          : this.selectors.passwordError;
+        const validationElement = await this.driver.wait(
+          until.elementLocated(By.xpath(errorSelector)),
+          this.timeout,
+          `Validation message "${expectedValidation}" not found`
+        );
+        await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
+        const actualValidation = await validationElement.getText();
+        return actualValidation === expectedValidation;
+      } else {
+        const errorSelector = selector === this.selectors.usernameInput
+          ? this.selectors.usernameError
+          : this.selectors.passwordError;
+        const elements = await this.driver.findElements(By.xpath(errorSelector));
+        return elements.length === 0;
+      }
     } catch (error) {
-      console.error(`❌ No se encontró el mensaje de validación: ${expectedValidation}`);
+      console.error(`Error verifying onBlur for ${selector}:`, error.message);
       return false;
     }
   }
