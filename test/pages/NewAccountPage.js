@@ -9,14 +9,26 @@ class NewAccountPage {
 
     this.selectors = {
       nameInput: "input[placeholder='Enter your name']",
-      surname: "input[placeholder='Enter your surname']",
-      email: "input[placeholder='Email']",
-      username: "input[placeholder='Username']",
-      password: "input[placeholder='Password']",
-      confirmPassword: "input[placeholder='Confirm Password']",
-      termsCheckbox: "input[type='checkbox']",
+      surnameInput: "input[placeholder='Enter your surname']",
+      emailInput: "input[placeholder='Enter your email']",
+      usernameInput: "input[placeholder='Enter your username']",
+      passwordInput: "input[placeholder='Enter your password']",
+      confirmPasswordInput: "input[placeholder='Repeat Password']",
+      termsCheckboxInput: "input[type='checkbox']",
       createButton: "button[type='submit']",
-      nameError: "//p[contains(normalize-space(.),'Name is required')]"
+      nameError: "//p[contains(normalize-space(.),'Name is required')]",
+      surnameError: "//p[contains(normalize-space(.),'Surname is required')]",
+      emailError: "//p[contains(normalize-space(.),'Please enter a valid email')]",
+      usernameError: "//p[contains(normalize-space(.),'Username is required')]",
+      passwordError: "//p[contains(normalize-space(.),'Password is required')]"
+    };
+
+    this.errorMapping = {
+      [this.selectors.nameInput]: this.selectors.nameError,
+      [this.selectors.surnameInput]: this.selectors.surnameError,
+      [this.selectors.emailInput]: this.selectors.emailError,
+      [this.selectors.usernameInput]: this.selectors.usernameError,
+      [this.selectors.passwordInput]: this.selectors.passwordError
     };
   }
 
