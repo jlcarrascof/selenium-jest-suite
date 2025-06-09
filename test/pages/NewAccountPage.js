@@ -63,7 +63,7 @@ class NewAccountPage {
         const actualValidation = await validationElement.getText();
         return actualValidation === expectedValidation;
       } else {
-        const errorSelector = this.errorMapping[selector] || this.selectors.nameError; // Valor por defecto si no hay mapeo
+        const errorSelector = this.errorMapping[selector] || this.selectors.nameError; // Default to name error if not specified
         const elements = await this.driver.findElements(By.xpath(errorSelector));
         return elements.length === 0;
       }
