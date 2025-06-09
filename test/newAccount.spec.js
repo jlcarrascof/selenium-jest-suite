@@ -79,7 +79,15 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(result).toBe(true);
   });
 
-
-
-
+  test('TC-006: Terms and Conditions checkbox should display error message when unchecked', async () => {
+    await newAccountPage.open();
+    const termsCheckbox = await driver.findElement(By.css(newAccountPage.selectors.termsCheckbox));
+    await termsCheckbox.click(); // Desmarcar si está pre-marcado
+    await termsCheckbox.click(); // Asegurarse de que esté desmarcado
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.termsCheckbox,
+      'Terms and Conditions'
+    );
+    expect(result).toBe(true);
+  });
 });

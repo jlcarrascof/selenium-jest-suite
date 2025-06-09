@@ -20,7 +20,8 @@ class NewAccountPage {
       surnameError: "//p[contains(normalize-space(.),'Surname is required')]",
       emailError: "//p[contains(normalize-space(.),'Please enter a valid email')]",
       usernameError: "//p[contains(normalize-space(.),'Username is required')]",
-      passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]"
+      passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]",
+      termsError: "//p[contains(normalize-space(.),'Terms and Conditions')]"
     };
 
     this.errorMapping = {
@@ -28,7 +29,8 @@ class NewAccountPage {
       [this.selectors.surnameInput]: this.selectors.surnameError,
       [this.selectors.emailInput]: this.selectors.emailError,
       [this.selectors.usernameInput]: this.selectors.usernameError,
-      [this.selectors.passwordInput]: this.selectors.passwordError
+      [this.selectors.passwordInput]: this.selectors.passwordError,
+      [this.selectors.termsCheckboxInput]: this.selectors.termsError
     };
   }
 
