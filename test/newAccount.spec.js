@@ -4,17 +4,6 @@ const { By, until, Key } = require('selenium-webdriver');
 
 const TIMEOUT = 120000;
 const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
-const VALID_USERNAME = 'javier';
-const VALID_PASSWORD = '.qwerty123.';
-const INVALID_USERNAME = 'maria';
-const INVALID_PASSWORD = '.12345.qwerty.';
-const CURRENT_BROWSER = 'chrome';
-const EMPTY_USERNAME = '';
-const EMPTY_PASSWORD = '';
-const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
-const RECOVER_PASSWORD_SELECTOR = 'form > div.flex.flex-row.gap-2.justify-between > a';
-const NEW_ACCOUNT_SELECTOR = "a[href*='user-signup']";
-const CONTACT_US_SELECTOR = "button.font-semibold.text-hprimary";
 
 let driver;
 let newAccountPage;
@@ -26,9 +15,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  if (driver) {
-    await driver.quit();
-  }
+  if (driver) await driver.quit();
 });
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
@@ -44,5 +31,4 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(result).toBe(true);
   });
-
 });
