@@ -34,4 +34,15 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(result).toBe(true);
   });
+
+  test('TC-002: Surname field should display error message when is empty', async () => {
+    await newAccountPage.open();
+    const surnameField = await driver.findElement(By.css(newAccountPage.selectors.surnameInput));
+    await surnameField.click();
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.surnameInput,
+      'Surname is required'
+    );
+    expect(result).toBe(true);
+  });
 });

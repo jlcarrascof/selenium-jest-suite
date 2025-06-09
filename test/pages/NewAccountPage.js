@@ -37,7 +37,6 @@ class NewAccountPage {
   }
 
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
-    const { By, Key, until } = require('selenium-webdriver');
     try {
       const locator = isXPath ? By.xpath(selector) : By.css(selector);
       const element = await this.driver.wait(
@@ -51,9 +50,10 @@ class NewAccountPage {
       await this.driver.actions().sendKeys(Key.TAB).perform();
 
       if (expectedValidation) {
-        const errorSelector = selector === this.selectors.nameInput
-          ? this.selectors.nameError
-          : this.selectors.passwordError;
+        const errorSelector = this.errorMapping[selector];
+        if (!errorSelector) {
+          throw new Error(`No error selector defined for ${selector}`);
+        }
         const validationElement = await this.driver.wait(
           until.elementLocated(By.xpath(errorSelector)),
           this.timeout,
@@ -63,9 +63,7 @@ class NewAccountPage {
         const actualValidation = await validationElement.getText();
         return actualValidation === expectedValidation;
       } else {
-        const errorSelector = selector === this.selectors.usernameInput
-          ? this.selectors.usernameError
-          : this.selectors.passwordError;
+        const errorSelector = this.errorMapping[selector] || this.selectors.nameError; // Valor por defecto si no hay mapeo
         const elements = await this.driver.findElements(By.xpath(errorSelector));
         return elements.length === 0;
       }
