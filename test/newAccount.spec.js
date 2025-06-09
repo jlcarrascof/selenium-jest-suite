@@ -4,6 +4,7 @@ const { By, until, Key } = require('selenium-webdriver');
 
 const TIMEOUT = 120000;
 const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
+const CURRENT_BROWSER = 'chrome';
 
 let driver;
 let newAccountPage;
@@ -19,15 +20,10 @@ afterAll(async () => {
 });
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
-  test('TC-001: Name field should display error message when empty', async () => {
+  test('TC-001: Name field should display error message when is empty', async () => {
     await newAccountPage.open();
-    const nameField = await driver.findElement(By.css(newAccountPage.selectors.nameInput));
-    await nameField.click();
 
-    const result = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.nameInput,
-      'Enter your name'
-    );
+    const result = await newAccountPage.verifyBlurValidation('name', 'Name is required');
 
     expect(result).toBe(true);
   });
