@@ -94,18 +94,22 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
   test('TC-006: Terms and Conditions checkbox should display error message when unchecked', async () => {
     await newAccountPage.open();
+
     const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
     await driver.wait(until.elementIsVisible(termsCheckbox), TIMEOUT);
     await termsCheckbox.click(); // Unclick if already checked
+
     const result = await newAccountPage.verifyBlurValidation(
       newAccountPage.selectors.termsCheckbox,
       'Terms and Conditions', true
     );
+
     expect(result).toBe(true);
   });
 
   test('TC-007: All fields should display error messages when are empty', async () => {
     await newAccountPage.open();
+
     const fields = [
       { selector: newAccountPage.selectors.nameInput, error: 'Name is required' },
       { selector: newAccountPage.selectors.surnameInput, error: 'Surname is required' },
@@ -116,23 +120,30 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     for (const field of fields) {
       const element = await driver.findElement(By.css(field.selector));
+
       await element.click();
       await driver.actions().sendKeys(Key.TAB).perform();
+
       const result = await newAccountPage.verifyBlurValidation(field.selector, field.error);
+
       expect(result).toBe(true);
     }
   });
 
   test('TC-008: Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked', async () => {
     await newAccountPage.open();
+
     const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
     await driver.wait(until.elementIsVisible(termsCheckbox), TIMEOUT);
     if (await termsCheckbox.isSelected()) {
-      await termsCheckbox.click(); // Desmarcar si está pre-marcado
+      await termsCheckbox.click(); // Uncheck if already checked
     }
+
     const createButton = await driver.findElement(By.css(newAccountPage.selectors.createButton));
     await driver.wait(until.elementIsVisible(createButton), TIMEOUT);
+
     const isDisabled = await createButton.getAttribute('disabled') !== null;
+
     expect(isDisabled).toBe(true);
   });
 
