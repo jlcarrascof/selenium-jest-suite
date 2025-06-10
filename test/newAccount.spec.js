@@ -11,9 +11,7 @@ const VALID_EMAIL = 'javier.martinez@example.com';
 const VALID_USERNAME = 'javiermartinez';
 const VALID_PASSWORD = 'Password123!';
 const DIFFERENT_PASSWORD = 'Password123*';
-const ONLY_NUMBERS_PASSWORD = '12345678';
-const ONLY_LETTERS_PASSWORD = 'abcdefgh';
-const LESS_THAN_8_PASSWORD = 'ab1@';
+const PASSWORD_ERROR_MESSAGE = 'Password must be at least 8 characters';
 
 let driver;
 let newAccountPage;
@@ -207,46 +205,25 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-011: Password field should display error message when using only numbers', async () => {
-    await newAccountPage.open();
+    const ONLY_NUMBERS_PASSWORD = '12345678';
 
-    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
-    await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
-    await passwordField.sendKeys(ONLY_NUMBERS_PASSWORD);
-    await driver.actions().sendKeys(Key.TAB).perform();
-
-    const result = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.passwordInput,
-      'Password must be at least 8 characters'
-    );
+    const result = await newAccountPage.isValidPassword(ONLY_NUMBERS_PASSWORD, PASSWORD_ERROR_MESSAGE);
 
     expect(result).toBe(true);
   });
 
   test('TC-012: Password field should display error message when using only letters', async () => {
-    await newAccountPage.open();
-    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
-    await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
-    await passwordField.sendKeys(ONLY_LETTERS_PASSWORD);
-    await driver.actions().sendKeys(Key.TAB).perform();
-    const result = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.passwordInput,
-      'Password must be at least 8 characters'
-    );
+    const ONLY_LETTERS_PASSWORD = 'abcdefgh';
+
+    const result = await newAccountPage.isValidPassword(ONLY_LETTERS_PASSWORD, PASSWORD_ERROR_MESSAGE);
+
     expect(result).toBe(true);
   });
 
   test('TC-013: Password field should display error message when using numbers and characters with length less than 8', async () => {
-    await newAccountPage.open();
+    const LESS_THAN_8_PASSWORD = 'ab1@';
 
-    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
-    await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
-    await passwordField.sendKeys(LESS_THAN_8_PASSWORD);
-    await driver.actions().sendKeys(Key.TAB).perform();
-
-    const result = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.passwordInput,
-      'Password must be at least 8 characters'
-    );
+    const result = await newAccountPage.isValidPassword(LESS_THAN_8_PASSWORD, PASSWORD_ERROR_MESSAGE);
 
     expect(result).toBe(true);
   });

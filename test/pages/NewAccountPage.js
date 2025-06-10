@@ -40,6 +40,23 @@ class NewAccountPage {
     await this.driver.get(this.baseUrl);
   }
 
+  async isValidPassword(password, errorMessage) {
+    await this.open();
+
+    const passwordField = await this.driver.findElement(By.css(this.selectors.passwordInput));
+
+    await this.driver.wait(until.elementIsVisible(passwordField), this.timeout);
+    await passwordField.sendKeys(password);
+    await this.driver.actions().sendKeys(Key.TAB).perform();
+
+    const result = await this.verifyBlurValidation(
+      this.selectors.passwordInput,
+      errorMessage
+    );
+
+    return result;
+  }
+
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
     try {
       const locator = isXPath ? By.xpath(selector) : By.css(selector);
