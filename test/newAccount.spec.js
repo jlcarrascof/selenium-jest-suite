@@ -5,6 +5,11 @@ const { By, until, Key } = require('selenium-webdriver');
 const TIMEOUT = 120000;
 const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
 const CURRENT_BROWSER = 'chrome';
+const VALID_NAME = 'Javier';
+const VALID_SURNAME = 'Martínez';
+const VALID_EMAIL = 'javier.martinez@example.com';
+const VALID_USERNAME = 'javiermartinez';
+const VALID_PASSWORD = 'Password123!';
 
 let driver;
 let newAccountPage;
@@ -146,5 +151,32 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(isDisabled).toBe(true);
   });
+
+  test('TC-009: Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked', async () => {
+    await newAccountPage.open();
+
+    await driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(VALID_NAME);
+    await driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(VALID_SURNAME);
+    await driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(VALID_EMAIL);
+    await driver.findElement(By.css(newAccountPage.selectors.usernameInput)).sendKeys(VALID_USERNAME);
+    await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(VALID_PASSWORD);
+    await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(VALID_PASSWORD);
+
+    // Check the Terms and Conditions checkbox
+    const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
+    if (!(await termsCheckbox.isSelected())) {
+      await termsCheckbox.click();
+    }
+
+    // wait for the button to be visible
+    const createButton = await driver.findElement(By.css(newAccountPage.selectors.createButton));
+    await driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
+
+    // Check if the button is enabled
+    const isDisabled = await createButton.getAttribute('disabled') !== null;
+
+    expect(isDisabled).toBe(false);
+  });
+
 
 });

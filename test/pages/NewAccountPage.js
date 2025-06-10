@@ -13,7 +13,7 @@ class NewAccountPage {
       emailInput: "input[placeholder='Enter your email']",
       usernameInput: "input[placeholder='Enter your username']",
       passwordInput: "input[placeholder='Enter your password']",
-      confirmPasswordInput: "input[placeholder='Repeat Password']",
+      confirmPasswordInput: "input[placeholder='Repeat password']",
       termsCheckbox: '//*[@id="checkbox"]',
       createButton: "button[type='submit']",
       nameError: "//p[contains(normalize-space(.),'Name is required')]",
