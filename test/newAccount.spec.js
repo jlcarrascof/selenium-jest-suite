@@ -10,7 +10,10 @@ const VALID_SURNAME = 'Martinez';
 const VALID_EMAIL = 'javier.martinez@example.com';
 const VALID_USERNAME = 'javiermartinez';
 const VALID_PASSWORD = 'Password123!';
+const DIFFERENT_PASSWORD = 'Password123*';
 const ONLY_NUMBERS_PASSWORD = '12345678';
+const ONLY_LETTERS_PASSWORD = 'abcdefgh';
+const LESS_THAN_8_PASSWORD = 'ab1@';
 
 let driver;
 let newAccountPage;
@@ -189,7 +192,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(VALID_PASSWORD);
     await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(VALID_PASSWORD);
 
-    // Asegurar que el checkbox no esté marcado
+    // Uncheck the Terms and Conditions checkbox
     const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
     if (await termsCheckbox.isSelected()) {
       await termsCheckbox.click();
@@ -216,6 +219,50 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
       'Password must be at least 8 characters'
     );
 
+    expect(result).toBe(true);
+  });
+
+  test('TC-012: Password field should display error message when using only letters', async () => {
+    await newAccountPage.open();
+    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
+    await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
+    await passwordField.sendKeys(ONLY_LETTERS_PASSWORD);
+    await driver.actions().sendKeys(Key.TAB).perform();
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.passwordInput,
+      'Password must be at least 8 characters'
+    );
+    expect(result).toBe(true);
+  });
+
+  test('TC-013: Password field should display error message when using numbers and characters with length less than 8', async () => {
+    await newAccountPage.open();
+
+    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
+    await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
+    await passwordField.sendKeys(LESS_THAN_8_PASSWORD);
+    await driver.actions().sendKeys(Key.TAB).perform();
+
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.passwordInput,
+      'Password must be at least 8 characters'
+    );
+
+    expect(result).toBe(true);
+  });
+
+  test('TC-014: Confirm Password field should display error message when we type a different Password', async () => {
+    await newAccountPage.open();
+    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
+    const confirmPasswordField = await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput));
+    await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
+    await passwordField.sendKeys(VALID_PASSWORD);
+    await confirmPasswordField.sendKeys(DIFFERENT_PASSWORD);
+    await driver.actions().sendKeys(Key.TAB).perform();
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.confirmPasswordInput,
+      'Password must match'
+    );
     expect(result).toBe(true);
   });
 
