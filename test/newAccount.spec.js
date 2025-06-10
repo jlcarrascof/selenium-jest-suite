@@ -12,6 +12,7 @@ const VALID_USERNAME = 'javiermartinez';
 const VALID_PASSWORD = 'Password123!';
 const DIFFERENT_PASSWORD = 'Password123*';
 const PASSWORD_ERROR_MESSAGE = 'Password must be at least 8 characters';
+const MESSAGE_EMAIL_ERROR = 'Please enter a valid email';
 
 let driver;
 let newAccountPage;
@@ -250,7 +251,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
   test('TC-015: Email field should display error message when using an invalid email format', async () => {
     const INVALID_EMAIL = 'test@';
-    const MESSAGE_EMAIL_ERROR = 'Please enter a valid email';
 
     await newAccountPage.open();
 
