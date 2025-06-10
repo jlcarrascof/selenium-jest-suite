@@ -268,4 +268,24 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(result).toBe(true);
   });
 
+  test('TC-016: Email field should not display error message when using a valid email format', async () => {
+    const VALID_EMAIL = 'test@example.com';
+    const MESSAGE_EMAIL = 'Username is required';
+
+    await newAccountPage.open();
+
+    const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
+
+    await driver.wait(until.elementIsVisible(emailField), TIMEOUT);
+    await emailField.sendKeys(VALID_EMAIL);
+    await driver.actions().sendKeys(Key.TAB).perform();
+
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.usernameInput,
+      MESSAGE_EMAIL
+    );
+
+    expect(result).toBe(true);
+  });
+
 });
