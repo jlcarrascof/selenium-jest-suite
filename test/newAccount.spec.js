@@ -6,10 +6,11 @@ const TIMEOUT = 120000;
 const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
 const CURRENT_BROWSER = 'chrome';
 const VALID_NAME = 'Javier';
-const VALID_SURNAME = 'Martínez';
+const VALID_SURNAME = 'Martinez';
 const VALID_EMAIL = 'javier.martinez@example.com';
 const VALID_USERNAME = 'javiermartinez';
 const VALID_PASSWORD = 'Password123!';
+const ONLY_NUMBERS_PASSWORD = '12345678';
 
 let driver;
 let newAccountPage;
@@ -200,6 +201,22 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     const isDisabled = await createButton.getAttribute('disabled') !== null;
 
     expect(isDisabled).toBe(true);
+  });
+
+  test('TC-011: Password field should display error message when using only numbers', async () => {
+    await newAccountPage.open();
+
+    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
+    await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
+    await passwordField.sendKeys(ONLY_NUMBERS_PASSWORD);
+    await driver.actions().sendKeys(Key.TAB).perform();
+
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.passwordInput,
+      'Password must be at least 8 characters'
+    );
+
+    expect(result).toBe(true);
   });
 
 });
