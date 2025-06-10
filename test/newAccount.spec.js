@@ -253,16 +253,21 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
   test('TC-014: Confirm Password field should display error message when we type a different Password', async () => {
     await newAccountPage.open();
+
     const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
+
     const confirmPasswordField = await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput));
+
     await driver.wait(until.elementIsVisible(passwordField), TIMEOUT);
     await passwordField.sendKeys(VALID_PASSWORD);
     await confirmPasswordField.sendKeys(DIFFERENT_PASSWORD);
     await driver.actions().sendKeys(Key.TAB).perform();
+
     const result = await newAccountPage.verifyBlurValidation(
       newAccountPage.selectors.confirmPasswordInput,
       'Password must match'
     );
+
     expect(result).toBe(true);
   });
 
