@@ -14,7 +14,7 @@ class NewAccountPage {
       usernameInput: "input[placeholder='Enter your username']",
       passwordInput: "input[placeholder='Enter your password']",
       confirmPasswordInput: "input[placeholder='Repeat Password']",
-      termsCheckboxInput: "input[type='checkbox']",
+      termsCheckbox: '//*[@id="checkbox"]',
       createButton: "button[type='submit']",
       nameError: "//p[contains(normalize-space(.),'Name is required')]",
       surnameError: "//p[contains(normalize-space(.),'Surname is required')]",
@@ -30,7 +30,7 @@ class NewAccountPage {
       [this.selectors.emailInput]: this.selectors.emailError,
       [this.selectors.usernameInput]: this.selectors.usernameError,
       [this.selectors.passwordInput]: this.selectors.passwordError,
-      [this.selectors.termsCheckboxInput]: this.selectors.termsError
+      [this.selectors.termsCheckbox]: this.selectors.termsError
     };
   }
 

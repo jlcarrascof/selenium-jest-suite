@@ -92,27 +92,15 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(result).toBe(true);
   });
 
-  /*
   test('TC-006: Terms and Conditions checkbox should display error message when unchecked', async () => {
     await newAccountPage.open();
-
-    // Move focus to the password field
-    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
-    await passwordField.click();
-    await newAccountPage.verifyBlurValidation(newAccountPage.selectors.passwordInput, 'Password is required');
-    await driver.actions().sendKeys(Key.TAB).perform(); // Confirm Password
-    await driver.actions().sendKeys(Key.TAB).perform(); // Terms Checkbox
-    await driver.actions().sendKeys(Key.TAB).perform(); // Extra TAB to ensure focus is on the checkbox
-
-    const termsCheckbox = await driver.findElement(By.css(newAccountPage.selectors.termsCheckbox));
-    await termsCheckbox.click(); // Uncheck the checkbox
-    await termsCheckbox.click(); // Click again to ensure it is unchecked
+    const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
+    await driver.wait(until.elementIsVisible(termsCheckbox), TIMEOUT);
+    await termsCheckbox.click(); // Unclick if already checked
     const result = await newAccountPage.verifyBlurValidation(
       newAccountPage.selectors.termsCheckbox,
-      'Terms and Conditions'
+      'Terms and Conditions', true
     );
-
     expect(result).toBe(true);
   });
-  */
 });
