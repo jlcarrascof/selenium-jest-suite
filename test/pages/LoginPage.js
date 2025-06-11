@@ -4,8 +4,9 @@ const WAIT_TIME = 10000;
 const TAB_WAIT_TIME = 500; // wait time after each TAB key press
 
 class LoginPage {
-  constructor(driver, timeout) {
+  constructor(driver, baseUrl, timeout) {
     this.driver = driver;
+    this.baseUrl = baseUrl;
     this.timeout = timeout;
 
     this.selectors = {
@@ -16,6 +17,10 @@ class LoginPage {
       usernameError: "//p[contains(normalize-space(.),'Username is required')]",
       passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]",
     };
+  }
+
+  async open() {
+    await this.driver.get(this.baseUrl);
   }
 
   async enterUsername(username) {

@@ -16,6 +16,7 @@ const RECOVER_PASSWORD_SELECTOR = 'form > div.flex.flex-row.gap-2.justify-betwee
 const NEW_ACCOUNT_SELECTOR = "a[href*='user-signup']";
 const CONTACT_US_SELECTOR = "button.font-semibold.text-hprimary";
 
+
 let driver;
 let landingPage;
 let loginPage;
