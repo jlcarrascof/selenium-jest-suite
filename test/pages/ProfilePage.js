@@ -14,6 +14,8 @@ class ProfilePage {
       submitButton: "button[type='submit']",
       profileIcon: 'div.menu-item[data-menu-item-toggle="dropdown"]',
       logoutButton: '//button[contains(text(), "Log out")]',
+      appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
+      groupsOption: '//div[span[text()="Groups"]]'
     };
   }
 
@@ -102,6 +104,28 @@ class ProfilePage {
     const url = await this.driver.getCurrentUrl();
 
     return url;
+  }
+
+  async clickAppsButton() {
+    const appsButton = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.appsButton)),
+      this.timeout
+    );
+    await appsButton.click();
+  }
+
+  async isGroupsOptionVisible() {
+    try {
+      const groupsOption = await this.driver.wait(
+        until.elementLocated(By.xpath(this.selectors.groupsOption)),
+        this.timeout
+      );
+      await this.driver.wait(until.elementIsVisible(groupsOption), this.timeout);
+      return true;
+    } catch (error) {
+      console.error('Error verifying Groups option visibility:', error.message);
+      return false;
+    }
   }
 
 }

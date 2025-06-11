@@ -102,8 +102,18 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   });
 
-  test('TC-006: Apps icon should open menu', async () => {
+  test('TC-006: Click on Apps button should open menu', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
+    await profilePage.clickAppsButton();
+
+    const isMenuOpen = await profilePage.isGroupsOptionVisible();
+
+    expect(isMenuOpen).toBe(true);
   });
 
 });
