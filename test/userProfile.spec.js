@@ -4,6 +4,7 @@ const { By, until, Key } = require('selenium-webdriver');
 
 const TIMEOUT = 120000;
 const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
+const GROUPS_URL = 'https://qa.harmonychurchsuite.com/tenant/groups/index';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
 const INVALID_USERNAME = 'invalidUser';
@@ -115,5 +116,19 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(isMenuOpen).toBe(true);
   });
+
+  test('TC-007: Click on Groups should redirect to correct URL', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await profilePage.clickAppsButton();
+    await profilePage.isGroupsOptionVisible();
+
+    const actualUrl = await profilePage.clickGroupsAndGetUrl();
+
+    expect(actualUrl).toBe(GROUPS_URL);
+    });
 
 });

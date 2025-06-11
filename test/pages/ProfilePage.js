@@ -128,6 +128,20 @@ class ProfilePage {
     }
   }
 
+  async clickGroupsAndGetUrl() {
+    const groupsOption = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.groupsOption)),
+      this.timeout
+    );
+
+    await groupsOption.click();
+    await this.driver.sleep(WAIT_TIME);
+
+    const url = await this.driver.getCurrentUrl();
+
+    return url;
+  }
+
 }
 
 module.exports = ProfilePage;
