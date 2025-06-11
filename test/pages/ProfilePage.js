@@ -15,7 +15,8 @@ class ProfilePage {
       profileIcon: 'div.menu-item[data-menu-item-toggle="dropdown"]',
       logoutButton: '//button[contains(text(), "Log out")]',
       appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
-      groupsOption: '//div[span[text()="Groups"]]'
+      groupsOption: '//div[span[text()="Groups"]]',
+      myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a'
     };
   }
 
@@ -136,6 +137,20 @@ class ProfilePage {
 
     await groupsOption.click();
     await this.driver.sleep(WAIT_TIME);
+
+    const url = await this.driver.getCurrentUrl();
+
+    return url;
+  }
+
+  async clickMyProfileAndGetUrl() {
+    const myProfileLink = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.myProfileLink)),
+      this.timeout
+    );
+
+    await myProfileLink.click();
+    await this.driver.sleep(WAIT_TIME); // Esperar redirección
 
     const url = await this.driver.getCurrentUrl();
 
