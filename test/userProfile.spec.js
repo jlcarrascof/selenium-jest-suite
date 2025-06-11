@@ -28,7 +28,7 @@ afterAll(async () => {
   }
 });
 
-describe('Test Suite: Login Functionality of Harmony Church', () => {
+describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test('TC-001: Valid credentials should login successfully', async () => {
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
@@ -67,6 +67,22 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const expectedText = 'Invalid credentials.';
 
     expect(modalText).toBe(expectedText);
+  });
+
+  test('TC-004: User profile icon should open menu', async () => {
+    // Login first
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+
+    // Click on user profile icon to open menu
+    await profilePage.clickProfileIcon();
+
+    // Verify menu is open by checking the visibility of "Log out" button
+    await profilePage.isLogoutButtonVisible();
+
   });
 
 });

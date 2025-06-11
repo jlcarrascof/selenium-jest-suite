@@ -4,14 +4,17 @@ const WAIT_TIME = 10000;
 const TAB_WAIT_TIME = 500; // wait time after each TAB key press
 
 class ProfilePage {
-  constructor(driver, timeout) {
+  constructor(driver, baseUrl, timeout) {
     this.driver = driver;
+    this.baseUrl = baseUrl;
     this.timeout = timeout;
 
     this.selectors = {
       usernameInput: "input[placeholder='Enter your username']",
       passwordInput: "input[placeholder='Enter your password']",
       submitButton: "button[type='submit']",
+      profileIcon: 'div.menu-item[data-menu-item-toggle="dropdown"]',
+      logoutButton: '//button[contains(text(), "Log out")]',
     };
   }
 
@@ -46,6 +49,22 @@ class ProfilePage {
       By.css(this.selectors.submitButton)
     );
     return !(await submitBtn.isEnabled());
+  }
+
+  async clickProfileIcon() {
+    const profileIcon = await this.driver.wait(
+      until.elementLocated(By.css(this.selectors.profileIcon)),
+      this.timeout
+    );
+    await profileIcon.click();
+  }
+
+  async isLogoutButtonVisible() {
+    const logoutButton = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.logoutButton)),
+      this.timeout
+    );
+    return await this.driver.wait(until.elementIsVisible(logoutButton), this.timeout);
   }
 
 }
