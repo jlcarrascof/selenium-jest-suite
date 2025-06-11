@@ -85,4 +85,25 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   });
 
+  test('TC-005: Logout should terminate session successfully', async () => {
+    // Login first
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+
+    // Open profile menu and logout
+    await profilePage.clickProfileIcon();
+    await profilePage.isLogoutButtonVisible();
+    const actualUrl = await profilePage.clickLogoutAndGetUrl();
+    const expectedUrl = BASE_URL;
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
+  test('TC-006: Apps icon should open menu', async () => {
+
+  });
+
 });

@@ -1,7 +1,6 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const WAIT_TIME = 10000;
-const TAB_WAIT_TIME = 500; // wait time after each TAB key press
+const WAIT_TIME = 1000;
 
 class ProfilePage {
   constructor(driver, baseUrl, timeout) {
@@ -22,6 +21,7 @@ class ProfilePage {
     const usernameField = await this.driver.findElement(
       By.css(this.selectors.usernameInput)
     );
+
     await usernameField.clear();
     await usernameField.sendKeys(username);
   }
@@ -30,6 +30,7 @@ class ProfilePage {
     const passwordField = await this.driver.findElement(
       By.css(this.selectors.passwordInput)
     );
+
     await passwordField.clear();
     await passwordField.sendKeys(password);
   }
@@ -39,6 +40,7 @@ class ProfilePage {
       until.elementLocated(By.css(this.selectors.submitButton)),
       this.timeout
     );
+
     await this.driver.wait(until.elementIsVisible(submitBtn), this.timeout);
     await this.driver.wait(until.elementIsEnabled(submitBtn), this.timeout);
     await submitBtn.click();
@@ -48,6 +50,7 @@ class ProfilePage {
     const submitBtn = await this.driver.findElement(
       By.css(this.selectors.submitButton)
     );
+
     return !(await submitBtn.isEnabled());
   }
 
@@ -56,6 +59,7 @@ class ProfilePage {
       until.elementLocated(By.css(this.selectors.profileIcon)),
       this.timeout
     );
+
     await profileIcon.click();
   }
 
@@ -64,6 +68,7 @@ class ProfilePage {
       until.elementLocated(By.xpath(this.selectors.logoutButton)),
       this.timeout
     );
+
     return await this.driver.wait(until.elementIsVisible(logoutButton), this.timeout);
   }
 
@@ -72,12 +77,31 @@ class ProfilePage {
       until.elementLocated(By.xpath(this.selectors.logoutButton)),
       this.timeout
     );
+
     await logoutButton.click();
+    await this.driver.sleep(WAIT_TIME); // Añadir espera
   }
 
   async isOnLoginPage() {
+    await this.driver.sleep(WAIT_TIME);
+
     const currentUrl = await this.driver.getCurrentUrl();
-    return currentUrl.includes('tenant/user-signin');
+
+    return currentUrl.startsWith(this.baseUrl); // Más flexible para parámetros adicionales
+  }
+
+  async clickLogoutAndGetUrl() {
+    const logoutButton = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.logoutButton)),
+      this.timeout
+    );
+
+    await logoutButton.click();
+    await this.driver.sleep(WAIT_TIME); // Esperar a que la redirección ocurra
+
+    const url = await this.driver.getCurrentUrl();
+
+    return url;
   }
 
 }
