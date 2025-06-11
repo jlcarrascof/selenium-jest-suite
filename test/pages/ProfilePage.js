@@ -67,6 +67,19 @@ class ProfilePage {
     return await this.driver.wait(until.elementIsVisible(logoutButton), this.timeout);
   }
 
+  async clickLogout() {
+    const logoutButton = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.logoutButton)),
+      this.timeout
+    );
+    await logoutButton.click();
+  }
+
+  async isOnLoginPage() {
+    const currentUrl = await this.driver.getCurrentUrl();
+    return currentUrl.includes('tenant/user-signin');
+  }
+
 }
 
 module.exports = ProfilePage;
