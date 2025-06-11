@@ -6,6 +6,8 @@ const TIMEOUT = 120000;
 const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
+const INVALID_USERNAME = 'invalidUser';
+const INVALID_PASSWORD = 'invalidPass';
 const CURRENT_BROWSER = 'chrome';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 
@@ -42,4 +44,29 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toMatch(expectedResult);
   });
+
+  test('TC-002: Invalid username should deny access', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(INVALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+
+    const modalText = await loginPage.getModalMessageText();
+    const expectedText = 'Invalid credentials.';
+
+    expect(modalText).toBe(expectedText);
+  });
+
+  test('TC-003: Invalid password should deny access', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(INVALID_PASSWORD);
+    await loginPage.clickSubmit();
+
+    const modalText = await loginPage.getModalMessageText();
+    const expectedText = 'Invalid credentials.';
+
+    expect(modalText).toBe(expectedText);
+  });
+
 });
