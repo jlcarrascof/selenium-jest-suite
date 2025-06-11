@@ -17,7 +17,7 @@ class ProfilePage {
       appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
       groupsOption: '//div[span[text()="Groups"]]',
       myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
-      usersLink: '//a[contains(text(), "Users")]',
+      usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
     };
   }
 
