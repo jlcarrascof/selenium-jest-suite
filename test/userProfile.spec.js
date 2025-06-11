@@ -147,4 +147,16 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 
+  test('TC-009: Click on Users should redirect to expected URL', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+
+    const actualUrl = await profilePage.clickUsersAndGetUrl();
+
+    expect(actualUrl).toBe(EXPECTED_URL);
+  });
+
 });

@@ -16,7 +16,8 @@ class ProfilePage {
       logoutButton: '//button[contains(text(), "Log out")]',
       appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
       groupsOption: '//div[span[text()="Groups"]]',
-      myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a'
+      myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
+      usersLink: '//a[contains(text(), "Users")]',
     };
   }
 
@@ -151,6 +152,20 @@ class ProfilePage {
 
     await myProfileLink.click();
     await this.driver.sleep(WAIT_TIME); // Esperar redirección
+
+    const url = await this.driver.getCurrentUrl();
+
+    return url;
+  }
+
+  async clickUsersAndGetUrl() {
+    const usersLink = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.usersLink)),
+      this.timeout
+    );
+
+    await usersLink.click();
+    await this.driver.sleep(WAIT_TIME);
 
     const url = await this.driver.getCurrentUrl();
 
