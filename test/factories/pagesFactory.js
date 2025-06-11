@@ -11,6 +11,8 @@ class PageFactory {
         return new LoginPage(driver, timeout);
       case 'newAccount':
         return new NewAccountPage(driver, baseUrl, timeout);
+      case 'profile':
+        return new ProfilePage(driver, timeout);
       default:
         throw new Error(`Page not found: ${pageName}`);
     }
