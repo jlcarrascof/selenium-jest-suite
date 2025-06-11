@@ -269,7 +269,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-016: Email field should not display error message when using a valid email format', async () => {
-    const VALID_EMAIL = 'test@example.com';
     const MESSAGE_EMAIL = 'Username is required';
 
     await newAccountPage.open();
@@ -287,5 +286,16 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(result).toBe(true);
   });
+
+  test('TC-017: Clicking Login link should redirect to login page', async () => {
+    await newAccountPage.open();
+    const loginLink = await driver.findElement(By.xpath('/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a'));
+    await driver.wait(until.elementIsVisible(loginLink), 5000);
+    await loginLink.click();
+    await driver.sleep(1000); // Espera a que la redirección ocurra
+    const actualUrl = await driver.getCurrentUrl();
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signin';
+    expect(actualUrl).toBe(expectedUrl);
+  }); // Timeout total de 10 segundos
 
 });
