@@ -20,6 +20,7 @@ class ProfilePage {
       usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
       rolesPermissionsLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
       eventLogLink: '//span[normalize-space()="Event log" and contains(@class, "menu-title")]',
+      allNotificationsLink: '//span[normalize-space()="All notifications" and contains(@class, "menu-title")]',
     };
   }
 
@@ -156,6 +157,10 @@ class ProfilePage {
 
   async clickEventLogAndGetUrl() {
     return await this.clickElementAndGetUrl('eventLogLink');
+  }
+
+  async clickEventLogAndGetUrl() {
+    return await this.clickElementAndGetUrl('allNotificationsLink');
   }
 
 }
