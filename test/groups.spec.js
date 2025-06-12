@@ -135,33 +135,30 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
   });
 
-test('TC-010: Image is selected but Cancel is clicked, no image should be loaded', async () => {
-  await loginAndGoToApps();
-  await profilePage.clickGroupsAndGetUrl();
-  await groupsPage.clickCreateGroup();
+  test('TC-010: Image is selected but Cancel is clicked, no image should be loaded', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
 
-  await groupsPage.clickEditIconOnImage();
-  await groupsPage.selectFirstImageFromGallery();
-  await groupsPage.cancelImageSelection();
+    await groupsPage.clickEditIconOnImage();
+    await groupsPage.selectFirstImageFromGallery();
+    await groupsPage.cancelImageSelection();
 
-  const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
+    const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
 
-  expect(allowedTextVisible).toBe(true);
-});
+    expect(allowedTextVisible).toBe(true);
+  });
 
-/*
-test('TC-011: No image is selected and Cancel is clicked, no image should be loaded', async () => {
-  await loginAndGoToApps();
-  await profilePage.clickGroupsAndGetUrl();
-  await profilePage.clickCreateGroup();
-  await profilePage.openImageUploadModal();
+  test('TC-011: No image is selected and Cancel is clicked, no image should be loaded', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
 
-  await profilePage.cancelImageSelection(); // Cancela sin haber seleccionado imagen
+    await groupsPage.clickEditIconOnImage();
+    await groupsPage.cancelImageSelection();
 
-  const imagePreviewExists = await profilePage.isImagePreviewLoaded();
-  const imagePreviewIsEmpty = await profilePage.isImagePreviewEmpty();
+    const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
 
-  expect(imagePreviewExists).toBe(false);
-  expect(imagePreviewIsEmpty).toBe(true);
-*/
+    expect(allowedTextVisible).toBe(true);
+  });
 });
