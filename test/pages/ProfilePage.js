@@ -22,6 +22,10 @@ class ProfilePage {
       eventLogLink: '//span[normalize-space()="Event log" and contains(@class, "menu-title")]',
       allNotificationsLink: '//span[normalize-space()="All notifications" and contains(@class, "menu-title")]',
       roleNotificationsLink: '//span[normalize-space()="Role notifications" and contains(@class, "menu-title")]',
+      userNotificationsLink: '//span[normalize-space()="User notifications" and contains(@class, "menu-title")]',
+      languagesLink: '//span[normalize-space()="Languages" and contains(@class, "menu-title")]',
+      referenceDataLink: '//span[normalize-space()="Reference data" and contains(@class, "menu-title")]',
+      subscriptionLink: '//span[normalize-space()="Subscription" and contains(@class, "menu-title")]',
     };
   }
 
@@ -163,6 +167,8 @@ class ProfilePage {
   async clickRoleNotificationsAndGetUrl() {
     return await this.clickElementAndGetUrl('roleNotificationsLink');
   }
+
+
 
 }
 
