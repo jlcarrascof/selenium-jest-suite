@@ -41,8 +41,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
-/*
-    test('TC-001: Click on Groups should redirect to correct URL', async () => {
+  test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await loginAndGoToApps();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
@@ -119,7 +118,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
 
     expect(formTitle).toBe(expectedTitle);
   });
-*/
+
   test('TC-009: Uploading a group image should display the selected image preview in the form', async () => {
     await loginAndGoToApps();
 
