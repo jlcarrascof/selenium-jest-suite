@@ -13,6 +13,16 @@ const VALID_PASSWORD = '.qwerty123.';
 const CURRENT_BROWSER = 'chrome';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 
+const loginAndGoToApps = async () => {
+  await loginPage.open();
+  await loginPage.enterUsername(VALID_USERNAME);
+  await loginPage.enterPassword(VALID_PASSWORD);
+  await loginPage.clickSubmit();
+  await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+  await profilePage.clickAppsButton();
+  await profilePage.isGroupsOptionVisible();
+};
+
 let driver;
 let loginPage, profilePage, groupsPage;
 
@@ -32,13 +42,7 @@ afterAll(async () => {
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-    await profilePage.clickAppsButton();
-    await profilePage.isGroupsOptionVisible();
+    await loginAndGoToApps();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
 
@@ -46,13 +50,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
   });
 
   test('TC-002: Click on Reports should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-    await profilePage.clickAppsButton();
-    await profilePage.isGroupsOptionVisible();
+    await loginAndGoToApps();
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickReportsAndGetUrl();
@@ -61,13 +59,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
   });
 
   test('TC-003: Click on Calendar should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-    await profilePage.clickAppsButton();
-    await profilePage.isGroupsOptionVisible();
+    await loginAndGoToApps();
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickCalendarAndGetUrl();
@@ -76,13 +68,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
   });
 
   test('TC-004: Click on Resources should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-    await profilePage.clickAppsButton();
-    await profilePage.isGroupsOptionVisible();
+    await loginAndGoToApps();
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickResourcesAndGetUrl();
