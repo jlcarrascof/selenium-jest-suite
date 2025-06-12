@@ -19,6 +19,7 @@ class ProfilePage {
       myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
       usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
       rolesPermissionsLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
+      eventLogLink: '//span[normalize-space()="Event log" and contains(@class, "menu-title")]',
     };
   }
 
@@ -147,6 +148,14 @@ class ProfilePage {
 
   async clickUsersAndGetUrl() {
     return await this.clickElementAndGetUrl('rolesPermissionsLink');
+  }
+
+  async clickUsersAndGetUrl() {
+    return await this.clickElementAndGetUrl('rolesPermissionsLink');
+  }
+
+  async clickEventLogAndGetUrl() {
+    return await this.clickElementAndGetUrl('eventLogLink');
   }
 
 }

@@ -149,7 +149,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   test('TC-009: Click on Roles and Permissions should redirect to expected URL', async () => {
 
-    const ROLES_EXPECTED_URL = 'https://qa.harmonychurchsuite.com/tenant/administration/dashboard/test';
+    // const ROLES_EXPECTED_URL = 'https://qa.harmonychurchsuite.com/tenant/administration/dashboard/test';
 
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
@@ -159,10 +159,22 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     const actualUrl = await profilePage.clickUsersAndGetUrl();
 
-    expect(actualUrl).toBe(ROLES_EXPECTED_URL);
+    expect(actualUrl).toBe(EXPECTED_URL);
   });
 
   test('TC-010: Click on Users should redirect to expected URL', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+
+    const actualUrl = await profilePage.clickUsersAndGetUrl();
+
+    expect(actualUrl).toBe(EXPECTED_URL);
+  });
+
+  test('TC-011: Click on Event log should redirect to expected URL', async () => {
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
