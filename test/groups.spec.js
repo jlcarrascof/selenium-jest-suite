@@ -76,4 +76,12 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 
+  test('TC-005: Click on User profile icon should open menu', async () => {
+
+    await loginAndGoToApps();
+    await groupsPage.clickProfileIcon();
+    await groupsPage.isLogoutButtonVisible();
+
+  });
+
 });

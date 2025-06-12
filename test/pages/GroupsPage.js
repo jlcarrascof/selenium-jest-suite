@@ -10,7 +10,7 @@ class GroupsPage {
     this.timeout = timeout;
 
     this.selectors = {
-      profileIcon: 'div.menu-item[data-menu-item-toggle="dropdown"]',
+      profileIcon: 'div.menu-toggle.btn.btn-icon.rounded-full',
       logoutButton: '//button[contains(text(), "Log out")]',
       appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
       groupsOption: '//div[span[text()="Groups"]]',
