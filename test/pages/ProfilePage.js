@@ -18,6 +18,14 @@ class ProfilePage {
       groupsOption: '//div[span[text()="Groups"]]',
       myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
       usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
+      rolesPermissionsLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
+      eventLogLink: '//span[normalize-space()="Event log" and contains(@class, "menu-title")]',
+      allNotificationsLink: '//span[normalize-space()="All notifications" and contains(@class, "menu-title")]',
+      roleNotificationsLink: '//span[normalize-space()="Role notifications" and contains(@class, "menu-title")]',
+      userNotificationsLink: '//span[normalize-space()="User notifications" and contains(@class, "menu-title")]',
+      languagesLink: '//span[normalize-space()="Languages" and contains(@class, "menu-title")]',
+      referenceDataLink: '//span[normalize-space()="Reference data" and contains(@class, "menu-title")]',
+      subscriptionLink: '//span[normalize-space()="Subscription" and contains(@class, "menu-title")]',
     };
   }
 
@@ -94,20 +102,6 @@ class ProfilePage {
     return currentUrl.startsWith(this.baseUrl); // Más flexible para parámetros adicionales
   }
 
-  async clickLogoutAndGetUrl() {
-    const logoutButton = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.logoutButton)),
-      this.timeout
-    );
-
-    await logoutButton.click();
-    await this.driver.sleep(WAIT_TIME); // Esperar a que la redirección ocurra
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
-  }
-
   async clickAppsButton() {
     const appsButton = await this.driver.wait(
       until.elementLocated(By.xpath(this.selectors.appsButton)),
@@ -130,46 +124,64 @@ class ProfilePage {
     }
   }
 
-  async clickGroupsAndGetUrl() {
-    const groupsOption = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.groupsOption)),
+  async clickElementAndGetUrl(selectorKey) {
+    const selector = this.selectors[selectorKey];
+    const element = await this.driver.wait(
+      until.elementLocated(By.xpath(selector)),
       this.timeout
     );
-
-    await groupsOption.click();
-    await this.driver.sleep(WAIT_TIME);
-
+    await element.click();
+    await this.driver.sleep(WAIT_TIME); // Esperar redirección
     const url = await this.driver.getCurrentUrl();
-
     return url;
+  }
+
+  async clickLogoutAndGetUrl() {
+    return await this.clickElementAndGetUrl('logoutButton');
+  }
+
+  async clickGroupsAndGetUrl() {
+    return await this.clickElementAndGetUrl('groupsOption');
   }
 
   async clickMyProfileAndGetUrl() {
-    const myProfileLink = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.myProfileLink)),
-      this.timeout
-    );
-
-    await myProfileLink.click();
-    await this.driver.sleep(WAIT_TIME); // Esperar redirección
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
+    return await this.clickElementAndGetUrl('myProfileLink');
   }
 
   async clickUsersAndGetUrl() {
-    const usersLink = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.usersLink)),
-      this.timeout
-    );
+    return await this.clickElementAndGetUrl('usersLink');
+  }
 
-    await usersLink.click();
-    await this.driver.sleep(WAIT_TIME);
+  async clickRolesPermissionsAndGetUrl() {
+    return await this.clickElementAndGetUrl('rolesPermissionsLink');
+  }
 
-    const url = await this.driver.getCurrentUrl();
+  async clickEventLogAndGetUrl() {
+    return await this.clickElementAndGetUrl('eventLogLink');
+  }
 
-    return url;
+  async clickAllNotificationsAndGetUrl() {
+    return await this.clickElementAndGetUrl('allNotificationsLink');
+  }
+
+  async clickRoleNotificationsAndGetUrl() {
+    return await this.clickElementAndGetUrl('roleNotificationsLink');
+  }
+
+  async clickUserNotificationsAndGetUrl() {
+    return await this.clickElementAndGetUrl('userNotificationsLink');
+  }
+
+  async clickLanguagesAndGetUrl() {
+    return await this.clickElementAndGetUrl('languagesLink');
+  }
+
+  async clickReferenceDataAndGetUrl() {
+    return await this.clickElementAndGetUrl('referenceDataLink');
+  }
+
+  async clickSubscriptionAndGetUrl() {
+    return await this.clickElementAndGetUrl('subscriptionLink');
   }
 
 }
