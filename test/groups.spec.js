@@ -106,4 +106,16 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   });
 
+  test('TC-008: Clicking on Create Group should display the group creation form', async () => {
+    await loginAndGoToApps();
+
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+
+    const formTitle = await groupsPage.getGroupFormTitle();
+    const expectedTitle = 'Create group'; 
+
+    expect(formTitle).toBe(expectedTitle);
+  });
+
 });
