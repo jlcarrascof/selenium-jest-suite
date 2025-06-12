@@ -168,7 +168,21 @@ class ProfilePage {
     return await this.clickElementAndGetUrl('roleNotificationsLink');
   }
 
+  async clickUserNotificationsAndGetUrl() {
+    return await this.clickElementAndGetUrl('userNotificationsLink');
+  }
 
+  async clickLanguagesAndGetUrl() {
+    return await this.clickElementAndGetUrl('languagesLink');
+  }
+
+  async clickReferenceDataAndGetUrl() {
+    return await this.clickElementAndGetUrl('referenceDataLink');
+  }
+
+  async clickSubscriptionAndGetUrl() {
+    return await this.clickElementAndGetUrl('subscriptionLink');
+  }
 
 }
 
