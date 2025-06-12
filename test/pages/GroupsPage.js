@@ -122,6 +122,10 @@ class GroupsPage {
     return await this.clickElementAndGetUrl('myProfileLink');
   }
 
+  async clickLogoutAndGetUrl() {
+    return await this.clickElementAndGetUrl('logoutButton');
+  }
+
 }
 
 module.exports = GroupsPage;

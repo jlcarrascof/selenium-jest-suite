@@ -94,4 +94,16 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 
+  test('TC-007: Click on Log out should terminate session successfully', async () => {
+    await loginAndGoToApps();
+
+    await profilePage.clickProfileIcon();
+    await profilePage.isLogoutButtonVisible();
+
+    const actualUrl = await groupsPage.clickLogoutAndGetUrl();
+    const expectedUrl = BASE_URL;
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+
 });
