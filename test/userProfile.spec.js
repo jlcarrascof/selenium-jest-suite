@@ -220,7 +220,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 
-  test('TC-014: Click on Languages should redirect to expected URL', async () => {
+  test('TC-015: Click on Languages should redirect to expected URL', async () => {
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
@@ -232,7 +232,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 
-  test('TC-015: Click on Reference data should redirect to expected URL', async () => {
+  test('TC-016: Click on Reference data should redirect to expected URL', async () => {
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
@@ -244,7 +244,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 
-  test('TC-016: Click on Subscription data should redirect to expected URL', async () => {
+  test('TC-017: Click on Subscription data should redirect to expected URL', async () => {
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
