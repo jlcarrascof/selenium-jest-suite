@@ -84,4 +84,14 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
 
   });
 
+  test('TC-006: Click on My Profile should redirect to expected URL', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickProfileIcon();
+    await profilePage.isLogoutButtonVisible();
+
+    const actualUrl = await profilePage.clickMyProfileAndGetUrl();
+
+    expect(actualUrl).toBe(EXPECTED_URL);
+  });
+
 });

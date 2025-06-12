@@ -118,6 +118,10 @@ class GroupsPage {
     return await this.clickElementAndGetUrl('resourcesLink');
   }
 
+  async clickMyProfileAndGetUrl() {
+    return await this.clickElementAndGetUrl('myProfileLink');
+  }
+
 }
 
 module.exports = GroupsPage;
