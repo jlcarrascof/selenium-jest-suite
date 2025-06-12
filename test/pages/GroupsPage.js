@@ -14,7 +14,7 @@ class GroupsPage {
       appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
       groupsOption: '//div[span[text()="Groups"]]',
       myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
-      usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
+      reportsLink: '//a[normalize-space()="Reports" and contains(@class, "flex") and contains(@href, "/tenant/groups/edit")]',
     };
   }
 
@@ -98,9 +98,13 @@ class GroupsPage {
       this.timeout
     );
     await element.click();
-    await this.driver.sleep(WAIT_TIME); 
+    await this.driver.sleep(WAIT_TIME);
     const url = await this.driver.getCurrentUrl();
     return url;
+  }
+
+  async clickReportsAndGetUrl() {
+    return await this.clickElementAndGetUrl('reportsLink');
   }
 
 

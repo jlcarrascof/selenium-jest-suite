@@ -54,7 +54,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickAppsButton();
     await profilePage.isGroupsOptionVisible();
 
-    const actualUrl = await profilePage.clickSubscriptionAndGetUrl();
+    const actualUrl = await groupsPage.clickReportsAndGetUrl();
 
     expect(actualUrl).toBe(EXPECTED_URL);
   });
