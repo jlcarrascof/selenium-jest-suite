@@ -21,6 +21,7 @@ class ProfilePage {
       rolesPermissionsLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
       eventLogLink: '//span[normalize-space()="Event log" and contains(@class, "menu-title")]',
       allNotificationsLink: '//span[normalize-space()="All notifications" and contains(@class, "menu-title")]',
+      roleNotificationsLink: '//span[normalize-space()="Role notifications" and contains(@class, "menu-title")]',
     };
   }
 
@@ -147,11 +148,7 @@ class ProfilePage {
     return await this.clickElementAndGetUrl('usersLink');
   }
 
-  async clickUsersAndGetUrl() {
-    return await this.clickElementAndGetUrl('rolesPermissionsLink');
-  }
-
-  async clickUsersAndGetUrl() {
+  async clickRolesPermissionsAndGetUrl() {
     return await this.clickElementAndGetUrl('rolesPermissionsLink');
   }
 
@@ -159,8 +156,12 @@ class ProfilePage {
     return await this.clickElementAndGetUrl('eventLogLink');
   }
 
-  async clickEventLogAndGetUrl() {
+  async clickAllNotificationsAndGetUrl() {
     return await this.clickElementAndGetUrl('allNotificationsLink');
+  }
+
+  async clickRoleNotificationsAndGetUrl() {
+    return await this.clickElementAndGetUrl('roleNotificationsLink');
   }
 
 }

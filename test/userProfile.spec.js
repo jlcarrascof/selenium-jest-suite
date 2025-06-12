@@ -149,15 +149,13 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   test('TC-009: Click on Roles and Permissions should redirect to expected URL', async () => {
 
-    // const ROLES_EXPECTED_URL = 'https://qa.harmonychurchsuite.com/tenant/administration/dashboard/test';
-
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
     await loginPage.clickSubmit();
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
-    const actualUrl = await profilePage.clickUsersAndGetUrl();
+    const actualUrl = await profilePage.clickRolesPermissionsAndGetUrl();
 
     expect(actualUrl).toBe(EXPECTED_URL);
   });
@@ -181,7 +179,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     await loginPage.clickSubmit();
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
-    const actualUrl = await profilePage.clickUsersAndGetUrl();
+    const actualUrl = await profilePage.clickEventLogAndGetUrl();
 
     expect(actualUrl).toBe(EXPECTED_URL);
   });
@@ -193,7 +191,19 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     await loginPage.clickSubmit();
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
-    const actualUrl = await profilePage.clickUsersAndGetUrl();
+    const actualUrl = await profilePage.clickAllNotificationsAndGetUrl();
+
+    expect(actualUrl).toBe(EXPECTED_URL);
+  });
+
+  test('TC-013: Click on Role notifications should redirect to expected URL', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+
+    const actualUrl = await profilePage.clickRoleNotificationsAndGetUrl();
 
     expect(actualUrl).toBe(EXPECTED_URL);
   });
