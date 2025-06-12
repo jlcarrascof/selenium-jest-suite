@@ -18,6 +18,7 @@ class ProfilePage {
       groupsOption: '//div[span[text()="Groups"]]',
       myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
       usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
+      rolesPermissionsLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
     };
   }
 
@@ -142,6 +143,10 @@ class ProfilePage {
 
   async clickUsersAndGetUrl() {
     return await this.clickElementAndGetUrl('usersLink');
+  }
+
+  async clickUsersAndGetUrl() {
+    return await this.clickElementAndGetUrl('rolesPermissionsLink');
   }
 
 }
