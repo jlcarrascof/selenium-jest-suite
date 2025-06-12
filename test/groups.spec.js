@@ -75,4 +75,19 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 
+  test('TC-004: Click on Resources should redirect to expected URL', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await profilePage.clickAppsButton();
+    await profilePage.isGroupsOptionVisible();
+    await profilePage.clickGroupsAndGetUrl();
+
+    const actualUrl = await groupsPage.clickResourcesAndGetUrl();
+
+    expect(actualUrl).toBe(EXPECTED_URL);
+  });
+
 });
