@@ -131,7 +131,7 @@ class ProfilePage {
       this.timeout
     );
     await element.click();
-    await this.driver.sleep(WAIT_TIME); // Esperar redirección
+    await this.driver.sleep(WAIT_TIME);
     const url = await this.driver.getCurrentUrl();
     return url;
   }

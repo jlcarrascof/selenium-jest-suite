@@ -9,23 +9,12 @@ class GroupsPage {
     this.timeout = timeout;
 
     this.selectors = {
-      usernameInput: "input[placeholder='Enter your username']",
-      passwordInput: "input[placeholder='Enter your password']",
-      submitButton: "button[type='submit']",
       profileIcon: 'div.menu-item[data-menu-item-toggle="dropdown"]',
       logoutButton: '//button[contains(text(), "Log out")]',
       appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
       groupsOption: '//div[span[text()="Groups"]]',
       myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
       usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
-      rolesPermissionsLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
-      eventLogLink: '//span[normalize-space()="Event log" and contains(@class, "menu-title")]',
-      allNotificationsLink: '//span[normalize-space()="All notifications" and contains(@class, "menu-title")]',
-      roleNotificationsLink: '//span[normalize-space()="Role notifications" and contains(@class, "menu-title")]',
-      userNotificationsLink: '//span[normalize-space()="User notifications" and contains(@class, "menu-title")]',
-      languagesLink: '//span[normalize-space()="Languages" and contains(@class, "menu-title")]',
-      referenceDataLink: '//span[normalize-space()="Reference data" and contains(@class, "menu-title")]',
-      subscriptionLink: '//span[normalize-space()="Subscription" and contains(@class, "menu-title")]',
     };
   }
 
@@ -100,6 +89,18 @@ class GroupsPage {
     const currentUrl = await this.driver.getCurrentUrl();
 
     return currentUrl.startsWith(this.baseUrl);
+  }
+
+  async clickElementAndGetUrl(selectorKey) {
+    const selector = this.selectors[selectorKey];
+    const element = await this.driver.wait(
+      until.elementLocated(By.xpath(selector)),
+      this.timeout
+    );
+    await element.click();
+    await this.driver.sleep(WAIT_TIME); 
+    const url = await this.driver.getCurrentUrl();
+    return url;
   }
 
 
