@@ -45,7 +45,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(GROUPS_URL);
   });
 
-  test('TC-002: Click on Subscription data should redirect to expected URL', async () => {
+  test('TC-002: Click on Reports should redirect to expected URL', async () => {
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
@@ -53,8 +53,24 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
     await profilePage.clickAppsButton();
     await profilePage.isGroupsOptionVisible();
+    await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickReportsAndGetUrl();
+
+    expect(actualUrl).toBe(EXPECTED_URL);
+  });
+
+  test('TC-003: Click on Calendar should redirect to expected URL', async () => {
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
+    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await profilePage.clickAppsButton();
+    await profilePage.isGroupsOptionVisible();
+    await profilePage.clickGroupsAndGetUrl();
+
+    const actualUrl = await groupsPage.clickCalendarAndGetUrl();
 
     expect(actualUrl).toBe(EXPECTED_URL);
   });

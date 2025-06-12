@@ -15,6 +15,7 @@ class GroupsPage {
       groupsOption: '//div[span[text()="Groups"]]',
       myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
       reportsLink: '//a[normalize-space()="Reports" and contains(@class, "flex") and contains(@href, "/tenant/groups/edit")]',
+      calendarLink: '//a[normalize-space()="Calendar" and contains(@class, "flex") and contains(@href, "/calendar")]',
     };
   }
 
@@ -107,6 +108,9 @@ class GroupsPage {
     return await this.clickElementAndGetUrl('reportsLink');
   }
 
+  async clickCalendarAndGetUrl() {
+    return await this.clickElementAndGetUrl('calendarLink');
+  }
 
 }
 
