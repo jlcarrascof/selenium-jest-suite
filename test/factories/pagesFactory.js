@@ -2,6 +2,7 @@ const LandingPage = require('../pages/LandingPage');
 const LoginPage = require('../pages/LoginPage');
 const NewAccountPage = require('../pages/NewAccountPage');
 const ProfilePage = require('../pages/ProfilePage');
+const GroupsPage = require('../pages/GroupsPage');
 
 class PageFactory {
   static createPage(pageName, driver, baseUrl, timeout) {
@@ -14,6 +15,8 @@ class PageFactory {
         return new NewAccountPage(driver, baseUrl, timeout);
       case 'profile':
         return new ProfilePage(driver, timeout);
+      case 'groups':
+        return new GroupsPage(driver, timeout);
       default:
         throw new Error(`Page not found: ${pageName}`);
     }
