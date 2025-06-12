@@ -94,20 +94,6 @@ class ProfilePage {
     return currentUrl.startsWith(this.baseUrl); // Más flexible para parámetros adicionales
   }
 
-  async clickLogoutAndGetUrl() {
-    const logoutButton = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.logoutButton)),
-      this.timeout
-    );
-
-    await logoutButton.click();
-    await this.driver.sleep(WAIT_TIME); // Esperar a que la redirección ocurra
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
-  }
-
   async clickAppsButton() {
     const appsButton = await this.driver.wait(
       until.elementLocated(By.xpath(this.selectors.appsButton)),
@@ -130,46 +116,32 @@ class ProfilePage {
     }
   }
 
-  async clickGroupsAndGetUrl() {
-    const groupsOption = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.groupsOption)),
+  async clickElementAndGetUrl(selectorKey) {
+    const selector = this.selectors[selectorKey];
+    const element = await this.driver.wait(
+      until.elementLocated(By.xpath(selector)),
       this.timeout
     );
-
-    await groupsOption.click();
-    await this.driver.sleep(WAIT_TIME);
-
+    await element.click();
+    await this.driver.sleep(WAIT_TIME); // Esperar redirección
     const url = await this.driver.getCurrentUrl();
-
     return url;
+  }
+
+  async clickLogoutAndGetUrl() {
+    return await this.clickElementAndGetUrl('logoutButton');
+  }
+
+  async clickGroupsAndGetUrl() {
+    return await this.clickElementAndGetUrl('groupsOption');
   }
 
   async clickMyProfileAndGetUrl() {
-    const myProfileLink = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.myProfileLink)),
-      this.timeout
-    );
-
-    await myProfileLink.click();
-    await this.driver.sleep(WAIT_TIME); // Esperar redirección
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
+    return await this.clickElementAndGetUrl('myProfileLink');
   }
 
   async clickUsersAndGetUrl() {
-    const usersLink = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.usersLink)),
-      this.timeout
-    );
-
-    await usersLink.click();
-    await this.driver.sleep(WAIT_TIME);
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
+    return await this.clickElementAndGetUrl('usersLink');
   }
 
 }
