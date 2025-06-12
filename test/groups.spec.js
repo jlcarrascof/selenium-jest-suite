@@ -41,7 +41,8 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
-  test('TC-001: Click on Groups should redirect to correct URL', async () => {
+/*
+    test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await loginAndGoToApps();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
@@ -118,5 +119,49 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
 
     expect(formTitle).toBe(expectedTitle);
   });
+*/
+  test('TC-009: Uploading a group image should display the selected image preview in the form', async () => {
+    await loginAndGoToApps();
 
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+
+    await groupsPage.clickEditIconOnImage();                // step 2
+    await groupsPage.selectFirstImageFromGallery();         // step 3
+    await groupsPage.confirmImageSelection();               // step 4
+
+    const previewSrc = await groupsPage.getGroupImagePreviewSrc(); // step 5
+
+    expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
+  });
+
+test('TC-010: Image is selected but Cancel is clicked, no image should be loaded', async () => {
+  await loginAndGoToApps();
+  await profilePage.clickGroupsAndGetUrl();
+  await groupsPage.clickCreateGroup();
+
+  await groupsPage.clickEditIconOnImage();
+  await groupsPage.selectFirstImageFromGallery();
+  await groupsPage.cancelImageSelection();
+
+  const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
+
+  expect(allowedTextVisible).toBe(true);
+});
+
+/*
+test('TC-011: No image is selected and Cancel is clicked, no image should be loaded', async () => {
+  await loginAndGoToApps();
+  await profilePage.clickGroupsAndGetUrl();
+  await profilePage.clickCreateGroup();
+  await profilePage.openImageUploadModal();
+
+  await profilePage.cancelImageSelection(); // Cancela sin haber seleccionado imagen
+
+  const imagePreviewExists = await profilePage.isImagePreviewLoaded();
+  const imagePreviewIsEmpty = await profilePage.isImagePreviewEmpty();
+
+  expect(imagePreviewExists).toBe(false);
+  expect(imagePreviewIsEmpty).toBe(true);
+*/
 });

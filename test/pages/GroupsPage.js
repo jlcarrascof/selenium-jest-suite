@@ -144,6 +144,55 @@ class GroupsPage {
     return await title.getText();
   }
 
+    async clickEditIconOnImage() {
+        const editIcon = await this.driver.wait(
+            until.elementLocated(By.css('img[alt="add image"]')),
+            this.timeout
+        );
+
+        await editIcon.click();
+    }
+
+    async selectFirstImageFromGallery() {
+        const firstImage = await this.driver.wait(
+            until.elementLocated(By.css('app-images img[alt="3"]')), // selector único por alt
+            this.timeout
+        );
+
+        await firstImage.click();
+    }
+
+    async confirmImageSelection() {
+        const selectButton = await this.driver.wait(
+            until.elementLocated(By.xpath("//button[contains(text(),'Select')]")),
+            this.timeout
+        );
+        await selectButton.click();
+    }
+
+    async getGroupImagePreviewSrc() {
+        const previewImage = await this.driver.wait(
+            until.elementLocated(By.css('form img[alt="3"]')), // alt "3" coincide con galería
+            this.timeout
+        );
+        return await previewImage.getAttribute('src');
+    }
+
+    async cancelImageSelection() {
+        const cancelButton = await this.driver.wait(
+            until.elementLocated(By.xpath("//button[contains(text(), 'Cancel')]")),
+            this.timeout
+        );
+        await cancelButton.click();
+    }
+
+    async isImagePreviewEmpty() {
+
+      const text = await this.driver.findElement(By.xpath("//*[contains(text(), 'Allowed file types')]"));
+
+      return await text.isDisplayed();
+    }
+
 }
 
 module.exports = GroupsPage;
