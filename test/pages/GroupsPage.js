@@ -18,6 +18,8 @@ class GroupsPage {
       reportsLink: '//a[normalize-space()="Reports" and contains(@class, "flex") and contains(@href, "/tenant/groups/edit")]',
       calendarLink: '//a[normalize-space()="Calendar" and contains(@class, "flex") and contains(@href, "/calendar")]',
       resourcesLink: '//a[normalize-space()="Resources" and contains(@class, "flex") and contains(@href, "/resources")]',
+      createGroupButton: 'button.bg-\\[\\#37b200\\].text-white.rounded-lg',
+      groupFormTitle: '#modal-title',
     };
   }
 
@@ -124,6 +126,22 @@ class GroupsPage {
 
   async clickLogoutAndGetUrl() {
     return await this.clickElementAndGetUrl('logoutButton');
+  }
+
+  async clickCreateGroup() {
+    const button = await this.driver.wait(
+        until.elementLocated(By.css(this.selectors.createGroupButton)),
+        this.timeout
+    );
+    await button.click();
+  }
+
+  async getGroupFormTitle() {
+    const title = await this.driver.wait(
+        until.elementLocated(By.css(this.selectors.groupFormTitle)),
+        this.timeout
+    );
+    return await title.getText();
   }
 
 }
