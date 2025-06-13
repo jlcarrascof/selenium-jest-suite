@@ -232,9 +232,20 @@ class GroupsPage {
         until.elementLocated(By.css('input[formcontrolname="location"]')),
         this.timeout
       );
-      await locationInput.click();
+
+      await this.driver.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", locationInput);
+
       await locationInput.sendKeys(Key.TAB);
+
+      const errorMessage = await this.driver.wait(
+        until.elementLocated(By.xpath("//p[contains(text(),'Location is required')]")),
+        this.timeout
+      );
+
+      const text = await errorMessage.getText();
+      return text;
     }
+
 
     async isLocationRequiredMessageVisible() {
       const error = await this.driver.wait(

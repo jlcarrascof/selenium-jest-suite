@@ -190,10 +190,8 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
-    await groupsPage.focusAndBlurLocationInput();
-    const visible = await groupsPage.isLocationRequiredMessageVisible();
-
-    expect(visible).toBe(true);
+    const errorText = await groupsPage.focusAndBlurLocationInput();
+    expect(errorText).toBe('Location is required');
   });
 
 
