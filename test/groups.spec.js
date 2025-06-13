@@ -174,4 +174,15 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(visible).toBe(true);
   });
 
+  test('TC-013: Leaving the Purpose field empty should display validation error', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+
+    await groupsPage.focusAndBlurPurposeInput();
+    const visible = await groupsPage.isPurposeRequiredMessageVisible();
+
+    expect(visible).toBe(true);
+  });
+
 });
