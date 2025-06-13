@@ -210,6 +210,23 @@ class GroupsPage {
       return await error.isDisplayed();
     }
 
+    async focusAndBlurPurposeInput() {
+      const purposeInput = await this.driver.wait(
+        until.elementLocated(By.css('textarea[formcontrolname="purpose"]')),
+        this.timeout
+      );
+      await purposeInput.click();
+      await purposeInput.sendKeys(Key.TAB);
+    }
+
+    async isPurposeRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Purpose is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
 }
 
 module.exports = GroupsPage;
