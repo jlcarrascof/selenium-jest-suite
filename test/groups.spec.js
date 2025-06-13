@@ -125,11 +125,11 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
-    await groupsPage.clickEditIconOnImage();                // step 2
-    await groupsPage.selectFirstImageFromGallery();         // step 3
-    await groupsPage.confirmImageSelection();               // step 4
+    await groupsPage.clickEditIconOnImage();
+    await groupsPage.selectFirstImageFromGallery();
+    await groupsPage.confirmImageSelection();
 
-    const previewSrc = await groupsPage.getGroupImagePreviewSrc(); // step 5
+    const previewSrc = await groupsPage.getGroupImagePreviewSrc();
 
     expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
   });
@@ -160,4 +160,37 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
 
     expect(allowedTextVisible).toBe(true);
   });
+
+  test('TC-012: Leaving the Name field empty should display validation error', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+    await groupsPage.focusAndBlurNameInput();
+
+    const visible = await groupsPage.isNameRequiredMessageVisible();
+
+    expect(visible).toBe(true);
+  });
+
+  test('TC-013: Leaving the Purpose field empty should display validation error', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+
+    await groupsPage.focusAndBlurPurposeInput();
+    const visible = await groupsPage.isPurposeRequiredMessageVisible();
+
+    expect(visible).toBe(true);
+  });
+
+  test('TC-014: Leaving the Location field empty should display validation error', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+
+    const errorText = await groupsPage.focusAndBlurLocationInput();
+    expect(errorText).toBe('Location is required');
+  });
+
+
 });

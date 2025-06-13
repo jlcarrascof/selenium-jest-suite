@@ -193,6 +193,68 @@ class GroupsPage {
       return await text.isDisplayed();
     }
 
+    async focusAndBlurNameInput() {
+      const nameInput = await this.driver.wait(
+        until.elementLocated(By.css('input[formcontrolname="name"]')),
+        this.timeout
+      );
+      await nameInput.click();
+      await nameInput.sendKeys(Key.TAB);
+    }
+
+    async isNameRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Name is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
+    async focusAndBlurPurposeInput() {
+      const purposeInput = await this.driver.wait(
+        until.elementLocated(By.css('textarea[formcontrolname="purpose"]')),
+        this.timeout
+      );
+      await purposeInput.click();
+      await purposeInput.sendKeys(Key.TAB);
+    }
+
+    async isPurposeRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Purpose is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
+    async focusAndBlurLocationInput() {
+      const locationInput = await this.driver.wait(
+        until.elementLocated(By.css('input[formcontrolname="location"]')),
+        this.timeout
+      );
+
+      await this.driver.executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", locationInput);
+
+      await locationInput.sendKeys(Key.TAB);
+
+      const errorMessage = await this.driver.wait(
+        until.elementLocated(By.xpath("//p[contains(text(),'Location is required')]")),
+        this.timeout
+      );
+
+      const text = await errorMessage.getText();
+      return text;
+    }
+
+
+    async isLocationRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Location is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
 }
 
 module.exports = GroupsPage;
