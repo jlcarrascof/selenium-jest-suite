@@ -227,6 +227,23 @@ class GroupsPage {
       return await error.isDisplayed();
     }
 
+    async focusAndBlurLocationInput() {
+      const locationInput = await this.driver.wait(
+        until.elementLocated(By.css('input[formcontrolname="location"]')),
+        this.timeout
+      );
+      await locationInput.click();
+      await locationInput.sendKeys(Key.TAB);
+    }
+
+    async isLocationRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Location is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
 }
 
 module.exports = GroupsPage;

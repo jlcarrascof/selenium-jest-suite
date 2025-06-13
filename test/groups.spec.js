@@ -185,4 +185,16 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(visible).toBe(true);
   });
 
+  test('TC-014: Leaving the Location field empty should display validation error', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+
+    await groupsPage.focusAndBlurLocationInput();
+    const visible = await groupsPage.isLocationRequiredMessageVisible();
+
+    expect(visible).toBe(true);
+  });
+
+
 });
