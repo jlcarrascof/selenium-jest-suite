@@ -193,6 +193,23 @@ class GroupsPage {
       return await text.isDisplayed();
     }
 
+    async focusAndBlurNameInput() {
+      const nameInput = await this.driver.wait(
+        until.elementLocated(By.css('input[formcontrolname="name"]')),
+        this.timeout
+      );
+      await nameInput.click();
+      await nameInput.sendKeys(Key.TAB);
+    }
+
+    async isNameRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Name is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
 }
 
 module.exports = GroupsPage;

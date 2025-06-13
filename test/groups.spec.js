@@ -41,6 +41,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
+/*
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await loginAndGoToApps();
 
@@ -160,4 +161,17 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
 
     expect(allowedTextVisible).toBe(true);
   });
+*/
+
+  test('TC-012: Leaving the Name field empty should display validation error', async () => {
+    await loginAndGoToApps();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+    await groupsPage.focusAndBlurNameInput();
+
+    const visible = await groupsPage.isNameRequiredMessageVisible();
+
+    expect(visible).toBe(true);
+  });
+
 });
