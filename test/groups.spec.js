@@ -125,11 +125,11 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
-    await groupsPage.clickEditIconOnImage();                // step 2
-    await groupsPage.selectFirstImageFromGallery();         // step 3
-    await groupsPage.confirmImageSelection();               // step 4
+    await groupsPage.clickEditIconOnImage();
+    await groupsPage.selectFirstImageFromGallery();
+    await groupsPage.confirmImageSelection();
 
-    const previewSrc = await groupsPage.getGroupImagePreviewSrc(); // step 5
+    const previewSrc = await groupsPage.getGroupImagePreviewSrc();
 
     expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
   });
