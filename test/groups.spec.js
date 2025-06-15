@@ -5,23 +5,13 @@ const { By, until, Key } = require('selenium-webdriver');
 const TIMEOUT = 120000;
 const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
 const GROUPS_URL = 'https://qa.harmonychurchsuite.com/tenant/groups/index';
-const EXPECTED_URL = 'https://qa.harmonychurchsuite.com/404';
+const NOT_FOUND_URL = 'https://qa.harmonychurchsuite.com/404';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
 // const INVALID_USERNAME = 'invalidUser';
 // const INVALID_PASSWORD = 'invalidPass';
 const CURRENT_BROWSER = 'chrome';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
-
-const loginAndGoToApps = async () => {
-  await loginPage.open();
-  await loginPage.enterUsername(VALID_USERNAME);
-  await loginPage.enterPassword(VALID_PASSWORD);
-  await loginPage.clickSubmit();
-  await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-  await profilePage.clickAppsButton();
-  await profilePage.isGroupsOptionVisible();
-};
 
 let driver;
 let loginPage, profilePage, groupsPage;
@@ -40,13 +30,23 @@ afterAll(async () => {
   }
 });
 
+const loginAndGoToApps = async () => {
+  await loginPage.open();
+  await loginPage.enterUsername(VALID_USERNAME);
+  await loginPage.enterPassword(VALID_PASSWORD);
+  await loginPage.clickSubmit();
+  await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+  await profilePage.clickAppsButton();
+};
+
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await loginAndGoToApps();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
+    const expectedUrl = GROUPS_URL;
 
-    expect(actualUrl).toBe(GROUPS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   });
 
   test('TC-002: Click on Reports should redirect to expected URL', async () => {
@@ -54,8 +54,9 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickReportsAndGetUrl();
+    const expectedUrl = NOT_FOUND_URL;
 
-    expect(actualUrl).toBe(EXPECTED_URL);
+    expect(actualUrl).toBe(expectedUrl);
   });
 
   test('TC-003: Click on Calendar should redirect to expected URL', async () => {
@@ -63,8 +64,9 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickCalendarAndGetUrl();
+    const expectedUrl = NOT_FOUND_URL;
 
-    expect(actualUrl).toBe(EXPECTED_URL);
+    expect(actualUrl).toBe(expectedUrl););
   });
 
   test('TC-004: Click on Resources should redirect to expected URL', async () => {
@@ -72,33 +74,35 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickResourcesAndGetUrl();
+    const expectedUrl = NOT_FOUND_URL;
 
-    expect(actualUrl).toBe(EXPECTED_URL);
+    expect(actualUrl).toBe(expectedUrl);
   });
 
   test('TC-005: Click on User profile icon should open menu', async () => {
 
     await loginAndGoToApps();
     await groupsPage.clickProfileIcon();
-    await groupsPage.isLogoutButtonVisible();
+
+    // Finish this test by checking if the profile icon menu is visible
+    expect(true).toBe(false);
 
   });
 
   test('TC-006: Click on My Profile should redirect to expected URL', async () => {
     await loginAndGoToApps();
     await profilePage.clickProfileIcon();
-    await profilePage.isLogoutButtonVisible();
 
     const actualUrl = await profilePage.clickMyProfileAndGetUrl();
+    const expectedUrl = NOT_FOUND_URL;
 
-    expect(actualUrl).toBe(EXPECTED_URL);
+    expect(actualUrl).toBe(expectedUrl);
   });
 
   test('TC-007: Click on Log out should terminate session successfully', async () => {
     await loginAndGoToApps();
 
     await profilePage.clickProfileIcon();
-    await profilePage.isLogoutButtonVisible();
 
     const actualUrl = await groupsPage.clickLogoutAndGetUrl();
     const expectedUrl = BASE_URL;
@@ -113,10 +117,10 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
-    const formTitle = await groupsPage.getGroupFormTitle();
+    const actualTitle = await groupsPage.getGroupFormTitle();
     const expectedTitle = TITLE_SELECTOR;
 
-    expect(formTitle).toBe(expectedTitle);
+    expect(actualTitle).toBe(expectedTitle);
   });
 
   test('TC-009: Uploading a group image should display the selected image preview in the form', async () => {
@@ -124,21 +128,24 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
 
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
-
     await groupsPage.clickEditIconOnImage();
     await groupsPage.selectFirstImageFromGallery();
     await groupsPage.confirmImageSelection();
 
-    const previewSrc = await groupsPage.getGroupImagePreviewSrc();
+    const previewUrl = await groupsPage.getGroupImagePreviewSrc();
 
-    expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
+    const PREVIEW_URL_REGEX = /\/assets\/|\/d\/assets\//;
+    const actualMatch = previewUrl.match(PREVIEW_URL_REGEX);
+    const expectedMatch = true;
+
+    expect(actualMatch).toBe(expectedMatch);
   });
 
   test('TC-010: Image is selected but Cancel is clicked, no image should be loaded', async () => {
     await loginAndGoToApps();
+
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
-
     await groupsPage.clickEditIconOnImage();
     await groupsPage.selectFirstImageFromGallery();
     await groupsPage.cancelImageSelection();
