@@ -32,10 +32,7 @@ afterAll(async () => {
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test('TC-001: Valid credentials should login successfully', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
 
     const dashboardElement = await driver.wait(
       until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)),
@@ -48,10 +45,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-002: Invalid username should deny access', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(INVALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(INVALID_USERNAME, VALID_PASSWORD);
 
     const modalText = await loginPage.getModalMessageText();
     const expectedText = 'Invalid credentials.';
@@ -60,10 +54,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-003: Invalid password should deny access', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(INVALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(VALID_USERNAME, INVALID_PASSWORD);
 
     const modalText = await loginPage.getModalMessageText();
     const expectedText = 'Invalid credentials.';
@@ -72,11 +63,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-004: User profile icon should open menu', async () => {
-    // Login first
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
     // Click on user profile icon to open menu
@@ -89,10 +77,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   test('TC-005: Logout should terminate session successfully', async () => {
     // Login first
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
     // Open profile menu and logout
@@ -105,10 +91,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-006: Click on Apps button should open menu', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
     await profilePage.clickAppsButton();
@@ -119,10 +103,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-007: Click on Groups should redirect to correct URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
     await profilePage.clickAppsButton();
     await profilePage.isGroupsOptionVisible();
@@ -133,10 +115,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-008: Click on My Profile should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
     await profilePage.clickProfileIcon();
