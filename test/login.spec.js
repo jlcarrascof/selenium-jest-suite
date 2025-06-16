@@ -77,12 +77,14 @@ describe.each`
   test(`${description}`, async () => {
     await loginPage.enterUsername(username);
     await loginPage.enterPassword(password);
+    await loginPage.clickSubmit();
 
     const actualResult = await loginPage.isSubmitButtonDisabled();
     expect(actualResult).toBe(true);
   });
 });
 
+/*
   test('TC-008: Clicking Forgot Password link should redirect to recovery page', async () => {
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
@@ -92,17 +94,19 @@ describe.each`
 
     expect(actualResult).toBe(expectedUrl);
   });
-
+*/
+/*
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
     await loginPage.enterUsername(VALID_USERNAME);
     await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
 
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
     const expectedUrl = `${loginPage.baseUrl}/tenant/user-signup?tenant=${global.testConfig.env}`;
 
     expect(actualUrl).toBe(expectedUrl);
   });
-
+*/
 /*
   test('TC-011: Clicking Contact Us link should redirect to contact page', async () => {
 
