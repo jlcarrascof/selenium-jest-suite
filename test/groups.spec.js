@@ -2,9 +2,6 @@ const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
 
-const TIMEOUT = 120000;
-const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
-const GROUPS_URL = 'https://qa.harmonychurchsuite.com/tenant/groups/index';
 const NOT_FOUND_URL = 'https://qa.harmonychurchsuite.com/404';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
@@ -17,11 +14,13 @@ let driver;
 let loginPage, profilePage, groupsPage;
 
 beforeAll(async () => {
-  const driverFactory = new DriverFactory(CURRENT_BROWSER, TIMEOUT);
+  const driverFactory = new DriverFactory(global.testConfig.cureentBrower, global.testConfig.timeout);
+
   driver = await driverFactory.initDriver();
-  loginPage = PageFactory.createPage('login', driver, BASE_URL, TIMEOUT);
-  profilePage = PageFactory.createPage('profile', driver, BASE_URL, TIMEOUT);
-  groupsPage = PageFactory.createPage('groups', driver, BASE_URL, TIMEOUT);
+
+  loginPage = PageFactory.createPage('login', driver, global.testConfig.baseUrl, global.testConfig.timeout);
+  profilePage = PageFactory.createPage('profile', driver, global.testConfig.baseUrl, global.testConfig.timeout);
+  groupsPage = PageFactory.createPage('groups', driver, global.testConfig.baseUrl, global.testConfig.timeout);
 });
 
 afterAll(async () => {
@@ -42,7 +41,9 @@ const loginAndGoToApps = async () => {
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await loginAndGoToApps();
-
+    
+    const GROUPS_URL = `{global.testData.baseUrl}`/tenant/groups/index; 
+   
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
     const expectedUrl = GROUPS_URL;
 
@@ -66,7 +67,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const actualUrl = await groupsPage.clickCalendarAndGetUrl();
     const expectedUrl = NOT_FOUND_URL;
 
-    expect(actualUrl).toBe(expectedUrl););
+    expect(actualUrl).toBe(expectedUrl);
   });
 
   test('TC-004: Click on Resources should redirect to expected URL', async () => {
