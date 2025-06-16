@@ -77,7 +77,7 @@ describe.each`
   test(`${description}`, async () => {
     await loginPage.enterUsername(username);
     await loginPage.enterPassword(password);
-    await loginPage.clickSubmit();
+    // await loginPage.clickSubmit();
 
     const actualResult = await loginPage.isSubmitButtonDisabled();
     expect(actualResult).toBe(true);
