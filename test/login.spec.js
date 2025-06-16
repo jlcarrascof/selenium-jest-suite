@@ -21,6 +21,7 @@ beforeAll(async () => {
 
   landingPage = PageFactory.createPage('landing', driver, `${global.testConfig.baseUrl}`, global.testConfig.timeout);
   loginPage = PageFactory.createPage('login', driver, `${global.testConfig.baseLoginUrl}`, global.testConfig.timeout);
+  newAccountPage = PageFactory.createPage('newAccount', driver, `${global.testConfig.baseNewAccountUrl}`, global.testConfig.timeout);
 });
 
 beforeEach(async () => {
@@ -92,7 +93,10 @@ describe.each`
 
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
-    const expectedUrl = `${loginPage.baseUrl}/tenant/user-signup?tenant=${global.testConfig.env}`;
+    console.log(`Actual URL: ${actualUrl}`);
+    //const expectedUrl = `${loginPage.baseUrl}/tenant/user-signup?tenant=${global.testConfig.env}`;
+    const expectedUrl = `${newAccountPage.baseUrl}`;
+    console.log(`Expected URL: ${expectedUrl}`);
 
     expect(actualUrl).toBe(expectedUrl);
   });
