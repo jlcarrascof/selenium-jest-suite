@@ -13,7 +13,7 @@ class LandingPage {
   }
 
   async open() {
-    await this.driver.get(this.baseUrl);
+    await this.driver.get(this.baseUrl + '/landing');
   }
 
   /**

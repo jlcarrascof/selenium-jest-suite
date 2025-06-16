@@ -27,6 +27,7 @@ afterAll(async () => {
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
   test('TC-001: Name field should display error message when is empty', async () => {
+
     await newAccountPage.open();
 
     // Put focus on name
@@ -212,6 +213,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     }
 
     const createButton = await driver.findElement(By.css(newAccountPage.selectors.createButton));
+    
     await driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
 
     const isDisabled = await createButton.getAttribute('disabled') !== null;
@@ -220,6 +222,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-011: Password field should display error message when using only numbers', async () => {
+
     const ONLY_NUMBERS_PASSWORD = '12345678';
 
     const result = await newAccountPage.isValidPassword(ONLY_NUMBERS_PASSWORD, PASSWORD_ERROR_MESSAGE);
@@ -228,6 +231,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-012: Password field should display error message when using only letters', async () => {
+
     const ONLY_LETTERS_PASSWORD = 'abcdefgh';
 
     const result = await newAccountPage.isValidPassword(ONLY_LETTERS_PASSWORD, PASSWORD_ERROR_MESSAGE);
@@ -236,6 +240,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-013: Password field should display error message when using numbers and characters with length less than 8', async () => {
+
     const LESS_THAN_8_PASSWORD = 'ab1@';
 
     const result = await newAccountPage.isValidPassword(LESS_THAN_8_PASSWORD, PASSWORD_ERROR_MESSAGE);
@@ -244,6 +249,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-014: Confirm Password field should display error message when we type a different Password', async () => {
+
     await newAccountPage.open();
 
     const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
@@ -266,6 +272,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
   test('TC-015: Email field should display error message when using an invalid email format', async () => {
     const INVALID_EMAIL = 'test@';
+    const MESSAGE_EMAIL_ERROR = 'Please enter a valid email';
 
     await newAccountPage.open();
 
