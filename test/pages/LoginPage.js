@@ -1,6 +1,5 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const WAIT_TIME = 10000;
 const TAB_WAIT_TIME = 500; // wait time after each TAB key press
 
 class LoginPage {
@@ -10,6 +9,10 @@ class LoginPage {
     this.timeout = timeout;
 
     this.selectors = {
+      dashboardTitle: 'h1.text-xl.font-semibold',
+      contactUs: 'button.font-semibold.text-hprimary',
+      recoverPassword: 'form > div.flex.flex-row.gap-2.justify-between > a',
+      newAccount: "a[href*='user-signup']",
       usernameInput: "input[placeholder='Enter your username']",
       passwordInput: "input[placeholder='Enter your password']",
       submitButton: "button[type='submit']",
@@ -76,13 +79,17 @@ class LoginPage {
       until.elementLocated(By.css(selector)),
       this.timeout
     );
+
     await this.driver.wait(until.elementIsVisible(element), this.timeout);
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-    await element.click();
 
+    await element.click();
+     console.log(`Clicked on element with selector: ${selector}`);
     // wait for the page to load
-    await this.driver.sleep(WAIT_TIME);
+    await this.driver.sleep(this.timeout);
+
     const url = await this.driver.getCurrentUrl();
+
     return url;
   }
 

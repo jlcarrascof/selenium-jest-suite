@@ -6,6 +6,10 @@ class LandingPage {
     this.baseUrl = baseUrl;
     this.timeout = timeout;
     this.loginBtnSelector = 'a.px-4'; // exact selector from original
+
+    this.selectors = {
+      loginBtn : 'a.px-4'
+    };
   }
 
   async open() {
@@ -17,7 +21,7 @@ class LandingPage {
    */
   async clickLoginButton() {
     const loginBtn = await this.driver.wait(
-      until.elementLocated(By.css(this.loginBtnSelector)),
+      until.elementLocated(By.css(this.selectors.loginBtn)),
       this.timeout
     );
     await this.driver.wait(until.elementIsVisible(loginBtn), this.timeout);
