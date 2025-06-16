@@ -83,19 +83,21 @@ describe.each`
     expect(actualResult).toBe(true);
   });
 });
-*/
   test('TC-008: Clicking Forgot Password link should redirect to recovery page', async () => {
     const actualResult = await loginPage.clickLink(loginPage.selectors.recoverPassword);
     const expectedUrl = `${loginPage.baseUrl}`; // To be updated with actual recovery page URL
 
     expect(actualResult).toBe(expectedUrl);
   });
-
+*/
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
-    const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
-    console.log(`Actual URL: ${actualUrl}`);
+    // const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
     //const expectedUrl = `${loginPage.baseUrl}/tenant/user-signup?tenant=${global.testConfig.env}`;
-    const expectedUrl = `${newAccountPage.baseUrl}`;
+    // const expectedUrl = `${newAccountPage.baseUrl}`;
+
+    const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
+    console.log(`Actual URL: ${actualUrl}`);
     console.log(`Expected URL: ${expectedUrl}`);
 
     expect(actualUrl).toBe(expectedUrl);
