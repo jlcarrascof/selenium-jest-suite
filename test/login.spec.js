@@ -15,12 +15,12 @@ let loginPage;
 
 beforeAll(async () => {
 
-  const driverFactory = new DriverFactory(global.testConfig.cureentBrower, global.testConfig.timeout);
+  const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
 
   driver = await driverFactory.initDriver();
 
   landingPage = PageFactory.createPage('landing', driver, `${global.testConfig.baseUrl}/landing`, global.testConfig.timeout);
-  loginPage = PageFactory.createPage('login', driver, `${global.testConfig.baseUrl}/landing`, global.testConfig.timeout); 
+  loginPage = PageFactory.createPage('login', driver, `${global.testConfig.baseUrl}/landing`, global.testConfig.timeout);
 });
 
 beforeEach(async () => {
@@ -94,7 +94,7 @@ describe.each`
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
 
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
-    const expectedUrl = `${loginPage.baseUrl}/tenant/user-signup?tenant=${global.testConfig.env}`; 
+    const expectedUrl = `${loginPage.baseUrl}/tenant/user-signup?tenant=${global.testConfig.env}`;
 
     expect(actualUrl).toBe(expectedUrl);
   });
@@ -186,7 +186,7 @@ describe.each`
     await usernameField.click();
 
     const WARNING_MESSAGE = 'Username is required';
-    
+
     const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
     const expectedResult = true;
 
@@ -220,7 +220,7 @@ describe.each`
     await passwordField.click();
 
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
-        
+
     const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
     const expectedResult = true;
 
