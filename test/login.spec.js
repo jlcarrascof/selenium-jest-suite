@@ -96,8 +96,8 @@ describe.each`
     // const expectedUrl = `${newAccountPage.baseUrl}`;
 
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
-    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
     console.log(`Actual URL: ${actualUrl}`);
+    const expectedUrl = `${newAccountPage.baseUrl}`;
     console.log(`Expected URL: ${expectedUrl}`);
 
     expect(actualUrl).toBe(expectedUrl);
