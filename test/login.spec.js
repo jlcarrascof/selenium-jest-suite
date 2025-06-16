@@ -8,6 +8,7 @@ const INVALID_USERNAME = 'maria';
 const INVALID_PASSWORD = '.12345.qwerty.';
 const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
+const TEST_TIMEOUT = 10000; // 10 seconds
 
 let driver;
 let landingPage;
@@ -84,13 +85,15 @@ describe.each`
 });
 
   test('TC-008: Clicking Forgot Password link should redirect to recovery page', async () => {
+    await loginPage.enterUsername(username);
+    await loginPage.enterPassword(password);
 
     const actualResult = await loginPage.clickLink(loginPage.selectors.recoverPassword);
     const expectedUrl = `${loginPage.baseUrl}/recover-password`;
 
     expect(actualResult).toBe(expectedUrl);
   });
-/*
+
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
 
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
@@ -99,6 +102,7 @@ describe.each`
     expect(actualUrl).toBe(expectedUrl);
   });
 
+/*
   test('TC-011: Clicking Contact Us link should redirect to contact page', async () => {
 
     const actualResult = await loginPage.clickLink(loginPage.selectors.contactUs);
