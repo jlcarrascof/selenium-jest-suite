@@ -2,15 +2,13 @@ const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
 
-const TIMEOUT = 120000;
-const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
+const BASE_URL = 'https://qa.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
 const GROUPS_URL = 'https://qa.harmonychurchsuite.com/tenant/groups/index';
 const EXPECTED_URL = 'https://qa.harmonychurchsuite.com/404';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
 const INVALID_USERNAME = 'invalidUser';
 const INVALID_PASSWORD = 'invalidPass';
-const CURRENT_BROWSER = 'chrome';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 
 let driver;
@@ -18,10 +16,12 @@ let loginPage;
 let profilePage;
 
 beforeAll(async () => {
-  const driverFactory = new DriverFactory(CURRENT_BROWSER, TIMEOUT);
+  const driverFactory = new DriverFactory(global.testConfig.cureentBrower, global.testConfig.timeout);
+
   driver = await driverFactory.initDriver();
-  loginPage = PageFactory.createPage('login', driver, BASE_URL, TIMEOUT);
-  profilePage = PageFactory.createPage('profile', driver, BASE_URL, TIMEOUT);
+  
+  loginPage = PageFactory.createPage('login', driver, global.testConfig.baseUrl, global.testConfig.timeout);
+  profilePage = PageFactory.createPage('profile', driver, global.testConfig.baseUrl, global.testConfig.timeout);
 });
 
 afterAll(async () => {
