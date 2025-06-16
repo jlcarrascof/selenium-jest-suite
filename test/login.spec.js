@@ -97,11 +97,6 @@ describe.each`
     // const expectedUrl = `${loginPage.baseUrl}/tenant/user-signup?tenant=${global.testConfig.env}`;
     const expectedUrl = `${newAccountPage.baseUrl}`;
 
-    // const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
-    // console.log(`Actual URL: ${actualUrl}`); // Depuración
-    // const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa'; // URL fija original
-    // console.log(`Expected URL: ${expectedUrl}`); //
-
     expect(actualUrl).toBe(expectedUrl);
   });
 
