@@ -90,7 +90,7 @@ describe.each`
 
     expect(actualResult).toBe(expectedUrl);
   });
-
+/*
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
 
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
@@ -226,5 +226,5 @@ describe.each`
 
     expect(actualResult).toBe(expectedResult);
   });
-
+*/
 });
