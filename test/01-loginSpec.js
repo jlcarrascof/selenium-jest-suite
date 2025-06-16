@@ -273,4 +273,5 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(result).toBe(true);
   });
+
 });
