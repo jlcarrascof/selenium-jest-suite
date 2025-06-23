@@ -36,7 +36,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-/*
+
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.enterUsername(VALID_USERNAME);
@@ -84,7 +84,7 @@ describe.each`
   });
 });
 
-*/
+
   test('TC-008: Clicking Forgot Password link should redirect to recovery page', async () => {
     const actualResult = await loginPage.clickLink(loginPage.selectors.recoverPassword);
     const expectedUrl = `${loginPage.baseUrl}`; // To be updated with actual recovery page URL
