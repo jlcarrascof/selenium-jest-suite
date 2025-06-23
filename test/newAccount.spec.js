@@ -26,10 +26,12 @@ afterAll(async () => {
 });
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
-  test('TC-001: Name field should display error message when is empty', async () => {
-    await newAccountPage.open();
 
-    // Put focus on name
+  beforeEach(async () => {
+    await newAccountPage.open();
+  });
+
+  test('TC-001: Name field should display error message when is empty', async () => {
     const nameField = await driver.findElement(By.css(newAccountPage.selectors.nameInput));
     await nameField.click();
 
@@ -42,9 +44,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-002: Surname field should display error message when is empty', async () => {
-
-    await newAccountPage.open();
-
     const surnameField = await driver.findElement(By.css(newAccountPage.selectors.surnameInput));
     await surnameField.click();
 
@@ -57,9 +56,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-003: Email field should display error message when is empty', async () => {
-
-    await newAccountPage.open();
-
     const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
     await emailField.click();
 
@@ -72,9 +68,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-004: Username field should display error message when is empty', async () => {
-
-    await newAccountPage.open();
-
     const usernameField = await driver.findElement(By.css(newAccountPage.selectors.usernameInput));
 
     await usernameField.click();
@@ -88,9 +81,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-005: Password field should display error message when is empty', async () => {
-
-    await newAccountPage.open();
-
     const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
     await passwordField.click();
 
@@ -103,9 +93,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-006: Terms and Conditions checkbox should display error message when unchecked', async () => {
-
-    await newAccountPage.open();
-
     const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
     await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
     await termsCheckbox.click(); // Unclick if already checked
@@ -120,9 +107,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-007: All fields should display error messages when are empty', async () => {
-
-    await newAccountPage.open();
-
     const fields = [
       { selector: newAccountPage.selectors.nameInput, error: 'Name is required' },
       { selector: newAccountPage.selectors.surnameInput, error: 'Surname is required' },
@@ -145,9 +129,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-008: Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked', async () => {
-
-    await newAccountPage.open();
-
     const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
 
     await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
@@ -159,7 +140,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     const createButton = await driver.findElement(By.css(newAccountPage.selectors.createButton));
     await driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
 
-    // Check if the button is enabled
     const actualResult = await createButton.getAttribute('disabled') !== null;
     const expectedResult = true;
 
@@ -167,9 +147,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-009: Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked', async () => {
-
-    await newAccountPage.open();
-
     await driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(VALID_NAME);
     await driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(VALID_SURNAME);
     await driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(VALID_EMAIL);
@@ -188,17 +165,13 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     await driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
 
     // Check if the button is enabled
-    const actualResult = await createButton.getAttribute('disabled') !== null;
+    const actualResult = await createButton.getAttribute('disabled') == null;
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
-/*
   test('TC-010: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
-
-    await newAccountPage.open();
-
     await driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(VALID_NAME);
     await driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(VALID_SURNAME);
     await driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(VALID_EMAIL);
@@ -245,17 +218,12 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-014: Confirm Password field should display error message when we type a different Password', async () => {
-    await newAccountPage.open();
-
     const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
-
     const confirmPasswordField = await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput));
 
     await driver.wait(until.elementIsVisible(passwordField), newAccountPage.timeout);
-
     await passwordField.sendKeys(VALID_PASSWORD);
     await confirmPasswordField.sendKeys(DIFFERENT_PASSWORD);
-
     await driver.actions().sendKeys(Key.TAB).perform();
 
     const WARNING_MESSAGE = 'Password must match';
@@ -268,8 +236,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   test('TC-015: Email field should display error message when using an invalid email format', async () => {
     const INVALID_EMAIL = 'test@';
     const MESSAGE_EMAIL_ERROR = 'Please enter a valid email';
-
-    await newAccountPage.open();
 
     const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
 
@@ -287,8 +253,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
   test('TC-016: Email field should not display error message when using a valid email format', async () => {
     const MESSAGE_EMAIL = 'Username is required';
-
-    await newAccountPage.open();
 
     const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
 
@@ -308,8 +272,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     const ELEMENT_VISIBILITY_TIMEOUT = 5000;
     const REDIRECTION_WAIT = 1000;
 
-    await newAccountPage.open();
-
     const loginLink = await driver.findElement(By.xpath('/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a'));
 
     await driver.wait(until.elementIsVisible(loginLink), ELEMENT_VISIBILITY_TIMEOUT);
@@ -321,5 +283,4 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
-*/
 });
