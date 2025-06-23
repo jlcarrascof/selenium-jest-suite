@@ -1,6 +1,6 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const TAB_WAIT_TIME = 1000; // wait time after each TAB key press
+const TAB_WAIT_TIME = 100; // wait time after each TAB key press
 
 class LoginPage {
   constructor(driver, baseUrl, timeout) {
