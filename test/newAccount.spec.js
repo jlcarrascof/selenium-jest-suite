@@ -27,73 +27,63 @@ afterAll(async () => {
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
+  const ERROR_MESSAGES = {
+    name: 'Name is required',
+    surname: 'Surname is required',
+    email: 'Please enter a valid email',
+    username: 'Username is required',
+    password: 'Password must be at least 8 characters',
+    terms: 'Terms and Conditions',
+    confirmPassword: 'Password must match',
+    invalidEmail: 'Please enter a valid email'
+  };
+
   beforeEach(async () => {
     await newAccountPage.open();
   });
 
-  test('TC-001: Name field should display error message when is empty', async () => {
-    const nameField = await driver.findElement(By.css(newAccountPage.selectors.nameInput));
-    await nameField.click();
+  async function verifyEmptyFieldError(selector, errorMessage) {
+    const field = await driver.findElement(By.css(selector));
+    await field.click();
+    await driver.actions().sendKeys(Key.TAB).perform(); // Let the field lose focus
+    const actualResult = await newAccountPage.verifyBlurValidation(selector, errorMessage);
+    const expectedResult = true;
+    expect(actualResult).toBe(expectedResult);
+  }
 
+  test('TC-001: Name field should display error message when is empty', async () => {
     const WARNING_MESSAGE = 'Name is required';
 
-    const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.nameInput, WARNING_MESSAGE);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    await verifyEmptyFieldError(newAccountPage.selectors.nameInput, WARNING_MESSAGE);
   });
 
   test('TC-002: Surname field should display error message when is empty', async () => {
-    const surnameField = await driver.findElement(By.css(newAccountPage.selectors.surnameInput));
-    await surnameField.click();
-
     const WARNING_MESSAGE = 'Surname is required';
 
-    const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.surnameInput, WARNING_MESSAGE);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    await verifyEmptyFieldError(newAccountPage.selectors.surnameInput, WARNING_MESSAGE);
   });
 
   test('TC-003: Email field should display error message when is empty', async () => {
-    const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
-    await emailField.click();
-
     const WARNING_MESSAGE = 'Please enter a valid email';
 
-    const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.emailInput, WARNING_MESSAGE);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    await verifyEmptyFieldError(newAccountPage.selectors.emailInput, WARNING_MESSAGE);
   });
 
   test('TC-004: Username field should display error message when is empty', async () => {
-    const usernameField = await driver.findElement(By.css(newAccountPage.selectors.usernameInput));
-
-    await usernameField.click();
-
     const WARNING_MESSAGE = 'Username is required';
 
-    const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.usernameInput, WARNING_MESSAGE);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    await verifyEmptyFieldError(newAccountPage.selectors.usernameInput, WARNING_MESSAGE);
   });
 
   test('TC-005: Password field should display error message when is empty', async () => {
-    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
-    await passwordField.click();
-
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
 
-    const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.passwordInput, WARNING_MESSAGE);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    await verifyEmptyFieldError(newAccountPage.selectors.passwordInput, WARNING_MESSAGE);
   });
 
   test('TC-006: Terms and Conditions checkbox should display error message when unchecked', async () => {
     const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
+
     await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
     await termsCheckbox.click(); // Unclick if already checked
 
