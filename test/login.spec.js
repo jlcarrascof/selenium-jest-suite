@@ -36,7 +36,6 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-/*
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.enterUsername(VALID_USERNAME);
@@ -51,39 +50,38 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toMatch(expectedResult);
   });
 
-describe.each`
-  testCase    | username            | password            | description
-  ${'TC-002'} | ${VALID_USERNAME}   | ${INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
-  ${'TC-003'} | ${INVALID_USERNAME} | ${VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
-  ${'TC-004'} | ${INVALID_USERNAME} | ${INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
-`('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
-  test(`${description}`, async () => {
-    await loginPage.enterUsername(username);
-    await loginPage.enterPassword(password);
-    await loginPage.clickSubmit();
+  describe.each`
+    testCase    | username            | password            | description
+    ${'TC-002'} | ${VALID_USERNAME}   | ${INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
+    ${'TC-003'} | ${INVALID_USERNAME} | ${VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
+    ${'TC-004'} | ${INVALID_USERNAME} | ${INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
+  `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
+    test(`${description}`, async () => {
+      await loginPage.enterUsername(username);
+      await loginPage.enterPassword(password);
+      await loginPage.clickSubmit();
 
-    const actualResult = await loginPage.getModalMessageText();
-    const expectedResult = 'Invalid credentials.';
+      const actualResult = await loginPage.getModalMessageText();
+      const expectedResult = 'Invalid credentials.';
 
-    expect(actualResult).toBe(expectedResult);
+      expect(actualResult).toBe(expectedResult);
+    });
   });
-});
 
-describe.each`
-  testCase    | username          | password          | description
-  ${'TC-005'} | ${EMPTY_USERNAME} | ${VALID_PASSWORD} | ${'When username is empty'}
-  ${'TC-006'} | ${VALID_USERNAME} | ${EMPTY_PASSWORD} | ${'When password is empty'}
-  ${'TC-007'} | ${EMPTY_USERNAME} | ${EMPTY_PASSWORD} | ${'When username and password are empty'}
-`('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
-  test(`${description}`, async () => {
-    await loginPage.enterUsername(username);
-    await loginPage.enterPassword(password);
+  describe.each`
+    testCase    | username          | password          | description
+    ${'TC-005'} | ${EMPTY_USERNAME} | ${VALID_PASSWORD} | ${'When username is empty'}
+    ${'TC-006'} | ${VALID_USERNAME} | ${EMPTY_PASSWORD} | ${'When password is empty'}
+    ${'TC-007'} | ${EMPTY_USERNAME} | ${EMPTY_PASSWORD} | ${'When username and password are empty'}
+  `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
+    test(`${description}`, async () => {
+      await loginPage.enterUsername(username);
+      await loginPage.enterPassword(password);
 
-    const actualResult = await loginPage.isSubmitButtonDisabled();
-    expect(actualResult).toBe(true);
+      const actualResult = await loginPage.isSubmitButtonDisabled();
+      expect(actualResult).toBe(true);
+    });
   });
-});
-
 
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     // Original Line
@@ -101,7 +99,7 @@ describe.each`
 
     expect(actualUrl).toBe(expectedUrl);
   });
-*/
+
   test('TC-010: Tab order should follow expected focus sequence', async () => {
 
     const controls = [
@@ -168,7 +166,7 @@ describe.each`
 
     expect(actualResult).toBe(expectedResult);
   });
-/*
+
   test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
     // Original Line
     // const actualResult = await loginPage.clickLink(loginPage.selectors.contactUs);
@@ -225,5 +223,5 @@ describe.each`
 
     expect(actualResult).toBe(expectedResult);
   });
-*/
+
 });
