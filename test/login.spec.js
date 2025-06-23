@@ -100,15 +100,7 @@ describe.each`
     expect(actualUrl).toBe(expectedUrl);
   });
 
-  test('TC-011: Clicking Contact Us link should redirect to contact page', async () => {
-
-    const actualResult = await loginPage.clickLink(loginPage.selectors.contactUs);
-    const expectedUrl = `${loginPage.baseUrl}/contact-us`;
-
-    expect(actualResult).toBe(expectedUrl);
-  });
-
-  /*
+/*
   test('TC-010: Tab order should follow expected focus sequence', async () => {
 
     const controls = [
@@ -179,7 +171,15 @@ describe.each`
 
     expect(actualResult).toBe(expectedResult);
   });
+*/
 
+  test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+
+    const actualResult = await loginPage.clickLink(loginPage.selectors.contactUs);
+    const expectedUrl = `${loginPage.baseUrl}/contact-us`;
+
+    expect(actualResult).toBe(expectedUrl);
+  });
 
   test('TC-012: Username field should display error message when is empty', async () => {
 
@@ -228,5 +228,5 @@ describe.each`
 
     expect(actualResult).toBe(expectedResult);
   });
-*/
+
 });
