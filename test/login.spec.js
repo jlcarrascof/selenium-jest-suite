@@ -153,8 +153,7 @@ describe.each`
       {
         selector: 'menu-context-language button.dropdown-toggle',
         name: 'Language Selector',
-        tabCount: 9,
-        isXPath: false
+        tabCount: 9
       },
       {
         selector: "//button[normalize-space(.)='Contact Us']",
