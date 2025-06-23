@@ -15,6 +15,7 @@ let loginPage;
 
 beforeAll(async () => {
 
+
   const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
 
   driver = await driverFactory.initDriver();
@@ -183,7 +184,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await usernameField.click();
 
     const WARNING_MESSAGE = 'Username is required';
-
     const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
     const expectedResult = true;
 
@@ -217,11 +217,11 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await passwordField.click();
 
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
-
     const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
+
 
 });
