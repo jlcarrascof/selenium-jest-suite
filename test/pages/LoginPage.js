@@ -103,8 +103,8 @@ class LoginPage {
 
     await this.driver.wait(until.elementIsVisible(element), this.timeout);
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
+
     await element.click();
-    await this.driver.wait(until.urlContains('user-signup'), this.timeout / 2);
 
     const url = await this.driver.getCurrentUrl();
 
