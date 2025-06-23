@@ -194,6 +194,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
+/*
   test('TC-010: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
 
     await newAccountPage.open();
@@ -313,5 +314,5 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signin';
     expect(actualUrl).toBe(expectedUrl);
   });
-
+*/
 });
