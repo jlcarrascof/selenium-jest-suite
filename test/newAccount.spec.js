@@ -14,11 +14,11 @@ let driver;
 let newAccountPage;
 
 beforeAll(async () => {
-  const driverFactory = new DriverFactory(global.testConfig.cureentBrower, global.testConfig.timeout);
+  const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
 
   driver = await driverFactory.initDriver();
-  
-  newAccountPage = PageFactory.createPage('newAccount', driver, global.testConfig.baseUrl, global.testConfig.timeout);
+
+  newAccountPage = PageFactory.createPage('newAccount', driver, global.testConfig.baseNewAccountUrl, global.testConfig.timeout);
 });
 
 afterAll(async () => {
@@ -80,7 +80,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     await usernameField.click();
 
     const WARNING_MESSAGE = 'Username is required';
-    
+
     const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.usernameInput, WARNING_MESSAGE);
     const expectedResult = true;
 
@@ -95,7 +95,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     await passwordField.click();
 
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
-    
+
     const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.passwordInput, WARNING_MESSAGE);
     const expectedResult = true;
 
@@ -145,11 +145,11 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-008: Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked', async () => {
-   
+
     await newAccountPage.open();
 
     const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
-   
+
     await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
 
     if (await termsCheckbox.isSelected()) {
@@ -266,6 +266,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
   test('TC-015: Email field should display error message when using an invalid email format', async () => {
     const INVALID_EMAIL = 'test@';
+    const MESSAGE_EMAIL_ERROR = 'Please enter a valid email';
 
     await newAccountPage.open();
 
@@ -311,6 +312,6 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     const actualUrl = await driver.getCurrentUrl();
     const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signin';
     expect(actualUrl).toBe(expectedUrl);
-  }); // Timeout total de 10 segundos
+  });
 
 });
