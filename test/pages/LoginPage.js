@@ -96,28 +96,18 @@ class LoginPage {
  */
 
 async clickLink(selector) {
-  console.log(`Starting clickLink with selector: ${selector}`);
   const element = await this.driver.wait(
     until.elementLocated(By.css(selector)),
     this.timeout
   );
-  console.log(`Element located: ${selector}`);
 
   await this.driver.wait(until.elementIsVisible(element), this.timeout);
-  console.log(`Element visible: ${selector}`);
-
   await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-  console.log(`Element enabled: ${selector}`);
-
   await element.click();
-  console.log(`Clicked on element with selector: ${selector}`);
-
-  console.log(`Before wait, current URL: ${await this.driver.getCurrentUrl()}`);
   await this.driver.wait(until.urlContains('user-signup'), this.timeout / 2);
-  console.log(`After wait, current URL: ${await this.driver.getCurrentUrl()}`);
 
   const url = await this.driver.getCurrentUrl();
-  console.log(`Returning URL: ${url}`);
+
   return url;
 }
 

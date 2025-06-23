@@ -85,9 +85,9 @@ describe.each`
 });
 
 
-  test('TC-008: Clicking Forgot Password link should redirect to recovery page', async () => {
+  test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     const actualResult = await loginPage.clickLink(loginPage.selectors.recoverPassword);
-    const expectedUrl = `${loginPage.baseUrl}`; // To be updated with actual recovery page URL
+    const expectedUrl = `${loginPage.baseUrl}/recover-password`;
 
     expect(actualResult).toBe(expectedUrl);
   });
@@ -100,7 +100,6 @@ describe.each`
     expect(actualUrl).toBe(expectedUrl);
   });
 
-  /*
   test('TC-011: Clicking Contact Us link should redirect to contact page', async () => {
 
     const actualResult = await loginPage.clickLink(loginPage.selectors.contactUs);
@@ -109,6 +108,7 @@ describe.each`
     expect(actualResult).toBe(expectedUrl);
   });
 
+  /*
   test('TC-010: Tab order should follow expected focus sequence', async () => {
 
     const controls = [
