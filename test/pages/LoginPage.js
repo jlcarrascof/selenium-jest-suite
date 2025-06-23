@@ -1,6 +1,6 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const TAB_WAIT_TIME = 500; // wait time after each TAB key press
+const TAB_WAIT_TIME = 100; // wait time after each TAB key press
 
 class LoginPage {
   constructor(driver, baseUrl, timeout) {
@@ -95,31 +95,21 @@ class LoginPage {
   }
  */
 
-async clickLink(selector) {
-  console.log(`Starting clickLink with selector: ${selector}`);
-  const element = await this.driver.wait(
-    until.elementLocated(By.css(selector)),
-    this.timeout
-  );
-  console.log(`Element located: ${selector}`);
+  async clickLink(selector) {
+    const element = await this.driver.wait(
+      until.elementLocated(By.css(selector)),
+      this.timeout
+    );
 
-  await this.driver.wait(until.elementIsVisible(element), this.timeout);
-  console.log(`Element visible: ${selector}`);
+    await this.driver.wait(until.elementIsVisible(element), this.timeout);
+    await this.driver.wait(until.elementIsEnabled(element), this.timeout);
+    await element.click();
+    await this.driver.wait(until.urlContains('user-signup'), this.timeout / 2);
 
-  await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-  console.log(`Element enabled: ${selector}`);
+    const url = await this.driver.getCurrentUrl();
 
-  await element.click();
-  console.log(`Clicked on element with selector: ${selector}`);
-
-  console.log(`Before wait, current URL: ${await this.driver.getCurrentUrl()}`);
-  await this.driver.wait(until.urlContains('user-signup'), this.timeout / 2);
-  console.log(`After wait, current URL: ${await this.driver.getCurrentUrl()}`);
-
-  const url = await this.driver.getCurrentUrl();
-  console.log(`Returning URL: ${url}`);
-  return url;
-}
+    return url;
+  }
 
 
   async canNavigateWithTabsInOrder(controls) {
