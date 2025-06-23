@@ -52,33 +52,23 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   }
 
   test('TC-001: Name field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Name is required';
-
-    await verifyEmptyFieldError(newAccountPage.selectors.nameInput, WARNING_MESSAGE);
+    await verifyEmptyFieldError(newAccountPage.selectors.nameInput, ERROR_MESSAGES.name);
   });
 
   test('TC-002: Surname field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Surname is required';
-
-    await verifyEmptyFieldError(newAccountPage.selectors.surnameInput, WARNING_MESSAGE);
+    await verifyEmptyFieldError(newAccountPage.selectors.surnameInput, ERROR_MESSAGES.surname);
   });
 
   test('TC-003: Email field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Please enter a valid email';
-
-    await verifyEmptyFieldError(newAccountPage.selectors.emailInput, WARNING_MESSAGE);
+    await verifyEmptyFieldError(newAccountPage.selectors.emailInput, ERROR_MESSAGES.email);
   });
 
   test('TC-004: Username field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Username is required';
-
-    await verifyEmptyFieldError(newAccountPage.selectors.usernameInput, WARNING_MESSAGE);
+    await verifyEmptyFieldError(newAccountPage.selectors.usernameInput, ERROR_MESSAGES.username);
   });
 
   test('TC-005: Password field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Password must be at least 8 characters';
-
-    await verifyEmptyFieldError(newAccountPage.selectors.passwordInput, WARNING_MESSAGE);
+    await verifyEmptyFieldError(newAccountPage.selectors.passwordInput, ERROR_MESSAGES.password);
   });
 
   test('TC-006: Terms and Conditions checkbox should display error message when unchecked', async () => {
@@ -261,16 +251,17 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   test('TC-017: Clicking Login link should redirect to login page', async () => {
     const ELEMENT_VISIBILITY_TIMEOUT = 5000;
     const REDIRECTION_WAIT = 1000;
+    const LOGIN_LINK_SELECTOR = '/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a';
+    const EXPECTED_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin';
 
-    const loginLink = await driver.findElement(By.xpath('/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a'));
+    const loginLink = await driver.findElement(By.xpath(LOGIN_LINK_SELECTOR));
 
     await driver.wait(until.elementIsVisible(loginLink), ELEMENT_VISIBILITY_TIMEOUT);
     await loginLink.click();
     await driver.sleep(REDIRECTION_WAIT);
 
     const actualUrl = await driver.getCurrentUrl();
-    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signin';
 
-    expect(actualUrl).toBe(expectedUrl);
+    expect(actualUrl).toBe(EXPECTED_URL);
   });
 });
