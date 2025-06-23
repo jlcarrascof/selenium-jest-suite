@@ -305,13 +305,20 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-017: Clicking Login link should redirect to login page', async () => {
+    const ELEMENT_VISIBILITY_TIMEOUT = 5000;
+    const REDIRECTION_WAIT = 1000;
+
     await newAccountPage.open();
+
     const loginLink = await driver.findElement(By.xpath('/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a'));
-    await driver.wait(until.elementIsVisible(loginLink), 5000);
+
+    await driver.wait(until.elementIsVisible(loginLink), ELEMENT_VISIBILITY_TIMEOUT);
     await loginLink.click();
-    await driver.sleep(1000); // Espera a que la redirección ocurra
+    await driver.sleep(REDIRECTION_WAIT);
+
     const actualUrl = await driver.getCurrentUrl();
     const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signin';
+
     expect(actualUrl).toBe(expectedUrl);
   });
 */
