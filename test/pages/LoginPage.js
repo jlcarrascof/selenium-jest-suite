@@ -95,21 +95,21 @@ class LoginPage {
   }
  */
 
-async clickLink(selector) {
-  const element = await this.driver.wait(
-    until.elementLocated(By.css(selector)),
-    this.timeout
-  );
+  async clickLink(selector) {
+    const element = await this.driver.wait(
+      until.elementLocated(By.css(selector)),
+      this.timeout
+    );
 
-  await this.driver.wait(until.elementIsVisible(element), this.timeout);
-  await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-  await element.click();
-  await this.driver.wait(until.urlContains('user-signup'), this.timeout / 2);
+    await this.driver.wait(until.elementIsVisible(element), this.timeout);
+    await this.driver.wait(until.elementIsEnabled(element), this.timeout);
+    await element.click();
+    await this.driver.wait(until.urlContains('user-signup'), this.timeout / 2);
 
-  const url = await this.driver.getCurrentUrl();
+    const url = await this.driver.getCurrentUrl();
 
-  return url;
-}
+    return url;
+  }
 
 
   async canNavigateWithTabsInOrder(controls) {
