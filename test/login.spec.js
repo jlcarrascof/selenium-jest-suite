@@ -168,7 +168,6 @@ describe.each`
 
     expect(actualResult).toBe(expectedResult);
   });
-
 /*
   test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
     // Original Line
