@@ -197,7 +197,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       {
         selector: 'menu-context-language button.dropdown-toggle',
         name: 'Language Selector',
-        tabCount: 9
+        tabCount: 9,
+        isXPath: false
       },
       {
         selector: "//button[normalize-space(.)='Contact Us']",
