@@ -8,7 +8,10 @@ const VALID_EMAIL = 'javier.martinez@example.com';
 const VALID_USERNAME = 'javiermartinez';
 const VALID_PASSWORD = 'Password123!';
 const DIFFERENT_PASSWORD = 'Password123*';
-const PASSWORD_ERROR_MESSAGE = 'Password must be at least 8 characters';
+const ONLY_NUMBERS_PASSWORD = '12345678';
+const ONLY_LETTERS_PASSWORD = 'abcdefgh';
+const LESS_THAN_8_PASSWORD = 'ab1@';
+const INVALID_EMAIL_FORMAT = 'test@';
 
 let driver;
 let newAccountPage;
