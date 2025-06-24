@@ -95,6 +95,8 @@ class LoginPage {
   }
  */
 
+  /* Previa 23-06-2025 */
+  /*
   async clickLink(selector) {
     const element = await this.driver.wait(
       until.elementLocated(By.css(selector)),
@@ -110,7 +112,17 @@ class LoginPage {
 
     return url;
   }
+*/
 
+  async clickLink(selector) {
+    const element = await this.driver.wait(
+      until.elementLocated(By.css(selector)),
+      this.timeout
+    );
+    await this.driver.wait(until.elementIsVisible(element), this.timeout);
+    await this.driver.wait(until.elementIsEnabled(element), this.timeout);
+    await element.click();
+  }
 
   async canNavigateWithTabsInOrder(controls) {
     const { By, Key, until } = require('selenium-webdriver');

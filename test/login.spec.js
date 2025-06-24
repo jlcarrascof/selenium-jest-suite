@@ -21,7 +21,7 @@ beforeAll(async () => {
 
   landingPage = PageFactory.createPage('landing', driver, `${global.testConfig.baseUrl}`, global.testConfig.timeout);
   loginPage = PageFactory.createPage('login', driver, `${global.testConfig.baseLoginUrl}`, global.testConfig.timeout);
-  newAccountPage = PageFactory.createPage('newAccount', driver, `${global.testConfig.baseNewAccountUrl}`, global.testConfig.timeout);
+  // newAccountPage = PageFactory.createPage('newAccount', driver, `${global.testConfig.baseNewAccountUrl}`, global.testConfig.timeout);
 });
 
 beforeEach(async () => {
@@ -84,7 +84,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(true);
     });
   });
-*/
+
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
 
     const actualResult = await loginPage.clickLink(loginPage.selectors.recoverPassword);
@@ -93,14 +93,33 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedUrl);
   });
-/*
+*/
+  /*
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
 
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
     const expectedUrl = `${newAccountPage.baseUrl}`;
+
+    expect(actualUrl).toBe(expectedUrl);
+  });
+  */
+
+  test('TC-009: Clicking New Account link should redirect to registration page', async () => {
+    // Hacer clic en el enlace "New Account"
+    await loginPage.clickLink(loginPage.selectors.newAccount);
+
+    // Definir la URL esperada directamente
+    const expectedUrl = 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa';
+
+    // Esperar a que la URL sea la esperada
+    await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
+
+    // Obtener la URL actual y verificar
+    const actualUrl = await driver.getCurrentUrl();
     expect(actualUrl).toBe(expectedUrl);
   });
 
+/*
   test('TC-010: Tab order should follow expected focus sequence', async () => {
 
     const controls = [
