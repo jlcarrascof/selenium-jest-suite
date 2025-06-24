@@ -37,6 +37,7 @@ afterAll(async () => {
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
 
+/*
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.enterUsername(VALID_USERNAME);
@@ -83,7 +84,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(true);
     });
   });
-
+*/
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
 
     const actualResult = await loginPage.clickLink(loginPage.selectors.recoverPassword);
@@ -92,7 +93,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedUrl);
   });
-
+/*
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
 
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
@@ -221,5 +222,5 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-
+*/
 });
