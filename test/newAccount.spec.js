@@ -42,6 +42,18 @@ beforeAll(async () => {
   driver = await driverFactory.initDriver();
 
   newAccountPage = PageFactory.createPage('newAccount', driver, global.testConfig.baseNewAccountUrl, global.testConfig.timeout);
+
+  if (!newAccountPage.errorMessages) {
+    newAccountPage.errorMessages = {
+      password: 'Password must be at least 8 characters',
+      terms: 'Terms and Conditions',
+      nameRequired: 'Name is required',
+      surnameRequired: 'Surname is required',
+      emailInvalid: 'Please enter a valid email',
+      usernameRequired: 'Username is required',
+      passwordMatch: 'Password must match'
+    };
+  }
 });
 
 afterAll(async () => {
