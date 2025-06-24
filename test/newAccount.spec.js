@@ -27,17 +27,6 @@ afterAll(async () => {
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
-  const ERROR_MESSAGES = {
-    name: 'Name is required',
-    surname: 'Surname is required',
-    email: 'Please enter a valid email',
-    username: 'Username is required',
-    password: 'Password must be at least 8 characters',
-    terms: 'Terms and Conditions',
-    confirmPassword: 'Password must match',
-    invalidEmail: 'Please enter a valid email'
-  };
-
   beforeEach(async () => {
     await newAccountPage.open();
   });
