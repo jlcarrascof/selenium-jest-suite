@@ -36,7 +36,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-/*
+
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.enterUsername(VALID_USERNAME);
@@ -83,7 +83,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(true);
     });
   });
-*/
 
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     await loginPage.clickLink(loginPage.selectors.recoverPassword);
@@ -108,7 +107,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
-/*
+
   test('TC-010: Tab order should follow expected focus sequence', async () => {
 
     const controls = [
@@ -175,22 +174,26 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-*/
+
   test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+
+    const TIMEOUT = 3000;
+
     await loginPage.clickLink(loginPage.selectors.contactUs);
 
     const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
 
     try {
-      await driver.wait(until.urlIs(expectedUrl), 3000);
+      await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
     } catch (error) {
       await driver.get(expectedUrl);
     }
 
     const actualUrl = await driver.getCurrentUrl();
+
     expect(actualUrl).toBe(expectedUrl);
   });
-/*
+
   test('TC-012: Username field should display error message when is empty', async () => {
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
@@ -234,5 +237,4 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-*/
 });

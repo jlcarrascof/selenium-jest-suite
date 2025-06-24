@@ -37,6 +37,7 @@ class LoginPage {
     const usernameField = await this.driver.findElement(
       By.css(this.selectors.usernameInput)
     );
+
     await usernameField.clear();
     await usernameField.sendKeys(username);
   }
@@ -45,6 +46,7 @@ class LoginPage {
     const passwordField = await this.driver.findElement(
       By.css(this.selectors.passwordInput)
     );
+
     await passwordField.clear();
     await passwordField.sendKeys(password);
   }
