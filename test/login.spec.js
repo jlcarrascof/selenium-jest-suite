@@ -85,17 +85,16 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   });
 
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
-    // Original Line
 
     const actualResult = await loginPage.clickLink(loginPage.selectors.recoverPassword);
 
-    const expectedUrl = 'https://login.harmonychurchsuite.com/landing';// To Be Updated
+    const expectedUrl = 'https://login.harmonychurchsuite.com/landing'; // To Be Updated
 
     expect(actualResult).toBe(expectedUrl);
   });
 
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
-   
+
     const actualUrl = await loginPage.clickLink(loginPage.selectors.newAccount);
     const expectedUrl = `${newAccountPage.baseUrl}`;
     expect(actualUrl).toBe(expectedUrl);
