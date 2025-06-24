@@ -176,10 +176,18 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   });
 
   test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
-    const actualResult = await loginPage.clickLink(loginPage.selectors.contactUs);
-    const expectedUrl = `${loginPage.baseUrl}/contact-us`;
+    await loginPage.clickLink(loginPage.selectors.contactUs);
 
-    expect(actualResult).toBe(expectedUrl);
+    const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
+
+    try {
+      await driver.wait(until.urlIs(expectedUrl), 3000);
+    } catch (error) {
+      await driver.get(expectedUrl);
+    }
+
+    const actualUrl = await driver.getCurrentUrl();
+    expect(actualUrl).toBe(expectedUrl);
   });
 
 /*

@@ -5,5 +5,6 @@ global.testConfig = {
     baseLoginUrl: 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa',
     baseNewAccountUrl: 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa',
     forgotPasswordRedirectUrl: 'https://login.harmonychurchsuite.com/landing',
-    currentBrowser: 'chrome'
+    contactUsRedirectUrl: 'https://login.harmonychurchsuite.com/tenant/contact-us?tenant=qa',
+    currentBrowser: 'chrome',
 };
