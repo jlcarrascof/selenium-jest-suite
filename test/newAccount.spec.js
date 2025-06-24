@@ -16,19 +16,21 @@ const INVALID_EMAIL_FORMAT = 'test@';
 let driver;
 let newAccountPage;
 
-// Helpers
-async function fillAllFields(driver, newAccountPage, name, surname, email, username, password, confirmPassword) {
-  await driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(name);
-  await driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(surname);
-  await driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(email);
-  await driver.findElement(By.css(newAccountPage.selectors.usernameInput)).sendKeys(username);
-  await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(password);
-  await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(confirmPassword);
+// --- Helpers
+
+async function fillAllFields(newAccountPage, name, surname, email, username, password, confirmPassword) {
+  await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(name);
+  await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(surname);
+  await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(email);
+  await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.usernameInput)).sendKeys(username);
+  await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(password);
+  await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(confirmPassword);
 }
 
-async function toggleTermsAndConditions(driver, newAccountPage, shouldBeChecked) {
-  const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
-  await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
+async function toggleTermsAndConditions(newAccountPage, shouldBeChecked) {
+  const termsCheckbox = await newAccountPage.driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
+
+  await newAccountPage.driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
 
   const isChecked = await termsCheckbox.isSelected();
   if ((shouldBeChecked && !isChecked) || (!shouldBeChecked && isChecked)) {
@@ -42,18 +44,6 @@ beforeAll(async () => {
   driver = await driverFactory.initDriver();
 
   newAccountPage = PageFactory.createPage('newAccount', driver, global.testConfig.baseNewAccountUrl, global.testConfig.timeout);
-
-  if (!newAccountPage.errorMessages) {
-    newAccountPage.errorMessages = {
-      password: 'Password must be at least 8 characters',
-      terms: 'Terms and Conditions',
-      nameRequired: 'Name is required',
-      surnameRequired: 'Surname is required',
-      emailInvalid: 'Please enter a valid email',
-      usernameRequired: 'Username is required',
-      passwordMatch: 'Password must match'
-    };
-  }
 });
 
 afterAll(async () => {
@@ -67,191 +57,141 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-001: Terms and Conditions checkbox should display error message when unchecked', async () => {
-    const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
+    await toggleTermsAndConditions(newAccountPage, false);
 
-    await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
-    await termsCheckbox.click();
+    const actualResult = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.termsCheckbox,
+      newAccountPage.selectors.termsError,
+      true
+    );
 
-    const TEXT = 'Terms and Conditions';
-    const isXPath = true;
-
-    const actualResult = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.termsCheckbox, TEXT, isXPath);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    expect(actualResult).toBe(true);
   });
 
   test('TC-002: All fields should display error messages when are empty', async () => {
-    const fields = [
-      { selector: newAccountPage.selectors.nameInput, error: 'Name is required' },
-      { selector: newAccountPage.selectors.surnameInput, error: 'Surname is required' },
-      { selector: newAccountPage.selectors.emailInput, error: 'Please enter a valid email' },
-      { selector: newAccountPage.selectors.usernameInput, error: 'Username is required' },
-      { selector: newAccountPage.selectors.passwordInput, error: 'Password must be at least 8 characters' },
+    const emptyFieldsConfig = [
+      { selector: newAccountPage.selectors.nameInput, error: newAccountPage.selectors.nameError },
+      { selector: newAccountPage.selectors.surnameInput, error: newAccountPage.selectors.surnameError },
+      { selector: newAccountPage.selectors.emailInput, error: newAccountPage.selectors.emailError },
+      { selector: newAccountPage.selectors.usernameInput, error: newAccountPage.selectors.usernameError },
+      { selector: newAccountPage.selectors.passwordInput, error: newAccountPage.selectors.passwordError },
     ];
 
-    for (const field of fields) {
-      const element = await driver.findElement(By.css(field.selector));
-
+    for (const field of emptyFieldsConfig) {
+      // Usamos newAccountPage.driver para interactuar con los elementos
+      const element = await newAccountPage.driver.findElement(By.css(field.selector));
       await element.click();
-      await driver.actions().sendKeys(Key.TAB).perform();
+      await newAccountPage.driver.actions().sendKeys(Key.TAB).perform();
 
       const actualResult = await newAccountPage.verifyBlurValidation(field.selector, field.error);
-      const expectedResult = true;
-
-      expect(actualResult).toBe(expectedResult);
+      expect(actualResult).toBe(true);
     }
   });
 
   test('TC-003: Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked', async () => {
-    const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
+    await toggleTermsAndConditions(newAccountPage, false); // Asegura que esté desmarcado
 
-    await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
+    // Usamos newAccountPage.driver para interactuar con los elementos
+    const createButton = await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.createButton));
+    await newAccountPage.driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
 
-    if (await termsCheckbox.isSelected()) {
-      await termsCheckbox.click();
-    }
-
-    const createButton = await driver.findElement(By.css(newAccountPage.selectors.createButton));
-    await driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
-
-    const actualResult = await createButton.getAttribute('disabled') !== null;
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    const isDisabled = await createButton.getAttribute('disabled') !== null;
+    expect(isDisabled).toBe(true);
   });
 
   test('TC-004: Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked', async () => {
-    await driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(VALID_NAME);
-    await driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(VALID_SURNAME);
-    await driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(VALID_EMAIL);
-    await driver.findElement(By.css(newAccountPage.selectors.usernameInput)).sendKeys(VALID_USERNAME);
-    await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(VALID_PASSWORD);
-    await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(VALID_PASSWORD);
+    await fillAllFields(newAccountPage, VALID_NAME, VALID_SURNAME, VALID_EMAIL, VALID_USERNAME, VALID_PASSWORD, VALID_PASSWORD);
+    await toggleTermsAndConditions(newAccountPage, true); // Asegura que esté marcado
 
-    const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
-    if (!(await termsCheckbox.isSelected())) {
-      await termsCheckbox.click();
-    }
+    const createButton = await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.createButton));
+    await newAccountPage.driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
 
-    const createButton = await driver.findElement(By.css(newAccountPage.selectors.createButton));
-    await driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
-
-    const actualResult = await createButton.getAttribute('disabled') == null;
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+    const isEnabled = await createButton.getAttribute('disabled') == null;
+    expect(isEnabled).toBe(true);
   });
 
   test('TC-005: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
-    await driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(VALID_NAME);
-    await driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(VALID_SURNAME);
-    await driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(VALID_EMAIL);
-    await driver.findElement(By.css(newAccountPage.selectors.usernameInput)).sendKeys(VALID_USERNAME);
-    await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(VALID_PASSWORD);
-    await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(VALID_PASSWORD);
+    await fillAllFields(newAccountPage, VALID_NAME, VALID_SURNAME, VALID_EMAIL, VALID_USERNAME, VALID_PASSWORD, VALID_PASSWORD);
+    await toggleTermsAndConditions(newAccountPage, false); // Asegura que esté desmarcado
 
-    const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
-    if (await termsCheckbox.isSelected()) {
-      await termsCheckbox.click();
-    }
-
-    const createButton = await driver.findElement(By.css(newAccountPage.selectors.createButton));
-    await driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
+    const createButton = await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.createButton));
+    await newAccountPage.driver.wait(until.elementIsVisible(createButton), newAccountPage.timeout);
 
     const isDisabled = await createButton.getAttribute('disabled') !== null;
-
     expect(isDisabled).toBe(true);
   });
 
   test('TC-006: Password field should display error message when using only numbers', async () => {
-    const ONLY_NUMBERS_PASSWORD = '12345678';
-    const result = await newAccountPage.isValidPassword(ONLY_NUMBERS_PASSWORD, PASSWORD_ERROR_MESSAGE);
-
+    const result = await newAccountPage.isValidPassword(ONLY_NUMBERS_PASSWORD, newAccountPage.selectors.passwordError);
     expect(result).toBe(true);
   });
 
   test('TC-007: Password field should display error message when using only letters', async () => {
-    const ONLY_LETTERS_PASSWORD = 'abcdefgh';
-
-    const result = await newAccountPage.isValidPassword(ONLY_LETTERS_PASSWORD, PASSWORD_ERROR_MESSAGE);
-
+    const result = await newAccountPage.isValidPassword(ONLY_LETTERS_PASSWORD, newAccountPage.selectors.passwordError);
     expect(result).toBe(true);
   });
 
   test('TC-008: Password field should display error message when using numbers and characters with length less than 8', async () => {
-    const LESS_THAN_8_PASSWORD = 'ab1@';
-
-    const result = await newAccountPage.isValidPassword(LESS_THAN_8_PASSWORD, PASSWORD_ERROR_MESSAGE);
-
+    const result = await newAccountPage.isValidPassword(LESS_THAN_8_PASSWORD, newAccountPage.selectors.passwordError);
     expect(result).toBe(true);
   });
 
   test('TC-009: Confirm Password field should display error message when we type a different Password', async () => {
-    const passwordField = await driver.findElement(By.css(newAccountPage.selectors.passwordInput));
-    const confirmPasswordField = await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput));
+    const passwordField = await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.passwordInput));
+    const confirmPasswordField = await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput));
 
-    await driver.wait(until.elementIsVisible(passwordField), newAccountPage.timeout);
+    await newAccountPage.driver.wait(until.elementIsVisible(passwordField), newAccountPage.timeout);
     await passwordField.sendKeys(VALID_PASSWORD);
     await confirmPasswordField.sendKeys(DIFFERENT_PASSWORD);
-    await driver.actions().sendKeys(Key.TAB).perform();
+    await newAccountPage.driver.actions().sendKeys(Key.TAB).perform();
 
-    const WARNING_MESSAGE = 'Password must match';
-
-    const result = await newAccountPage.verifyBlurValidation(newAccountPage.selectors.confirmPasswordInput, WARNING_MESSAGE);
-
+    const result = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.confirmPasswordInput,
+      newAccountPage.selectors.confirmPasswordError
+    );
     expect(result).toBe(true);
   });
 
   test('TC-010: Email field should display error message when using an invalid email format', async () => {
-    const INVALID_EMAIL = 'test@';
-    const MESSAGE_EMAIL_ERROR = 'Please enter a valid email';
-
-    const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
-
-    await driver.wait(until.elementIsVisible(emailField), newAccountPage.timeout);
-    await emailField.sendKeys(INVALID_EMAIL);
-    await driver.actions().sendKeys(Key.TAB).perform();
+    const emailField = await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.emailInput));
+    await newAccountPage.driver.wait(until.elementIsVisible(emailField), newAccountPage.timeout);
+    await emailField.sendKeys(INVALID_EMAIL_FORMAT);
+    await newAccountPage.driver.actions().sendKeys(Key.TAB).perform();
 
     const result = await newAccountPage.verifyBlurValidation(
       newAccountPage.selectors.emailInput,
-      MESSAGE_EMAIL_ERROR
+      newAccountPage.selectors.emailError
     );
-
     expect(result).toBe(true);
   });
 
   test('TC-011: Email field should not display error message when using a valid email format', async () => {
-    const MESSAGE_EMAIL = 'Username is required';
-
-    const emailField = await driver.findElement(By.css(newAccountPage.selectors.emailInput));
-
-    await driver.wait(until.elementIsVisible(emailField), newAccountPage.timeout);
+    const emailField = await newAccountPage.driver.findElement(By.css(newAccountPage.selectors.emailInput));
+    await newAccountPage.driver.wait(until.elementIsVisible(emailField), newAccountPage.timeout);
     await emailField.sendKeys(VALID_EMAIL);
-    await driver.actions().sendKeys(Key.TAB).perform();
+    await newAccountPage.driver.actions().sendKeys(Key.TAB).perform();
 
+    // Asumiendo que quieres que el siguiente campo requerido muestre su error al salir del email.
+    // Si la intención es verificar que NO hay error en el email, necesitarías una aserción diferente.
     const result = await newAccountPage.verifyBlurValidation(
       newAccountPage.selectors.usernameInput,
-      MESSAGE_EMAIL
+      newAccountPage.selectors.usernameError
     );
-
     expect(result).toBe(true);
   });
 
   test('TC-012: Clicking Login link should redirect to login page', async () => {
-    const ELEMENT_VISIBILITY_TIMEOUT = 5000;
-    const REDIRECTION_WAIT = 1000;
     const LOGIN_LINK_SELECTOR = '/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a';
     const EXPECTED_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin';
 
-    const loginLink = await driver.findElement(By.xpath(LOGIN_LINK_SELECTOR));
-
-    await driver.wait(until.elementIsVisible(loginLink), ELEMENT_VISIBILITY_TIMEOUT);
+    const loginLink = await newAccountPage.driver.findElement(By.xpath(LOGIN_LINK_SELECTOR));
+    await newAccountPage.driver.wait(until.elementIsVisible(loginLink), newAccountPage.timeout);
     await loginLink.click();
-    await driver.sleep(REDIRECTION_WAIT);
 
-    const actualUrl = await driver.getCurrentUrl();
+    // Usamos until.urlIs para una espera más robusta
+    await newAccountPage.driver.wait(until.urlIs(EXPECTED_URL), newAccountPage.timeout);
 
+    const actualUrl = await newAccountPage.driver.getCurrentUrl();
     expect(actualUrl).toBe(EXPECTED_URL);
   });
 });
