@@ -16,6 +16,26 @@ const INVALID_EMAIL_FORMAT = 'test@';
 let driver;
 let newAccountPage;
 
+// Helpers
+async function fillAllFields(driver, newAccountPage, name, surname, email, username, password, confirmPassword) {
+  await driver.findElement(By.css(newAccountPage.selectors.nameInput)).sendKeys(name);
+  await driver.findElement(By.css(newAccountPage.selectors.surnameInput)).sendKeys(surname);
+  await driver.findElement(By.css(newAccountPage.selectors.emailInput)).sendKeys(email);
+  await driver.findElement(By.css(newAccountPage.selectors.usernameInput)).sendKeys(username);
+  await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(password);
+  await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(confirmPassword);
+}
+
+async function toggleTermsAndConditions(driver, newAccountPage, shouldBeChecked) {
+  const termsCheckbox = await driver.findElement(By.xpath(newAccountPage.selectors.termsCheckbox));
+  await driver.wait(until.elementIsVisible(termsCheckbox), newAccountPage.timeout);
+
+  const isChecked = await termsCheckbox.isSelected();
+  if ((shouldBeChecked && !isChecked) || (!shouldBeChecked && isChecked)) {
+    await termsCheckbox.click();
+  }
+}
+
 beforeAll(async () => {
   const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
 
