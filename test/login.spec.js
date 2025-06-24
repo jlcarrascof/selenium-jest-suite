@@ -190,7 +190,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   });
 
-/*
   test('TC-012: Username field should display error message when is empty', async () => {
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
@@ -234,5 +233,4 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-*/
 });

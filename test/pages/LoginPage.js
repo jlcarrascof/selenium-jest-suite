@@ -1,6 +1,6 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const TAB_WAIT_TIME = 100; // wait time after each TAB key press
+const TAB_WAIT_TIME = 100;
 
 class LoginPage {
   constructor(driver, baseUrl, timeout) {
@@ -54,6 +54,7 @@ class LoginPage {
       until.elementLocated(By.css(this.selectors.submitButton)),
       this.timeout
     );
+
     await this.driver.wait(until.elementIsVisible(submitBtn), this.timeout);
     await this.driver.wait(until.elementIsEnabled(submitBtn), this.timeout);
     await submitBtn.click();
@@ -64,6 +65,7 @@ class LoginPage {
       until.elementLocated(By.css(this.selectors.modalMessage)),
       this.timeout
     );
+
     return await modalMsg.getText();
   }
 
@@ -71,54 +73,16 @@ class LoginPage {
     const submitBtn = await this.driver.findElement(
       By.css(this.selectors.submitButton)
     );
+
     return !(await submitBtn.isEnabled());
   }
 
-  /* Anterior
   async clickLink(selector) {
     const element = await this.driver.wait(
       until.elementLocated(By.css(selector)),
       this.timeout
     );
 
-    await this.driver.wait(until.elementIsVisible(element), this.timeout);
-    await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-
-    await element.click();
-     console.log(`Clicked on element with selector: ${selector}`);
-    // wait for the page to load
-    await this.driver.sleep(this.timeout);
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
-  }
- */
-
-  /* Previa 23-06-2025 */
-  /*
-  async clickLink(selector) {
-    const element = await this.driver.wait(
-      until.elementLocated(By.css(selector)),
-      this.timeout
-    );
-
-    await this.driver.wait(until.elementIsVisible(element), this.timeout);
-    await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-
-    await element.click();
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
-  }
-*/
-
-  async clickLink(selector) {
-    const element = await this.driver.wait(
-      until.elementLocated(By.css(selector)),
-      this.timeout
-    );
     await this.driver.wait(until.elementIsVisible(element), this.timeout);
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
@@ -126,17 +90,19 @@ class LoginPage {
 
   async canNavigateWithTabsInOrder(controls) {
     const { By, Key, until } = require('selenium-webdriver');
+
     await this.driver.executeScript('document.body.focus();');
+
     let sentTabs = 0;
     let allPassed = true;
 
     for (const { selector, name, tabCount, isXPath = false } of controls) {
       try {
-        // wait for the element to be located and visible
         const locator = isXPath ? By.xpath(selector) : By.css(selector);
         const expectedElement = await this.driver.wait(
           until.elementLocated(locator),
           this.timeout,
+
           `Element "${name}" not found with selector: ${selector}`
         );
         await this.driver.wait(
@@ -145,7 +111,6 @@ class LoginPage {
           `Element "${name}" not visible with selector: ${selector}`
         );
 
-        // send TABs to reach the expected element
         const tabsToSend = tabCount - sentTabs;
         sentTabs = tabCount;
 
@@ -154,7 +119,6 @@ class LoginPage {
           await this.driver.sleep(TAB_WAIT_TIME);
         }
 
-        // verify if the expected element is focused
         const activeElement = await this.driver.switchTo().activeElement();
         const isFocused = await this.driver.executeScript(
           'return arguments[0] === document.activeElement;',
@@ -181,6 +145,7 @@ class LoginPage {
 
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
     const { By, Key, until } = require('selenium-webdriver');
+
     try {
       const locator = isXPath ? By.xpath(selector) : By.css(selector);
       const element = await this.driver.wait(
