@@ -2,13 +2,15 @@ const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
 
-const BASE_URL = 'https://qa.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
+const TIMEOUT = 120000;
+const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
 const GROUPS_URL = 'https://qa.harmonychurchsuite.com/tenant/groups/index';
 const EXPECTED_URL = 'https://qa.harmonychurchsuite.com/404';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
 const INVALID_USERNAME = 'invalidUser';
 const INVALID_PASSWORD = 'invalidPass';
+const CURRENT_BROWSER = 'chrome';
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 
 let driver;
@@ -16,12 +18,10 @@ let loginPage;
 let profilePage;
 
 beforeAll(async () => {
-  const driverFactory = new DriverFactory(global.testConfig.cureentBrower, global.testConfig.timeout);
-
+  const driverFactory = new DriverFactory(CURRENT_BROWSER, TIMEOUT);
   driver = await driverFactory.initDriver();
-  
-  loginPage = PageFactory.createPage('login', driver, global.testConfig.baseUrl, global.testConfig.timeout);
-  profilePage = PageFactory.createPage('profile', driver, global.testConfig.baseUrl, global.testConfig.timeout);
+  loginPage = PageFactory.createPage('login', driver, BASE_URL, TIMEOUT);
+  profilePage = PageFactory.createPage('profile', driver, BASE_URL, TIMEOUT);
 });
 
 afterAll(async () => {
@@ -32,20 +32,29 @@ afterAll(async () => {
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test('TC-001: Valid credentials should login successfully', async () => {
-    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
 
     const dashboardElement = await driver.wait(
       until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)),
       TIMEOUT
     );
+
     const actualResult = await dashboardElement.getText();
     const expectedResult = /dashboard/i;
 
     expect(actualResult).toMatch(expectedResult);
-  });
+
+  }, 8000);
 
   test('TC-002: Invalid username should deny access', async () => {
-    await loginPage.login(INVALID_USERNAME, VALID_PASSWORD);
+    await loginPage.open();
+    await loginPage.enterUsername(INVALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
 
     const modalText = await loginPage.getModalMessageText();
     const expectedText = 'Invalid credentials.';
@@ -54,7 +63,10 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-003: Invalid password should deny access', async () => {
-    await loginPage.login(VALID_USERNAME, INVALID_PASSWORD);
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(INVALID_PASSWORD);
+    await loginPage.clickSubmit();
 
     const modalText = await loginPage.getModalMessageText();
     const expectedText = 'Invalid credentials.';
@@ -63,8 +75,11 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-004: User profile icon should open menu', async () => {
-    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
-
+    // Login first
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
     // Click on user profile icon to open menu
@@ -76,12 +91,13 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-005: Logout should terminate session successfully', async () => {
-    // Login first
-    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
 
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
-    // Open profile menu and logout
     await profilePage.clickProfileIcon();
     await profilePage.isLogoutButtonVisible();
     const actualUrl = await profilePage.clickLogoutAndGetUrl();
@@ -91,7 +107,10 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-006: Click on Apps button should open menu', async () => {
-    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
 
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
@@ -103,8 +122,10 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-007: Click on Groups should redirect to correct URL', async () => {
-    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
-
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
     await profilePage.clickAppsButton();
     await profilePage.isGroupsOptionVisible();
@@ -115,8 +136,10 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-008: Click on My Profile should redirect to expected URL', async () => {
-    await loginPage.login(VALID_USERNAME, VALID_PASSWORD);
-
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.clickSubmit();
     await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
 
     await profilePage.clickProfileIcon();
