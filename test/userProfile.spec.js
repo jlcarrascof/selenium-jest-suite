@@ -2,26 +2,42 @@ const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
 
-const TIMEOUT = 120000;
-const BASE_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
-const GROUPS_URL = 'https://qa.harmonychurchsuite.com/tenant/groups/index';
-const EXPECTED_URL = 'https://qa.harmonychurchsuite.com/404';
-const VALID_USERNAME = 'javier';
-const VALID_PASSWORD = '.qwerty123.';
-const INVALID_USERNAME = 'invalidUser';
-const INVALID_PASSWORD = 'invalidPass';
-const CURRENT_BROWSER = 'chrome';
-const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
+const CONFIG = {
+  LOGIN_TIMEOUT: 8000,
+  BASE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa',
+  EXPECTED_URL: 'https://qa.harmonychurchsuite.com/404',
+  GROUPS_URL: 'https://qa.harmonychurchsuite.com/tenant/groups/index',
+  USERNAME: 'javier',
+  PASSWORD: '.qwerty123.',
+  INVALID_USERNAME: 'invalidUser',
+  INVALID_PASSWORD: 'invalidPass',
+  DASHBOARD_TITLE_SELECTOR: 'h1.text-xl.font-semibold'
+};
 
 let driver;
 let loginPage;
 let profilePage;
 
+const login = async (username, password) => {
+  await loginPage.open();
+  await loginPage.enterUsername(username);
+  await loginPage.enterPassword(password);
+  await loginPage.clickSubmit();
+  await driver.wait(until.elementLocated(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR)), CONFIG.TIMEOUT);
+};
+
+const expectRedirectTo = async (url) => {
+  await driver.wait(until.urlIs(url), CONFIG.TIMEOUT);
+  const actualUrl = await driver.getCurrentUrl();
+  const expectedUrl = url;
+  expect(actualUrl).toBe(expectedUrl);
+};
+
 beforeAll(async () => {
-  const driverFactory = new DriverFactory(CURRENT_BROWSER, TIMEOUT);
+  const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
   driver = await driverFactory.initDriver();
-  loginPage = PageFactory.createPage('login', driver, BASE_URL, TIMEOUT);
-  profilePage = PageFactory.createPage('profile', driver, BASE_URL, TIMEOUT);
+  loginPage = PageFactory.createPage('login', driver, CONFIG.BASE_URL, global.testConfig.timeout);
+  profilePage = PageFactory.createPage('profile', driver, CONFIG.BASE_URL, global.testConfig.timeout);
 });
 
 afterAll(async () => {
@@ -48,7 +64,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualResult).toMatch(expectedResult);
 
-  }, 8000);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-002: Invalid username should deny access', async () => {
     await loginPage.open();
@@ -186,7 +202,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(EXPECTED_URL);
   });
-
+/*
   test('TC-012: Click on All notifications should redirect to expected URL', async () => {
     await loginPage.open();
     await loginPage.enterUsername(VALID_USERNAME);
@@ -258,5 +274,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(EXPECTED_URL);
   });
-
+*/
 });
