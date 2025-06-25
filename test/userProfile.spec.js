@@ -134,112 +134,72 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-009: Click on Roles and Permissions should redirect to expected URL', async () => {
-
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickRolesPermissionsAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-010: Click on Users should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickUsersAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-011: Click on Event log should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     const actualUrl = await profilePage.clickEventLogAndGetUrl();
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
-/*
   test('TC-012: Click on All notifications should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickAllNotificationsAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-013: Click on Role notifications should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickRoleNotificationsAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-014: Click on User notifications should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickUserNotificationsAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-015: Click on Languages should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickLanguagesAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-016: Click on Reference data should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickReferenceDataAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-017: Click on Subscription data should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickSubscriptionAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
-*/
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 });
