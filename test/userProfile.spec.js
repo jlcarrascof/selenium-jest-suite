@@ -21,7 +21,8 @@ const CONFIG = {
   ROLE_NOTIFICATIONS_URL: 'https://qa.harmonychurchsuite.com/404',
   USER_NOTIFICATIONS_URL: 'https://qa.harmonychurchsuite.com/404',
   LANGUAGES_URL: 'https://qa.harmonychurchsuite.com/404',
-  REFERENCE_DATA_URL: 'https://qa.harmonychurchsuite.com/404'
+  REFERENCE_DATA_URL: 'https://qa.harmonychurchsuite.com/404',
+  SUBSCRIPTION_DATA_URL: 'https://qa.harmonychurchsuite.com/404',
 };
 
 let driver;
