@@ -68,7 +68,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
 
     expect(actualResult).toBe(expectedResult);
-  });
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-003: Invalid password should deny access', async () => {
     await loginPage.open();
@@ -80,7 +80,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
 
     expect(actualResult).toBe(expectedResult);
-  });
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-004: User profile icon should open menu', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
@@ -103,19 +103,13 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-006: Click on Apps button should open menu', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickAppsButton();
 
     const isMenuOpen = await profilePage.isGroupsOptionVisible();
 
     expect(isMenuOpen).toBe(true);
-  });
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-007: Click on Groups should redirect to correct URL', async () => {
     await loginPage.open();
