@@ -92,20 +92,15 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-005: Logout should terminate session successfully', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickProfileIcon();
     await profilePage.isLogoutButtonVisible();
+
     const actualUrl = await profilePage.clickLogoutAndGetUrl();
-    const expectedUrl = BASE_URL;
+    const expectedUrl = CONFIG.BASE_URL;
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-006: Click on Apps button should open menu', async () => {
     await loginPage.open();
