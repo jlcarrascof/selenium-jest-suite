@@ -11,7 +11,8 @@ const CONFIG = {
   PASSWORD: '.qwerty123.',
   INVALID_USERNAME: 'invalidUser',
   INVALID_PASSWORD: 'invalidPass',
-  DASHBOARD_TITLE_SELECTOR: 'h1.text-xl.font-semibold'
+  DASHBOARD_TITLE_SELECTOR: 'h1.text-xl.font-semibold',
+  INVALID_LOGIN_MESSAGE: 'Invalid credentials.',
 };
 
 let driver;
@@ -48,34 +49,25 @@ afterAll(async () => {
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test('TC-001: Valid credentials should login successfully', async () => {
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-
-    const dashboardElement = await driver.wait(
-      until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)),
-      TIMEOUT
-    );
-
+    const dashboardElement = await driver.findElement(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR));
     const actualResult = await dashboardElement.getText();
     const expectedResult = /dashboard/i;
 
     expect(actualResult).toMatch(expectedResult);
-
   }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-002: Invalid username should deny access', async () => {
     await loginPage.open();
-    await loginPage.enterUsername(INVALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.enterUsername(CONFIG.INVALID_USERNAME);
+    await loginPage.enterPassword(CONFIG.PASSWORD);
     await loginPage.clickSubmit();
 
-    const modalText = await loginPage.getModalMessageText();
-    const expectedText = 'Invalid credentials.';
+    const actualResult = await loginPage.getModalMessageText();
+    const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
 
-    expect(modalText).toBe(expectedText);
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-003: Invalid password should deny access', async () => {
