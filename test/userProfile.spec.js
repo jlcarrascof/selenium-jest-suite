@@ -83,20 +83,13 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   });
 
   test('TC-004: User profile icon should open menu', async () => {
-    // Login first
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-
-    // Click on user profile icon to open menu
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickProfileIcon();
 
-    // Verify menu is open by checking the visibility of "Log out" button
-    await profilePage.isLogoutButtonVisible();
+    const isVisible = await profilePage.isLogoutButtonVisible();
 
-  });
+    expect(Boolean(isVisible)).toBe(true);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-005: Logout should terminate session successfully', async () => {
     await loginPage.open();
