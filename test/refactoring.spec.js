@@ -46,8 +46,10 @@ const waitForElement = async (by, selector, timeout = newAccountPage.timeout) =>
   return element;
 };
 
-const validateError = async (selector, error, isXPath = false) => {
-  return await newAccountPage.verifyBlurValidation(selector, error, isXPath);
+const validateError = async (selector, errorMessage, isXPath = false) => {
+  const actualResult = await newAccountPage.verifyBlurValidation(selector, errorMessage, isXPath);
+  const expectedResult = true;
+  expect(actualResult).toBe(expectedResult);
 };
 
 beforeAll(async () => {
@@ -69,7 +71,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   test('TC-001: Terms and Conditions checkbox should display error message when unchecked', async () => {
     const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
     await checkbox.click();
-    expect(await validateError(newAccountPage.selectors.termsCheckbox, ERROR_MESSAGES.terms, true)).toBe(true);
+    await validateError(newAccountPage.selectors.termsCheckbox, ERROR_MESSAGES.terms, true);
   });
 
   test('TC-002: All fields should display error messages when are empty', async () => {
@@ -81,11 +83,11 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
       ['passwordInput', ERROR_MESSAGES.password],
     ];
 
-    for (const [selectorKey, error] of requiredFields) {
+    for (const [selectorKey, errorMessage] of requiredFields) {
       const selector = newAccountPage.selectors[selectorKey];
       await driver.findElement(By.css(selector)).click();
       await driver.actions().sendKeys(Key.TAB).perform();
-      expect(await validateError(selector, error)).toBe(true);
+      await validateError(selector, errorMessage);
     }
   });
 
@@ -94,7 +96,9 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     if (await checkbox.isSelected()) await checkbox.click();
 
     const createButton = await waitForElement(By.css, newAccountPage.selectors.createButton);
-    expect(await createButton.getAttribute('disabled')).not.toBeNull();
+    const actualResult = await createButton.getAttribute('disabled') !== null;
+    const expectedResult = true;
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-004: Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked', async () => {
@@ -111,7 +115,9 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     if (!(await checkbox.isSelected())) await checkbox.click();
 
     const createButton = await waitForElement(By.css, newAccountPage.selectors.createButton);
-    expect(await createButton.getAttribute('disabled')).toBeNull();
+    const actualResult = await createButton.getAttribute('disabled') == null;
+    const expectedResult = true;
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-005: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
@@ -128,40 +134,48 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     if (await checkbox.isSelected()) await checkbox.click();
 
     const createButton = await waitForElement(By.css, newAccountPage.selectors.createButton);
-    expect(await createButton.getAttribute('disabled')).not.toBeNull();
+    const actualResult = await createButton.getAttribute('disabled') !== null;
+    const expectedResult = true;
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-006: Password field should display error message when using only numbers', async () => {
-    expect(await newAccountPage.isValidPassword('12345678', ERROR_MESSAGES.password)).toBe(true);
+    const actualResult = await newAccountPage.isValidPassword('12345678', ERROR_MESSAGES.password);
+    const expectedResult = true;
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-007: Password field should display error message when using only letters', async () => {
-    expect(await newAccountPage.isValidPassword('abcdefgh', ERROR_MESSAGES.password)).toBe(true);
+    const actualResult = await newAccountPage.isValidPassword('abcdefgh', ERROR_MESSAGES.password);
+    const expectedResult = true;
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-008: Password field should display error message when using numbers and characters with length less than 8', async () => {
-    expect(await newAccountPage.isValidPassword('ab1@', ERROR_MESSAGES.password)).toBe(true);
+    const actualResult = await newAccountPage.isValidPassword('ab1@', ERROR_MESSAGES.password);
+    const expectedResult = true;
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-009: Confirm Password field should display error message when we type a different Password', async () => {
     await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(VALID_DATA.password);
     await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(VALID_DATA.differentPassword);
     await driver.actions().sendKeys(Key.TAB).perform();
-    expect(await validateError(newAccountPage.selectors.confirmPasswordInput, ERROR_MESSAGES.confirmPassword)).toBe(true);
+    await validateError(newAccountPage.selectors.confirmPasswordInput, ERROR_MESSAGES.confirmPassword);
   });
 
   test('TC-010: Email field should display error message when using an invalid email format', async () => {
     const emailField = await waitForElement(By.css, newAccountPage.selectors.emailInput);
     await emailField.sendKeys('test@');
     await driver.actions().sendKeys(Key.TAB).perform();
-    expect(await validateError(newAccountPage.selectors.emailInput, ERROR_MESSAGES.invalidEmail)).toBe(true);
+    await validateError(newAccountPage.selectors.emailInput, ERROR_MESSAGES.invalidEmail);
   });
 
   test('TC-011: Email field should not display error message when using a valid email format', async () => {
     const emailField = await waitForElement(By.css, newAccountPage.selectors.emailInput);
     await emailField.sendKeys(VALID_DATA.email);
     await driver.actions().sendKeys(Key.TAB).perform();
-    expect(await validateError(newAccountPage.selectors.usernameInput, ERROR_MESSAGES.username)).toBe(true);
+    await validateError(newAccountPage.selectors.usernameInput, ERROR_MESSAGES.username);
   });
 
   test('TC-012: Clicking Login link should redirect to login page', async () => {
@@ -172,7 +186,8 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     await loginLink.click();
     await driver.wait(until.urlIs(EXPECTED_URL), TIMEOUTS.redirection);
 
-    const currentUrl = await driver.getCurrentUrl();
-    expect(currentUrl).toBe(EXPECTED_URL);
+    const actualResult = await driver.getCurrentUrl();
+    const expectedResult = EXPECTED_URL;
+    expect(actualResult).toBe(expectedResult);
   });
 });
