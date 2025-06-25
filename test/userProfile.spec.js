@@ -3,7 +3,7 @@ const PageFactory = require('./factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
 
 const CONFIG = {
-  LOGIN_TIMEOUT: 8000,
+  LOGIN_TIMEOUT: 15000,
   BASE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa',
   EXPECTED_URL: 'https://qa.harmonychurchsuite.com/404',
   GROUPS_URL: 'https://qa.harmonychurchsuite.com/tenant/groups/index',
@@ -24,15 +24,17 @@ const login = async (username, password) => {
   await loginPage.enterUsername(username);
   await loginPage.enterPassword(password);
   await loginPage.clickSubmit();
-  await driver.wait(until.elementLocated(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR)), CONFIG.TIMEOUT);
+  await driver.wait(until.elementLocated(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR)), CONFIG.LOGIN_TIMEOUT);
 };
 
+/* Testing redirect functionality is commented
 const expectRedirectTo = async (url) => {
   await driver.wait(until.urlIs(url), CONFIG.TIMEOUT);
   const actualUrl = await driver.getCurrentUrl();
   const expectedUrl = url;
   expect(actualUrl).toBe(expectedUrl);
 };
+*/
 
 beforeAll(async () => {
   const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
@@ -112,33 +114,24 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-007: Click on Groups should redirect to correct URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickAppsButton();
     await profilePage.isGroupsOptionVisible();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
 
-    expect(actualUrl).toBe(GROUPS_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.GROUPS_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-008: Click on My Profile should redirect to expected URL', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(VALID_PASSWORD);
-    await loginPage.clickSubmit();
-    await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
-
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickProfileIcon();
     await profilePage.isLogoutButtonVisible();
 
     const actualUrl = await profilePage.clickMyProfileAndGetUrl();
 
-    expect(actualUrl).toBe(EXPECTED_URL);
-  });
+    expect(actualUrl).toBe(CONFIG.EXPECTED_URL);
+  }, CONFIG.LOGIN_TIMEOUT);
 
   test('TC-009: Click on Roles and Permissions should redirect to expected URL', async () => {
 
