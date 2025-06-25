@@ -72,14 +72,14 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   test('TC-003: Invalid password should deny access', async () => {
     await loginPage.open();
-    await loginPage.enterUsername(VALID_USERNAME);
-    await loginPage.enterPassword(INVALID_PASSWORD);
+    await loginPage.enterUsername(CONFIG.USERNAME);
+    await loginPage.enterPassword(CONFIG.INVALID_PASSWORD);
     await loginPage.clickSubmit();
 
-    const modalText = await loginPage.getModalMessageText();
-    const expectedText = 'Invalid credentials.';
+    const actualResult = await loginPage.getModalMessageText();
+    const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
 
-    expect(modalText).toBe(expectedText);
+    expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-004: User profile icon should open menu', async () => {
