@@ -2,16 +2,52 @@ const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
 
-const VALID_NAME = 'Javier';
-const VALID_SURNAME = 'Martinez';
-const VALID_EMAIL = 'javier.martinez@example.com';
-const VALID_USERNAME = 'javiermartinez';
-const VALID_PASSWORD = 'Password123!';
-const DIFFERENT_PASSWORD = 'Password123*';
-const PASSWORD_ERROR_MESSAGE = 'Password must be at least 8 characters';
+const VALID_DATA = {
+  name: 'Javier',
+  surname: 'Martinez',
+  email: 'javier.martinez@example.com',
+  username: 'javiermartinez',
+  password: 'Password123!',
+  confirmPassword: 'Password123!',
+  differentPassword: 'Password123*'
+};
+
+const ERROR_MESSAGES = {
+  name: 'Name is required',
+  surname: 'Surname is required',
+  email: 'Please enter a valid email',
+  username: 'Username is required',
+  password: 'Password must be at least 8 characters',
+  terms: 'Terms and Conditions',
+  confirmPassword: 'Password must match',
+  invalidEmail: 'Please enter a valid email'
+};
+
+const TIMEOUTS = {
+  elementVisibility: 5000,
+  redirection: 1000
+};
 
 let driver;
 let newAccountPage;
+
+const fillFormFields = async (fields) => {
+  for (const [key, value] of Object.entries(fields)) {
+    const selector = newAccountPage.selectors[`${key}Input`];
+    await driver.findElement(By.css(selector)).sendKeys(value);
+  }
+};
+
+const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
+  const element = await driver.findElement(by(selector));
+  await driver.wait(until.elementIsVisible(element), timeout);
+  return element;
+};
+
+const validateError = async (selector, error, isXPath = false) => {
+  return await newAccountPage.verifyBlurValidation(selector, error, isXPath);
+};
+
 
 beforeAll(async () => {
   const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
