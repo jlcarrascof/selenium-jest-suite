@@ -80,6 +80,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       await loginPage.enterPassword(password);
 
       const actualResult = await loginPage.isSubmitButtonDisabled();
+
       expect(actualResult).toBe(true);
     });
   });
