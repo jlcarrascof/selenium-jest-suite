@@ -57,46 +57,43 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, TIMEOUT);
 
-/*
   test('TC-003: Click on Calendar should redirect to expected URL', async () => {
-    await loginAndGoToApps();
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickCalendarAndGetUrl();
     const expectedUrl = NOT_FOUND_URL;
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, TIMEOUT);
 
   test('TC-004: Click on Resources should redirect to expected URL', async () => {
-    await loginAndGoToApps();
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickResourcesAndGetUrl();
     const expectedUrl = NOT_FOUND_URL;
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, TIMEOUT);
 
   test('TC-005: Click on User profile icon should open menu', async () => {
-
-    await loginAndGoToApps();
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await groupsPage.clickProfileIcon();
-
-    expect(true).toBe(false);
-
-  });
+    await groupsPage.isLogoutButtonVisible();
+  }, TIMEOUT);
 
   test('TC-006: Click on My Profile should redirect to expected URL', async () => {
-    await loginAndGoToApps();
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickProfileIcon();
 
     const actualUrl = await profilePage.clickMyProfileAndGetUrl();
     const expectedUrl = NOT_FOUND_URL;
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, TIMEOUT);
 
+/*
   test('TC-007: Click on Log out should terminate session successfully', async () => {
     await loginAndGoToApps();
 
