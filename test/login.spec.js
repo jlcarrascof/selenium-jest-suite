@@ -21,7 +21,7 @@ beforeAll(async () => {
 
   landingPage = PageFactory.createPage('landing', driver, `${global.testConfig.baseUrl}`, global.testConfig.timeout);
   loginPage = PageFactory.createPage('login', driver, `${global.testConfig.baseLoginUrl}`, global.testConfig.timeout);
-  // newAccountPage = PageFactory.createPage('newAccount', driver, `${global.testConfig.baseNewAccountUrl}`, global.testConfig.timeout);
+
 });
 
 beforeEach(async () => {
@@ -80,6 +80,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       await loginPage.enterPassword(password);
 
       const actualResult = await loginPage.isSubmitButtonDisabled();
+
       expect(actualResult).toBe(true);
     });
   });
