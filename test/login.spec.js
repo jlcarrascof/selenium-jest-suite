@@ -214,7 +214,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
 
-    await passwordField.click(); // Click on the password field to trigger blur event
+    await passwordField.click();
 
     const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
     const expectedResult = true;
