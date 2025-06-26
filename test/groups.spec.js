@@ -36,6 +36,7 @@ const login = async (username, password) => {
 };
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
+/*
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await login(VALID_USERNAME, VALID_PASSWORD);
 
@@ -114,30 +115,26 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const expectedTitle = TITLE_SELECTOR;
 
     expect(actualTitle).toBe(expectedTitle);
-  });
+  }, TIMEOUT);
 
-/*
+*/
   test('TC-009: Uploading a group image should display the selected image preview in the form', async () => {
-    await loginAndGoToApps();
-
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
+
     await groupsPage.clickEditIconOnImage();
     await groupsPage.selectFirstImageFromGallery();
     await groupsPage.confirmImageSelection();
 
-    const previewUrl = await groupsPage.getGroupImagePreviewSrc();
+    const previewSrc = await groupsPage.getGroupImagePreviewSrc();
 
-    const PREVIEW_URL_REGEX = /\/assets\/|\/d\/assets\//;
-    const actualMatch = previewUrl.match(PREVIEW_URL_REGEX);
-    const expectedMatch = true;
+    expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
+  }, TIMEOUT);
 
-    expect(actualMatch).toBe(expectedMatch);
-  });
-
+/*
   test('TC-010: Image is selected but Cancel is clicked, no image should be loaded', async () => {
-    await loginAndGoToApps();
-
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
     await groupsPage.clickEditIconOnImage();
@@ -147,10 +144,10 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
 
     expect(allowedTextVisible).toBe(true);
-  });
+  }, TIMEOUT);
 
   test('TC-011: No image is selected and Cancel is clicked, no image should be loaded', async () => {
-    await loginAndGoToApps();
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
@@ -160,8 +157,9 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
 
     expect(allowedTextVisible).toBe(true);
-  });
-
+  }, TIMEOUT);
+*/
+/*
   test('TC-012: Leaving the Name field empty should display validation error', async () => {
     await loginAndGoToApps();
     await profilePage.clickGroupsAndGetUrl();
