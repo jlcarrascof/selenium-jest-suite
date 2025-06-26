@@ -2,7 +2,7 @@
   "name": "selenium-jest-suite",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest userProfile.spec.js",
+    "test": "jest groups.spec.js",
     "test:e2e": "jest --config=jest.config.js --runInBand"
   },
   "dependencies": {

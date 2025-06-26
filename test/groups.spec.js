@@ -14,7 +14,7 @@ let driver;
 let loginPage, profilePage, groupsPage;
 
 beforeAll(async () => {
-  const driverFactory = new DriverFactory(global.testConfig.cureentBrower, global.testConfig.timeout);
+  const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
 
   driver = await driverFactory.initDriver();
 
@@ -41,9 +41,9 @@ const loginAndGoToApps = async () => {
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await loginAndGoToApps();
-    
-    const GROUPS_URL = `{global.testData.baseUrl}`/tenant/groups/index; 
-   
+
+    const GROUPS_URL = `{global.testData.baseUrl}`/tenant/groups/index;
+
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
     const expectedUrl = GROUPS_URL;
 
@@ -85,7 +85,6 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await loginAndGoToApps();
     await groupsPage.clickProfileIcon();
 
-    // Finish this test by checking if the profile icon menu is visible
     expect(true).toBe(false);
 
   });
