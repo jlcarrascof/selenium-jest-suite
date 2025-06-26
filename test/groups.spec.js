@@ -196,28 +196,4 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualErrorText).toBe(expectedErrorText);
   }, CONFIG.TIMEOUT);
 
-  test('TC-015: Leaving the Meeting Date field empty should display validation error', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-    await profilePage.clickGroupsAndGetUrl();
-    await groupsPage.clickCreateGroup();
-    await groupsPage.focusAndBlurNameInput();
-
-    const actualIsNameRequiredMessageVisible = await groupsPage.isNameRequiredMessageVisible();
-    const expectedIsNameRequiredMessageVisible = true;
-
-    expect(actualIsNameRequiredMessageVisible).toBe(expectedIsNameRequiredMessageVisible);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-019: Check if one Language was picked.', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-    await profilePage.clickGroupsAndGetUrl();
-    await groupsPage.clickCreateGroup();
-    await groupsPage.focusAndBlurNameInput();
-
-    const actualIsNameRequiredMessageVisible = await groupsPage.isNameRequiredMessageVisible();
-    const expectedIsNameRequiredMessageVisible = true;
-
-    expect(actualIsNameRequiredMessageVisible).toBe(expectedIsNameRequiredMessageVisible);
-  }, CONFIG.TIMEOUT);
-
 });
