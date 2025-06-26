@@ -5,7 +5,7 @@ const { By, until, Key } = require('selenium-webdriver');
 const NOT_FOUND_URL = 'https://qa.harmonychurchsuite.com/404';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
-const TIMEOUT = 10000;
+const TIMEOUT = 30000;
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
 const BASE_URL ='https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
 
@@ -36,7 +36,6 @@ const login = async (username, password) => {
 };
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
-/*
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await login(VALID_USERNAME, VALID_PASSWORD);
 
@@ -117,7 +116,6 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualTitle).toBe(expectedTitle);
   }, TIMEOUT);
 
-*/
   test('TC-009: Uploading a group image should display the selected image preview in the form', async () => {
     await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
