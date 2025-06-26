@@ -93,18 +93,16 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, TIMEOUT);
 
-/*
   test('TC-007: Click on Log out should terminate session successfully', async () => {
-    await loginAndGoToApps();
-
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickProfileIcon();
 
     const actualUrl = await groupsPage.clickLogoutAndGetUrl();
     const expectedUrl = BASE_URL;
 
     expect(actualUrl).toBe(expectedUrl);
-  });
-
+  }, TIMEOUT);
+/*
   test('TC-008: Clicking on Create Group should display the group creation form', async () => {
     const TITLE_SELECTOR = 'Create Group';
     await loginAndGoToApps();
