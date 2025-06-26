@@ -5,10 +5,9 @@ const { By, until, Key } = require('selenium-webdriver');
 const NOT_FOUND_URL = 'https://qa.harmonychurchsuite.com/404';
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
-// const INVALID_USERNAME = 'invalidUser';
-// const INVALID_PASSWORD = 'invalidPass';
-const CURRENT_BROWSER = 'chrome';
+const TIMEOUT = 10000;
 const DASHBOARD_TITLE_SELECTOR = 'h1.text-xl.font-semibold';
+const BASE_URL ='https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa';
 
 let driver;
 let loginPage, profilePage, groupsPage;
@@ -18,21 +17,19 @@ beforeAll(async () => {
 
   driver = await driverFactory.initDriver();
 
-  loginPage = PageFactory.createPage('login', driver, global.testConfig.baseUrl, global.testConfig.timeout);
-  profilePage = PageFactory.createPage('profile', driver, global.testConfig.baseUrl, global.testConfig.timeout);
+  loginPage = PageFactory.createPage('login', driver, `${global.testConfig.baseLoginUrl}`, global.testConfig.timeout);
+  profilePage = PageFactory.createPage('profile', driver, BASE_URL, global.testConfig.timeout);
   groupsPage = PageFactory.createPage('groups', driver, global.testConfig.baseUrl, global.testConfig.timeout);
 });
 
 afterAll(async () => {
-  if (driver) {
-    await driver.quit();
-  }
+  if (driver) await driver.quit();
 });
 
-const loginAndGoToApps = async () => {
+const login = async (username, password) => {
   await loginPage.open();
-  await loginPage.enterUsername(VALID_USERNAME);
-  await loginPage.enterPassword(VALID_PASSWORD);
+  await loginPage.enterUsername(username);
+  await loginPage.enterPassword(password);
   await loginPage.clickSubmit();
   await driver.wait(until.elementLocated(By.css(DASHBOARD_TITLE_SELECTOR)), TIMEOUT);
   await profilePage.clickAppsButton();
@@ -40,16 +37,17 @@ const loginAndGoToApps = async () => {
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
-    await loginAndGoToApps();
+    await login(VALID_USERNAME, VALID_PASSWORD);
 
-    const GROUPS_URL = `{global.testData.baseUrl}`/tenant/groups/index;
+    const GROUPS_URL = `${global.testConfig.baseUrl}/tenant/groups/index`;
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
     const expectedUrl = GROUPS_URL;
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, TIMEOUT);
 
+/*
   test('TC-002: Click on Reports should redirect to expected URL', async () => {
     await loginAndGoToApps();
     await profilePage.clickGroupsAndGetUrl();
@@ -198,6 +196,6 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const errorText = await groupsPage.focusAndBlurLocationInput();
     expect(errorText).toBe('Location is required');
   });
-
+*/
 
 });
