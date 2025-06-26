@@ -132,7 +132,6 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
   }, TIMEOUT);
 
-/*
   test('TC-010: Image is selected but Cancel is clicked, no image should be loaded', async () => {
     await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
@@ -146,6 +145,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(allowedTextVisible).toBe(true);
   }, TIMEOUT);
 
+/*
   test('TC-011: No image is selected and Cancel is clicked, no image should be loaded', async () => {
     await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
