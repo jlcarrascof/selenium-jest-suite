@@ -38,7 +38,6 @@ const login = async (username, password) => {
 };
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
-/*
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -128,9 +127,10 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await groupsPage.selectFirstImageFromGallery();
     await groupsPage.confirmImageSelection();
 
-    const previewSrc = await groupsPage.getGroupImagePreviewSrc();
+    const actualPreviewSrc = await groupsPage.getGroupImagePreviewSrc();
+    const expecterdPattern = /\/assets\/|\/d\/assets\//;
 
-    expect(previewSrc).toMatch(/\/assets\/|\/d\/assets\//);
+    expect(actualPreviewSrc).toMatch(expecterdPattern);
   }, CONFIG.TIMEOUT);
 
   test('TC-010: Image is selected but Cancel is clicked, no image should be loaded', async () => {
@@ -141,12 +141,12 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await groupsPage.selectFirstImageFromGallery();
     await groupsPage.cancelImageSelection();
 
-    const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
+    const actualIsImagePreviewEmpty = await groupsPage.isImagePreviewEmpty();
+    const expectedIsImagePreviewEmpty = true;
 
-    expect(allowedTextVisible).toBe(true);
+    expect(actualIsImagePreviewEmpty).toBe(expectedIsImagePreviewEmpty);
   }, CONFIG.TIMEOUT);
 
-*/
   test('TC-011: No image is selected and Cancel is clicked, no image should be loaded', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
@@ -155,9 +155,10 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await groupsPage.clickEditIconOnImage();
     await groupsPage.cancelImageSelection();
 
-    const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
+    const actualIsImagePreviewEmpty = await groupsPage.isImagePreviewEmpty();
+    const expectedIsImagePreviewEmpty = true;
 
-    expect(allowedTextVisible).toBe(true);
+    expect(actualIsImagePreviewEmpty).toBe(expectedIsImagePreviewEmpty);
   }, CONFIG.TIMEOUT);
 
   test('TC-012: Leaving the Name field empty should display validation error', async () => {
@@ -166,20 +167,22 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await groupsPage.clickCreateGroup();
     await groupsPage.focusAndBlurNameInput();
 
-    const visible = await groupsPage.isNameRequiredMessageVisible();
+    const actualIsNameRequiredMessageVisible = await groupsPage.isNameRequiredMessageVisible();
+    const expectedIsNameRequiredMessageVisible = true;
 
-    expect(visible).toBe(true);
+    expect(actualIsNameRequiredMessageVisible).toBe(expectedIsNameRequiredMessageVisible);
   }, CONFIG.TIMEOUT);
 
   test('TC-013: Leaving the Purpose field empty should display validation error', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
-
     await groupsPage.focusAndBlurPurposeInput();
-    const visible = await groupsPage.isPurposeRequiredMessageVisible();
 
-    expect(visible).toBe(true);
+    const actualIsPurposeRequiredMessageVisible = await groupsPage.isPurposeRequiredMessageVisible();
+    const expectedIsPurposeRequiredMessageVisible = true;
+
+    expect(actualIsPurposeRequiredMessageVisible).toBe(expectedIsPurposeRequiredMessageVisible);
   }, CONFIG.TIMEOUT);
 
   test('TC-014: Leaving the Location field empty should display validation error', async () => {
@@ -187,8 +190,10 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
-    const errorText = await groupsPage.focusAndBlurLocationInput();
-    expect(errorText).toBe('Location is required');
+    const actualErrorText = await groupsPage.focusAndBlurLocationInput();
+    const expectedErrorText = 'Location is required';
+
+    expect(actualErrorText).toBe(expectedErrorText);
   }, CONFIG.TIMEOUT);
 
 });
