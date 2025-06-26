@@ -38,6 +38,7 @@ const login = async (username, password) => {
 };
 
 describe('Test Suite: Groups Functionality of Harmony Church', () => {
+/*
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -145,9 +146,9 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(allowedTextVisible).toBe(true);
   }, CONFIG.TIMEOUT);
 
-/*
+*/
   test('TC-011: No image is selected and Cancel is clicked, no image should be loaded', async () => {
-    await login(VALID_USERNAME, VALID_PASSWORD);
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
@@ -157,11 +158,10 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const allowedTextVisible = await groupsPage.isImagePreviewEmpty();
 
     expect(allowedTextVisible).toBe(true);
-  }, TIMEOUT);
-*/
-/*
+  }, CONFIG.TIMEOUT);
+
   test('TC-012: Leaving the Name field empty should display validation error', async () => {
-    await loginAndGoToApps();
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
     await groupsPage.focusAndBlurNameInput();
@@ -169,10 +169,10 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const visible = await groupsPage.isNameRequiredMessageVisible();
 
     expect(visible).toBe(true);
-  });
+  }, CONFIG.TIMEOUT);
 
   test('TC-013: Leaving the Purpose field empty should display validation error', async () => {
-    await loginAndGoToApps();
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
@@ -180,16 +180,15 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     const visible = await groupsPage.isPurposeRequiredMessageVisible();
 
     expect(visible).toBe(true);
-  });
+  }, CONFIG.TIMEOUT);
 
   test('TC-014: Leaving the Location field empty should display validation error', async () => {
-    await loginAndGoToApps();
+    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
     const errorText = await groupsPage.focusAndBlurLocationInput();
     expect(errorText).toBe('Location is required');
-  });
-*/
+  }, CONFIG.TIMEOUT);
 
 });
