@@ -47,17 +47,17 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, TIMEOUT);
 
-/*
   test('TC-002: Click on Reports should redirect to expected URL', async () => {
-    await loginAndGoToApps();
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
 
     const actualUrl = await groupsPage.clickReportsAndGetUrl();
     const expectedUrl = NOT_FOUND_URL;
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, TIMEOUT);
 
+/*
   test('TC-003: Click on Calendar should redirect to expected URL', async () => {
     await loginAndGoToApps();
     await profilePage.clickGroupsAndGetUrl();

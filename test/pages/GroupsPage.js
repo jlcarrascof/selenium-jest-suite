@@ -109,7 +109,7 @@ class GroupsPage {
   }
 
   async clickReportsAndGetUrl() {
-    return await this.clickElementAndGetUrl(this.selectors.reportsLink);
+    return await this.clickElementAndGetUrl('reportsLink');
   }
 
   async clickCalendarAndGetUrl() {
