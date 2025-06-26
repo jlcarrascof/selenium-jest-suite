@@ -102,11 +102,11 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, TIMEOUT);
-/*
+
   test('TC-008: Clicking on Create Group should display the group creation form', async () => {
     const TITLE_SELECTOR = 'Create Group';
-    await loginAndGoToApps();
 
+    await login(VALID_USERNAME, VALID_PASSWORD);
     await profilePage.clickGroupsAndGetUrl();
     await groupsPage.clickCreateGroup();
 
@@ -116,6 +116,7 @@ describe('Test Suite: Groups Functionality of Harmony Church', () => {
     expect(actualTitle).toBe(expectedTitle);
   });
 
+/*
   test('TC-009: Uploading a group image should display the selected image preview in the form', async () => {
     await loginAndGoToApps();
 
