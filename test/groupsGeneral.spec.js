@@ -31,22 +31,21 @@ describe('Groups - General Functionality', () => {
   }, CONFIG.TIMEOUT);
 
   test.each([
-    ['TC-002', 'Click on Reports', 'clickReportsAndGetUrl'],
-    ['TC-003', 'Click on Calendar', 'clickCalendarAndGetUrl'],
-    ['TC-004', 'Click on Resources', 'clickResourcesAndGetUrl'],
-    ['TC-006', 'Click on My Profile', 'clickMyProfileAndGetUrl', 'profilePage']
-    ])('%s: %s should redirect to expected URL', async (_tc, description, method, page = 'groupsPage') => {
+    ['TC-002', 'Click on Reports', 'reportsLink', 'groupsPage'],
+    ['TC-003', 'Click on Calendar', 'calendarLink', 'groupsPage'],
+    ['TC-004', 'Click on Resources', 'resourcesLink', 'groupsPage'],
+    ['TC-006', 'Click on My Profile', 'myProfileLink', 'profilePage']
+  ])('%s: %s should redirect to expected URL', async (_tc, desc, selectorKey, page) => {
     await login();
 
     if (page === 'groupsPage') {
-        await profilePage.clickGroupsAndGetUrl();
+      await profilePage.clickGroupsAndGetUrl();
     } else {
-        await profilePage.clickProfileIcon();
+      await profilePage.clickProfileIcon();
     }
 
-    const actualUrl = await (
-        page === 'groupsPage' ? groupsPage[method]() : profilePage[method]()
-    );
+    const targetPage = page === 'groupsPage' ? groupsPage : profilePage;
+    const actualUrl = await targetPage.clickElementAndGetUrl(selectorKey);
 
     expect(actualUrl).toBe(CONFIG.NOT_FOUND_URL);
   }, CONFIG.TIMEOUT);
@@ -64,7 +63,7 @@ describe('Groups - General Functionality', () => {
     await login();
     await profilePage.clickProfileIcon();
 
-    const actualUrl = await groupsPage.clickLogoutAndGetUrl();
+    const actualUrl = await groupsPage.clickLogoutAndGetUrl(CONFIG.BASE_URL);
 
     expect(actualUrl).toBe(CONFIG.BASE_URL);
   }, CONFIG.TIMEOUT);
