@@ -117,7 +117,6 @@ class GroupsPage {
     await this.driver.wait(until.elementIsVisible(logoutBtn), this.timeout);
     await logoutBtn.click();
 
-    // ✅ Espera explícita por URL exacta
     await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
 
     return await this.driver.getCurrentUrl();
