@@ -66,6 +66,7 @@ describe('Groups - Create Form Functionality', () => {
   test.each([
     ['TC-012', 'Name', 'focusAndBlurNameInput', 'isNameRequiredMessageVisible', true],
     ['TC-013', 'Purpose', 'focusAndBlurPurposeInput', 'isPurposeRequiredMessageVisible', true]
+    ['TC-015', 'Meeting Date', 'focusAndBlurMeetingDateInput', 'isMeetingDateRequiredMessageVisible', true]
   ])('%s: Leaving the %s field empty should display validation error', async (_tc, label, focusMethod, validateMethod, expected) => {
     await login();
     await profilePage.clickGroupsAndGetUrl();

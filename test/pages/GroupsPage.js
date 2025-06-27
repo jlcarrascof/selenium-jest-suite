@@ -221,6 +221,14 @@ class GroupsPage {
       return await error.isDisplayed();
     }
 
+    async isMeetingDateRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Meeting date info is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
     async focusAndBlurLocationInput() {
       const locationInput = await this.driver.wait(
         until.elementLocated(By.css('input[formcontrolname="location"]')),
@@ -262,5 +270,29 @@ class GroupsPage {
 
       return await this.driver.getCurrentUrl();
     }
+
+    async focusAndBlurMeetingDateInput() {
+      const meetingDateInput = await this.driver.wait(
+        until.elementLocated(By.css('input[formcontrolname="meeting_date"]')),
+        this.timeout
+      );
+
+      await this.driver.executeScript(
+        "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+        meetingDateInput
+      );
+
+      await meetingDateInput.sendKeys(Key.TAB);
+
+      const errorMessage = await this.driver.wait(
+        until.elementLocated(By.xpath("//p[contains(text(),'Meeting Date info is required')]")),
+        this.timeout
+      );
+
+      const text = await errorMessage.getText();
+      return text;
+    }
+
 }
+
 module.exports = GroupsPage;
