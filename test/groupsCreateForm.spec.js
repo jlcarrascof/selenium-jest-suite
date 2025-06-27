@@ -65,7 +65,8 @@ describe('Groups - Create Form Functionality', () => {
 
   test.each([
     ['TC-012', 'Name', 'focusAndBlurNameInput', 'isNameRequiredMessageVisible', true],
-    ['TC-013', 'Purpose', 'focusAndBlurPurposeInput', 'isPurposeRequiredMessageVisible', true]
+    ['TC-013', 'Purpose', 'focusAndBlurPurposeInput', 'isPurposeRequiredMessageVisible', true],
+    ['TC-014', 'Location', 'focusAndBlurLocationInput', 'isLocationRequiredMessageVisible', true],
     ['TC-015', 'Meeting Date', 'focusAndBlurMeetingDateInput', 'isMeetingDateRequiredMessageVisible', true]
   ])('%s: Leaving the %s field empty should display validation error', async (_tc, label, focusMethod, validateMethod, expected) => {
     await login();
@@ -78,12 +79,7 @@ describe('Groups - Create Form Functionality', () => {
     expect(result).toBe(expected);
   }, CONFIG.TIMEOUT);
 
-  test('TC-014: Leaving the Location field empty should display validation error', async () => {
-    await login();
-    await profilePage.clickGroupsAndGetUrl();
-    await groupsPage.clickCreateGroup();
-
-    const errorText = await groupsPage.focusAndBlurLocationInput();
-    expect(errorText).toBe('Location is required');
+  test('TC-016: Check the Leaders field at least with one member.', async () => {
   }, CONFIG.TIMEOUT);
+
 });

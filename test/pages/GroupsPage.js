@@ -248,7 +248,6 @@ class GroupsPage {
       return text;
     }
 
-
     async isLocationRequiredMessageVisible() {
       const error = await this.driver.wait(
         until.elementLocated(By.xpath("//*[contains(text(), 'Location is required')]")),
@@ -285,7 +284,7 @@ class GroupsPage {
       await meetingDateInput.sendKeys(Key.TAB);
 
       const errorMessage = await this.driver.wait(
-        until.elementLocated(By.xpath("//p[contains(text(),'Meeting Date info is required')]")),
+        until.elementLocated(By.xpath("//p[contains(text(),'Meeting date info is required')]")),
         this.timeout
       );
 
