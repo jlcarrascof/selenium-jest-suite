@@ -129,15 +129,9 @@ class LoginPage {
 
         if (!isFocused) {
           const activeElementHTML = await activeElement.getAttribute('outerHTML');
-          console.log(
-            `❌ Expected focus on "${name}" (selector: ${selector}) after ${tabCount} TABs, but focus is on: ${activeElementHTML}`
-          );
           allPassed = false;
-        } else {
-          console.log(`✔ Focus on "${name}" after ${tabCount} TABs`);
         }
       } catch (error) {
-        console.error(`Error to focus "${name}" with selector ${selector}:`, error.message);
         allPassed = false;
       }
     }
