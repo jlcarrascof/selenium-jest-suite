@@ -108,24 +108,19 @@ class GroupsPage {
     return url;
   }
 
-  async clickReportsAndGetUrl() {
-    return await this.clickElementAndGetUrl('reportsLink');
-  }
+  async clickLogoutAndGetUrl(expectedUrl) {
+    const logoutBtn = await this.driver.wait(
+      until.elementLocated(By.xpath(this.selectors.logoutButton)),
+      this.timeout
+    );
 
-  async clickCalendarAndGetUrl() {
-    return await this.clickElementAndGetUrl('calendarLink');
-  }
+    await this.driver.wait(until.elementIsVisible(logoutBtn), this.timeout);
+    await logoutBtn.click();
 
-  async clickResourcesAndGetUrl() {
-    return await this.clickElementAndGetUrl('resourcesLink');
-  }
+    // ✅ Espera explícita por URL exacta
+    await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
 
-  async clickMyProfileAndGetUrl() {
-    return await this.clickElementAndGetUrl('myProfileLink');
-  }
-
-  async clickLogoutAndGetUrl() {
-    return await this.clickElementAndGetUrl('logoutButton');
+    return await this.driver.getCurrentUrl();
   }
 
   async clickCreateGroup() {
@@ -255,6 +250,18 @@ class GroupsPage {
       return await error.isDisplayed();
     }
 
-}
+    async clickElementAndGetUrl(selectorKey) {
+      const selector = this.selectors[selectorKey];
+      const isXPath = selector.trim().startsWith('//') || selector.trim().startsWith('(');
 
+      const element = isXPath
+        ? await this.driver.findElement(By.xpath(selector))
+        : await this.driver.findElement(By.css(selector));
+
+      await element.click();
+      await this.driver.wait(until.urlContains('harmonychurchsuite.com'), this.timeout);
+
+      return await this.driver.getCurrentUrl();
+    }
+}
 module.exports = GroupsPage;
