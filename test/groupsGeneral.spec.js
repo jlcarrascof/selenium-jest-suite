@@ -24,10 +24,10 @@ describe('Groups - General Functionality', () => {
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await login();
 
-    const GROUPS_URL = `${global.testConfig.baseUrl}/tenant/groups/index`;
+    const expectedUrl = `${global.testConfig.baseUrl}/tenant/groups/index`;
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
 
-    expect(actualUrl).toBe(GROUPS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test.each([
@@ -46,17 +46,19 @@ describe('Groups - General Functionality', () => {
 
     const targetPage = page === 'groupsPage' ? groupsPage : profilePage;
     const actualUrl = await targetPage.clickElementAndGetUrl(selectorKey);
+    const expectedUrl = CONFIG.NOT_FOUND_URL;
 
-    expect(actualUrl).toBe(CONFIG.NOT_FOUND_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-005: Click on User profile icon should open menu', async () => {
     await login();
     await groupsPage.clickProfileIcon();
 
-    const isVisible = await groupsPage.isLogoutButtonVisible();
+    const actualResult = await groupsPage.isLogoutButtonVisible();
+    const expectedResult = true;
 
-    expect(Boolean(isVisible)).toBe(true);
+    expect(Boolean(actualResult)).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-007: Click on Log out should terminate session successfully', async () => {
@@ -64,7 +66,8 @@ describe('Groups - General Functionality', () => {
     await profilePage.clickProfileIcon();
 
     const actualUrl = await groupsPage.clickLogoutAndGetUrl(CONFIG.BASE_URL);
+    const expectedUrl = CONFIG.BASE_URL;
 
-    expect(actualUrl).toBe(CONFIG.BASE_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 });
