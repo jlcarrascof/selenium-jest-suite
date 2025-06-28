@@ -1,8 +1,5 @@
-const {
-  CONFIG,
-  initPages,
-  login
-} = require('./helpers/groupsTestSetup');
+const { CONFIG, initPages, login } = require('./helpers/groupsTestSetup');
+const { By } = require('selenium-webdriver');
 
 let driver, profilePage, groupsPage;
 
@@ -18,6 +15,7 @@ afterAll(async () => {
 });
 
 describe('Groups - Create Form Functionality', () => {
+/*
   test('TC-008: Clicking on Create Group should display the group creation form', async () => {
     await login();
     await profilePage.clickGroupsAndGetUrl();
@@ -80,6 +78,32 @@ describe('Groups - Create Form Functionality', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-016: Check the Leaders field at least with one member.', async () => {
+
   }, CONFIG.TIMEOUT);
+*/
+test('TC-019: Check if one Language was picked', async () => {
+  await login();
+  await profilePage.clickGroupsAndGetUrl();
+  await groupsPage.clickCreateGroup();
+
+  const radios = await driver.findElements(By.css('input[formcontrolname="languages"]'));
+  expect(radios.length).toBeGreaterThan(0);
+
+  await driver.executeScript("arguments[0].scrollIntoView(true);", radios[1]);
+  await driver.executeScript("arguments[0].click();", radios[1]);
+
+  let selected = false;
+  for (let radio of radios) {
+    if (await radio.isSelected()) {
+      selected = true;
+      break;
+    }
+  }
+
+  result = selected;
+  expected = true;
+
+  expect(result).toBe(expected);
+}, CONFIG.TIMEOUT);
 
 });

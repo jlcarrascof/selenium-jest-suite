@@ -20,6 +20,7 @@ class GroupsPage {
       resourcesLink: '//a[normalize-space()="Resources" and contains(@class, "flex") and contains(@href, "/resources")]',
       createGroupButton: 'button.bg-\\[\\#37b200\\].text-white.rounded-lg',
       groupFormTitle: '#modal-title',
+      languagesRadios: 'input[formcontrolname="languages"]',
     };
   }
 
