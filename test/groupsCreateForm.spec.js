@@ -81,29 +81,15 @@ describe('Groups - Create Form Functionality', () => {
 
   }, CONFIG.TIMEOUT);
 */
-test('TC-019: Check if one Language was picked', async () => {
-  await login();
-  await profilePage.clickGroupsAndGetUrl();
-  await groupsPage.clickCreateGroup();
+  test('TC-019: Check if one Language was picked', async () => {
+    await login();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
 
-  const radios = await driver.findElements(By.css('input[formcontrolname="languages"]'));
-  expect(radios.length).toBeGreaterThan(0);
+    await groupsPage.selectLanguageByIndex(1);
 
-  await driver.executeScript("arguments[0].scrollIntoView(true);", radios[1]);
-  await driver.executeScript("arguments[0].click();", radios[1]);
-
-  let selected = false;
-  for (let radio of radios) {
-    if (await radio.isSelected()) {
-      selected = true;
-      break;
-    }
-  }
-
-  result = selected;
-  expected = true;
-
-  expect(result).toBe(expected);
-}, CONFIG.TIMEOUT);
+    const result = await groupsPage.isAnyLanguageSelected();
+    expect(result).toBe(true);
+  }, CONFIG.TIMEOUT);
 
 });
