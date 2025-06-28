@@ -21,6 +21,7 @@ class GroupsPage {
       createGroupButton: 'button.bg-\\[\\#37b200\\].text-white.rounded-lg',
       groupFormTitle: '#modal-title',
       languagesRadios: 'input[formcontrolname="languages"]',
+      gendersRadios: 'input[formcontrolname="genders"]',
     };
   }
 
@@ -312,6 +313,27 @@ class GroupsPage {
 
     return false;
   }
+
+  async selectGenderByIndex(index = 0) {
+    const radios = await this.driver.findElements(By.css(this.selectors.gendersRadios));
+    if (radios.length === 0) {
+      throw new Error('No gender radio buttons found.');
+    }
+
+    await this.driver.executeScript("arguments[0].scrollIntoView(true);", radios[index]);
+    await this.driver.executeScript("arguments[0].click();", radios[index]);
+  }
+
+  async isAnyGenderSelected() {
+    const radios = await this.driver.findElements(By.css(this.selectors.gendersRadios));
+
+    for (let radio of radios) {
+      if (await radio.isSelected()) return true;
+    }
+
+    return false;
+  }
+
 
 }
 
