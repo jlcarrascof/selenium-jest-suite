@@ -293,6 +293,26 @@ class GroupsPage {
       return text;
     }
 
+  async selectLanguageByIndex(index = 0) {
+    const radios = await this.driver.findElements(By.css(this.selectors.languagesRadios));
+    if (radios.length === 0) {
+      throw new Error('No language radio buttons found.');
+    }
+
+    await this.driver.executeScript("arguments[0].scrollIntoView(true);", radios[index]);
+    await this.driver.executeScript("arguments[0].click();", radios[index]);
+  }
+
+  async isAnyLanguageSelected() {
+    const radios = await this.driver.findElements(By.css(this.selectors.languagesRadios));
+
+    for (let radio of radios) {
+      if (await radio.isSelected()) return true;
+    }
+
+    return false;
+  }
+
 }
 
 module.exports = GroupsPage;
