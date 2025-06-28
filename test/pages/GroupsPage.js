@@ -20,6 +20,8 @@ class GroupsPage {
       resourcesLink: '//a[normalize-space()="Resources" and contains(@class, "flex") and contains(@href, "/resources")]',
       createGroupButton: 'button.bg-\\[\\#37b200\\].text-white.rounded-lg',
       groupFormTitle: '#modal-title',
+      languagesRadios: 'input[formcontrolname="languages"]',
+      gendersRadios: 'input[formcontrolname="genders"]',
     };
   }
 
@@ -117,7 +119,6 @@ class GroupsPage {
     await this.driver.wait(until.elementIsVisible(logoutBtn), this.timeout);
     await logoutBtn.click();
 
-    // ✅ Espera explícita por URL exacta
     await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
 
     return await this.driver.getCurrentUrl();
@@ -222,6 +223,14 @@ class GroupsPage {
       return await error.isDisplayed();
     }
 
+    async isMeetingDateRequiredMessageVisible() {
+      const error = await this.driver.wait(
+        until.elementLocated(By.xpath("//*[contains(text(), 'Meeting date info is required')]")),
+        this.timeout
+      );
+      return await error.isDisplayed();
+    }
+
     async focusAndBlurLocationInput() {
       const locationInput = await this.driver.wait(
         until.elementLocated(By.css('input[formcontrolname="location"]')),
@@ -240,7 +249,6 @@ class GroupsPage {
       const text = await errorMessage.getText();
       return text;
     }
-
 
     async isLocationRequiredMessageVisible() {
       const error = await this.driver.wait(
@@ -263,5 +271,70 @@ class GroupsPage {
 
       return await this.driver.getCurrentUrl();
     }
+
+    async focusAndBlurMeetingDateInput() {
+      const meetingDateInput = await this.driver.wait(
+        until.elementLocated(By.css('input[formcontrolname="meeting_date"]')),
+        this.timeout
+      );
+
+      await this.driver.executeScript(
+        "arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});",
+        meetingDateInput
+      );
+
+      await meetingDateInput.sendKeys(Key.TAB);
+
+      const errorMessage = await this.driver.wait(
+        until.elementLocated(By.xpath("//p[contains(text(),'Meeting date info is required')]")),
+        this.timeout
+      );
+
+      const text = await errorMessage.getText();
+      return text;
+    }
+
+  async selectLanguageByIndex(index = 0) {
+    const radios = await this.driver.findElements(By.css(this.selectors.languagesRadios));
+    if (radios.length === 0) {
+      throw new Error('No language radio buttons found.');
+    }
+
+    await this.driver.executeScript("arguments[0].scrollIntoView(true);", radios[index]);
+    await this.driver.executeScript("arguments[0].click();", radios[index]);
+  }
+
+  async isAnyLanguageSelected() {
+    const radios = await this.driver.findElements(By.css(this.selectors.languagesRadios));
+
+    for (let radio of radios) {
+      if (await radio.isSelected()) return true;
+    }
+
+    return false;
+  }
+
+  async selectGenderByIndex(index = 0) {
+    const radios = await this.driver.findElements(By.css(this.selectors.gendersRadios));
+    if (radios.length === 0) {
+      throw new Error('No gender radio buttons found.');
+    }
+
+    await this.driver.executeScript("arguments[0].scrollIntoView(true);", radios[index]);
+    await this.driver.executeScript("arguments[0].click();", radios[index]);
+  }
+
+  async isAnyGenderSelected() {
+    const radios = await this.driver.findElements(By.css(this.selectors.gendersRadios));
+
+    for (let radio of radios) {
+      if (await radio.isSelected()) return true;
+    }
+
+    return false;
+  }
+
+
 }
+
 module.exports = GroupsPage;
