@@ -77,10 +77,19 @@ describe('Groups - Create Form Functionality', () => {
     expect(result).toBe(expected);
   }, CONFIG.TIMEOUT);
 
+  // Check this test after fixing the issue with the Leaders field
   test('TC-016: Check the Leaders field at least with one member.', async () => {
+    await login();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
 
+    await groupsPage.focusAndBlurLeadersInput();
+    const result = await groupsPage.isLeadersRequiredMessageVisible();
+
+    expect(result).toBe(true);
   }, CONFIG.TIMEOUT);
 */
+
   test('TC-019: Check if one Language was picked', async () => {
     await login();
     await profilePage.clickGroupsAndGetUrl();
@@ -89,7 +98,22 @@ describe('Groups - Create Form Functionality', () => {
     await groupsPage.selectLanguageByIndex(1);
 
     const result = await groupsPage.isAnyLanguageSelected();
-    expect(result).toBe(true);
+    const expected = true;
+
+    expect(result).toBe(expected);
+  }, CONFIG.TIMEOUT);
+
+  test('TC-020: Check if one Gender was picked', async () => {
+    await login();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+
+    await groupsPage.selectGenderByIndex(1);
+
+    const result = await groupsPage.isAnyGenderSelected();
+    const expected = true;
+
+    expect(result).toBe(expected);
   }, CONFIG.TIMEOUT);
 
 });
