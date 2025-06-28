@@ -15,7 +15,6 @@ afterAll(async () => {
 });
 
 describe('Groups - Create Form Functionality', () => {
-/*
   test('TC-008: Clicking on Create Group should display the group creation form', async () => {
     await login();
     await profilePage.clickGroupsAndGetUrl();
@@ -77,6 +76,7 @@ describe('Groups - Create Form Functionality', () => {
     expect(result).toBe(expected);
   }, CONFIG.TIMEOUT);
 
+/*
   // Check this test after fixing the issue with the Leaders field
   test('TC-016: Check the Leaders field at least with one member.', async () => {
     await login();
