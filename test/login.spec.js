@@ -6,7 +6,6 @@ const {
 } = require('./helpers/loginTestSetup');
 const { By, until } = require('selenium-webdriver');
 
-
 let driver;
 let loginPage;
 let landingPage;
@@ -28,7 +27,6 @@ beforeEach(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.open();
@@ -49,14 +47,14 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   describe.each`
     testCase    | username            | password            | description
-    ${'TC-002'} | ${VALID_USERNAME}   | ${INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
-    ${'TC-003'} | ${INVALID_USERNAME} | ${VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
-    ${'TC-004'} | ${INVALID_USERNAME} | ${INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
+    ${'TC-002'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
+    ${'TC-003'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
+    ${'TC-004'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
   `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
     test(`${description}`, async () => {
       await loginPage.enterUsername(username);
       await loginPage.enterPassword(password);
-      await loginPage.clickSubmit();
+      await loginPage.submit();
 
       const actualResult = await loginPage.getModalMessageText();
       const expectedResult = 'Invalid credentials.';
