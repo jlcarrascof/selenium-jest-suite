@@ -63,12 +63,11 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     });
   }, CONFIG.TIMEOUT);
 
-/*
   describe.each`
     testCase    | username          | password          | description
-    ${'TC-005'} | ${EMPTY_USERNAME} | ${VALID_PASSWORD} | ${'When username is empty'}
-    ${'TC-006'} | ${VALID_USERNAME} | ${EMPTY_PASSWORD} | ${'When password is empty'}
-    ${'TC-007'} | ${EMPTY_USERNAME} | ${EMPTY_PASSWORD} | ${'When username and password are empty'}
+    ${'TC-005'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
+    ${'TC-006'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
+    ${'TC-007'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
   `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
     test(`${description}`, async () => {
       await loginPage.enterUsername(username);
@@ -80,6 +79,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     });
   });
 
+/*
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     await loginPage.clickLink(loginPage.selectors.recoverPassword);
 
