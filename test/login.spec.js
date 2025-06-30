@@ -4,6 +4,8 @@ const {
   initPages,
   driver: getDriver
 } = require('./helpers/loginTestSetup');
+const { By, until } = require('selenium-webdriver');
+
 
 let driver;
 let loginPage;
@@ -25,12 +27,6 @@ beforeEach(async () => {
   await landingPage.clickLoginButton();
 });
 
-afterAll(async () => {
-  if (driver) {
-    await driver.quit();
-  }
-});
-
 describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   test('TC-001: Valid credentials should login successfully', async () => {
@@ -50,7 +46,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toMatch(expectedResult);
   });
-/*
+
   describe.each`
     testCase    | username            | password            | description
     ${'TC-002'} | ${VALID_USERNAME}   | ${INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
@@ -69,6 +65,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     });
   });
 
+/*
   describe.each`
     testCase    | username          | password          | description
     ${'TC-005'} | ${EMPTY_USERNAME} | ${VALID_PASSWORD} | ${'When username is empty'}

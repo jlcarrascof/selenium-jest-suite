@@ -1,5 +1,5 @@
-const DriverFactory = require('./factories/driverFactory');
-const PageFactory = require('./factories/pagesFactory');
+const DriverFactory = require('../factories/driverFactory');
+const PageFactory = require('../factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
 
 const CONFIG = {
@@ -24,4 +24,16 @@ const initPages = async () => {
   return { driver, loginPage, landingPage };
 };
 
-module.exports = { CONFIG, initPages, driver: getDriver };
+module.exports = {
+  CONFIG,
+  initPages,
+  get driver() {
+    return driver;
+  },
+  get loginPage() {
+    return loginPage;
+  },
+  get landingPage() {
+    return landingPage;
+  }
+};
