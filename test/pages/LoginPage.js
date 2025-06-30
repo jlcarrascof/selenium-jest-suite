@@ -26,13 +26,14 @@ class LoginPage {
     await this.driver.get(this.baseUrl);
   }
 
+  /*
   async login(username, password) {
     await loginPage.open();
     await loginPage.enterUsername(username);
     await loginPage.enterPassword(password);
     await loginPage.clickSubmit();
   }
-
+*/
   async enterUsername(username) {
     const usernameField = await this.driver.findElement(
       By.css(this.selectors.usernameInput)
