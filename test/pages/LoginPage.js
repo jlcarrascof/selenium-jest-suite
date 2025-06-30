@@ -33,16 +33,6 @@ class LoginPage {
   getSelectors() {
     return this.selectors;
   }
-  async clickSubmit() {
-    const submitBtn = await this.driver.wait(
-      until.elementLocated(By.css(this.selectors.submitButton)),
-      this.timeout
-    );
-
-    await this.driver.wait(until.elementIsVisible(submitBtn), this.timeout);
-    await this.driver.wait(until.elementIsEnabled(submitBtn), this.timeout);
-    await submitBtn.click();
-  }
 
   async getModalMessageText() {
     const modalMsg = await this.driver.wait(
