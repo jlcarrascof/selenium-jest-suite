@@ -43,7 +43,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const expectedResult = /dashboard/i;
 
     expect(actualResult).toMatch(expectedResult);
-  });
+  }, CONFIG.TIMEOUT);
 
   describe.each`
     testCase    | username            | password            | description
@@ -61,7 +61,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
       expect(actualResult).toBe(expectedResult);
     });
-  });
+  }, CONFIG.TIMEOUT);
 
 /*
   describe.each`

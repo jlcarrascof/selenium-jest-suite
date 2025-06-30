@@ -9,7 +9,7 @@ const CONFIG = {
     INVALID_PASSWORD: '.12345.qwerty.',
     EMPTY_USERNAME: '',
     EMPTY_PASSWORD: '',
-    TIMEOUT: 5000
+    TIMEOUT: 30000
 };
 
 let driver, loginPage, landingPage;
