@@ -1,6 +1,8 @@
 const DriverFactory = require('./factories/driverFactory');
 const PageFactory = require('./factories/pagesFactory');
 const { By, until, Key } = require('selenium-webdriver');
+const loginSelectors = require('./selectors/loginSelector');
+
 
 const VALID_USERNAME = 'javier';
 const VALID_PASSWORD = '.qwerty123.';
@@ -8,6 +10,7 @@ const INVALID_USERNAME = 'maria';
 const INVALID_PASSWORD = '.12345.qwerty.';
 const EMPTY_USERNAME = '';
 const EMPTY_PASSWORD = '';
+const TIMEOUT = 5000;
 
 let driver;
 let landingPage;
@@ -39,10 +42,10 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   test('TC-001: Valid credentials should login successfully', async () => {
 
-    await openUrl(driver, BASE_URL);
-    await enterUsername(driver, loginSelectors, VALID_USERNAME);
-    await enterPassword(driver, loginSelectors, VALID_PASSWORD);
-    await submitLogin(driver, loginSelectors, TIMEOUT);
+    await loginPage.open();
+    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterPassword(VALID_PASSWORD);
+    await loginPage.submit();
 
     const dashboardElement = await driver.wait(
       until.elementLocated(By.css(loginSelectors.dashboardTitle)),
