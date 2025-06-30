@@ -18,14 +18,6 @@ class LoginPage {
     await this.driver.get(this.baseUrl);
   }
 
-  /*
-  async login(username, password) {
-    await loginPage.open();
-    await loginPage.enterUsername(username);
-    await loginPage.enterPassword(password);
-    await loginPage.clickSubmit();
-  }
-*/
   async enterUsername(username) {
     await fillTextField(this.driver, this.selectors.usernameInput, username);
   }
