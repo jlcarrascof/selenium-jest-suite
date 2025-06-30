@@ -1,4 +1,8 @@
 // tests/pages/LoginPage.js
+const selectors = require("../selectors/loginSelector");
+const { fillTextField } = require("../lib/fieldActions");
+const { clickWhenReady } = require("../lib/formActions");
+
 const { By, until, Key } = require('selenium-webdriver');
 const TAB_WAIT_TIME = 100;
 
@@ -7,19 +11,7 @@ class LoginPage {
     this.driver = driver;
     this.baseUrl = baseUrl;
     this.timeout = timeout;
-
-    this.selectors = {
-      dashboardTitle: 'h1.text-xl.font-semibold',
-      contactUs: 'button.font-semibold.text-hprimary',
-      recoverPassword: 'form > div.flex.flex-row.gap-2.justify-between > a',
-      newAccount: "a[href*='user-signup']",
-      usernameInput: "input[placeholder='Enter your username']",
-      passwordInput: "input[placeholder='Enter your password']",
-      submitButton: "button[type='submit']",
-      modalMessage: 'div.mb-8.text-md > p',
-      usernameError: "//p[contains(normalize-space(.),'Username is required')]",
-      passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]",
-    };
+    this.selectors = selectors;
   }
 
   async open() {
@@ -35,23 +27,20 @@ class LoginPage {
   }
 */
   async enterUsername(username) {
-    const usernameField = await this.driver.findElement(
-      By.css(this.selectors.usernameInput)
-    );
-
-    await usernameField.clear();
-    await usernameField.sendKeys(username);
+    await fillTextField(this.driver, this.selectors.usernameInput, username);
   }
 
   async enterPassword(password) {
-    const passwordField = await this.driver.findElement(
-      By.css(this.selectors.passwordInput)
-    );
-
-    await passwordField.clear();
-    await passwordField.sendKeys(password);
+    await fillTextField(this.driver, this.selectors.passwordInput, password);
   }
 
+  async submit() {
+    await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
+  }
+
+  getSelectors() {
+    return this.selectors;
+  }
   async clickSubmit() {
     const submitBtn = await this.driver.wait(
       until.elementLocated(By.css(this.selectors.submitButton)),
