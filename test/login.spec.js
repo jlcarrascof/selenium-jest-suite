@@ -56,7 +56,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       await loginPage.enterPassword(password);
       await loginPage.submit();
 
-      const actualResult = await loginPage.getModalMessageText();
+      const actualResult = await loginPage.getModalText();
       const expectedResult = 'Invalid credentials.';
 
       expect(actualResult).toBe(expectedResult);

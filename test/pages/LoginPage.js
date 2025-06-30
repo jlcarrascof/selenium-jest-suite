@@ -2,6 +2,7 @@
 const selectors = require("../selectors/loginSelector");
 const { fillTextField } = require("../lib/fieldActions");
 const { clickWhenReady } = require("../lib/formActions");
+const { getModalText } = require("../lib/textModalActions");
 
 const { By, until, Key } = require('selenium-webdriver');
 const TAB_WAIT_TIME = 100;
@@ -30,18 +31,15 @@ class LoginPage {
     await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
   }
 
+  async getModalText() {
+    return await getModalText(this.driver, this.selectors.modalMessage, this.timeout);
+  }
+
   getSelectors() {
     return this.selectors;
   }
 
-  async getModalMessageText() {
-    const modalMsg = await this.driver.wait(
-      until.elementLocated(By.css(this.selectors.modalMessage)),
-      this.timeout
-    );
 
-    return await modalMsg.getText();
-  }
 
   async isSubmitButtonDisabled() {
     const submitBtn = await this.driver.findElement(
