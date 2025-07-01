@@ -47,8 +47,6 @@ class LoginPage {
    }
 
   async canNavigateWithTabsInOrder(controls) {
-    const { By, Key, until } = require('selenium-webdriver');
-
     await this.driver.executeScript('document.body.focus();');
 
     let sentTabs = 0;
