@@ -8,7 +8,6 @@ class DOMHandler {
   }
 
   // Form Interactions
-
   async fillTextField(selector, value) {
     const field = await this.driver.findElement(By.css(selector));
     await field.clear();
@@ -16,7 +15,6 @@ class DOMHandler {
   }
 
   // General Actions
-
   async clickWhenReady(selector) {
     const element = await this.driver.wait(
       until.elementLocated(By.css(selector)),
@@ -28,14 +26,12 @@ class DOMHandler {
   }
 
   // Button Interactions
-
   async isButtonDisabled(selector) {
     const button = await this.driver.findElement(By.css(selector));
     return !(await button.isEnabled());
   }
 
   // Modal / Alerts
-
   async getModalText(selector) {
     const modal = await this.driver.wait(
       until.elementLocated(By.css(selector)),
