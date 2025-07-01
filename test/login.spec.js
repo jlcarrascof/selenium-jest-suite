@@ -48,9 +48,9 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   describe.each`
     testCase    | username            | password            | description
-    ${'TC-002'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
-    ${'TC-003'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
-    ${'TC-004'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
+    ${'TC-008'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
+    ${'TC-009'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
+    ${'TC-010'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
   `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
     test(`${description}`, async () => {
       await loginPage.enterUsername(username);
@@ -66,9 +66,9 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   describe.each`
     testCase    | username          | password          | description
-    ${'TC-005'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
-    ${'TC-006'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
-    ${'TC-007'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
+    ${'TC-011'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
+    ${'TC-012'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
+    ${'TC-013'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
   `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
     test(`${description}`, async () => {
       await loginPage.enterUsername(username);
@@ -80,7 +80,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     }, CONFIG.TIMEOUT);
   });
 
-  test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
+  test('TC-002:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     await loginPage.openLink(loginPage.selectors.recoverPassword);
 
     const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
@@ -92,7 +92,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test('TC-009: Clicking New Account link should redirect to registration page', async () => {
+  test('TC-003: Clicking New Account link should redirect to registration page', async () => {
     await loginPage.openLink(loginPage.selectors.newAccount);
 
     const expectedUrl = global.testConfig.baseNewAccountUrl;
@@ -104,14 +104,14 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test('TC-010: Tab order should follow expected focus sequence', async () => {
+  test('TC-004: Tab order should follow expected focus sequence', async () => {
     const actualResult = await loginPage.canNavigateWithTabsInOrder(tabOrderControls);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-  test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+  test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
 
     TIMEOUT = 2000;
 
@@ -130,7 +130,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test('TC-012: Username field should display error message when is empty', async () => {
+  test('TC-006: Username field should display error message when is empty', async () => {
     const WARNING_MESSAGE = 'Username is required';
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
@@ -142,7 +142,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-  test('TC-013: Password field should display error message when is empty', async () => {
+  test('TC-007: Password field should display error message when is empty', async () => {
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
 
     await loginPage.enterUsername(CONFIG.VALID_USERNAME);
