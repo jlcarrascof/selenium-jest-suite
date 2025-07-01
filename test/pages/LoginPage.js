@@ -1,7 +1,7 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
 const { fillTextField } = require("../lib/fieldActions");
-const { clickButton, clickLink, isButtonDisabled, clickWhenReady } = require("../lib/formActions");
+const { isButtonDisabled, clickWhenReady } = require("../lib/formActions");
 const { getModalText } = require("../lib/textModalActions");
 
 const { By, until, Key } = require('selenium-webdriver');
@@ -27,16 +27,8 @@ class LoginPage {
     await fillTextField(this.driver, this.selectors.passwordInput, password);
   }
 
-
-  // ojo
-  /*
-  async submit() {
-    await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
-  }
-  */
-
   async submitForm() {
-    await clickButton(this.driver, this.selectors.submitButton, this.timeout);
+    await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
   }
 
   async getModalText() {
@@ -55,18 +47,6 @@ class LoginPage {
     return this.selectors;
    }
 
-  /*
-  async clickLink(selector) {
-    const element = await this.driver.wait(
-      until.elementLocated(By.css(selector)),
-      this.timeout
-    );
-
-    await this.driver.wait(until.elementIsVisible(element), this.timeout);
-    await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-    await element.click();
-  }
-*/
   async canNavigateWithTabsInOrder(controls) {
     const { By, Key, until } = require('selenium-webdriver');
 
