@@ -47,13 +47,13 @@ class LoginPage {
     return await isButtonDisabled(this.driver, this.selectors.submitButton);
   }
 
-  getSelectors() {
-    return this.selectors;
-   }
-
   async openLink(selector) {
     await clickLink(this.driver, selector, this.timeout);
   }
+
+  getSelectors() {
+    return this.selectors;
+   }
 
   /*
   async clickLink(selector) {
