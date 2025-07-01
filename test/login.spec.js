@@ -77,10 +77,10 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
       expect(actualResult).toBe(true);
     });
-  });
+  }, CONFIG.TIMEOUT);
 
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
-    await loginPage.clickLink(loginPage.selectors.recoverPassword);
+    await loginPage.openLink(loginPage.selectors.recoverPassword);
 
     const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
 
@@ -89,11 +89,10 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const actualUrl = await driver.getCurrentUrl();
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, CONFIG.TIMEOUT);
 
-/*
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
-    await loginPage.clickLink(loginPage.selectors.newAccount);
+    await loginPage.openLink(loginPage.selectors.newAccount);
 
     const expectedUrl = global.testConfig.baseNewAccountUrl;
 
@@ -103,7 +102,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   });
-
+/*
   test('TC-010: Tab order should follow expected focus sequence', async () => {
 
     const controls = [
@@ -170,14 +169,14 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-
+*/
   test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
 
-    const TIMEOUT = 3000;
+    TIMEOUT = 2000;
 
-    await loginPage.clickLink(loginPage.selectors.contactUs);
+    await loginPage.openLink(loginPage.selectors.contactUs);
 
-    const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
+    const expectedUrl = global.testConfig.contactUsRedirectUrl;
 
     try {
       await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
@@ -188,8 +187,9 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const actualUrl = await driver.getCurrentUrl();
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, CONFIG.TIMEOUT);
 
+/*
   test('TC-012: Username field should display error message when is empty', async () => {
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 

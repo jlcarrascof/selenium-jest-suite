@@ -1,7 +1,7 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
 const { fillTextField } = require("../lib/fieldActions");
-const { clickButton, isButtonDisabled } = require("../lib/formActions");
+const { clickButton, clickLink, isButtonDisabled } = require("../lib/formActions");
 const { getModalText } = require("../lib/textModalActions");
 
 const { By, until, Key } = require('selenium-webdriver');
@@ -49,8 +49,13 @@ class LoginPage {
 
   getSelectors() {
     return this.selectors;
+   }
+
+  async openLink(selector) {
+    await clickLink(this.driver, selector, this.timeout);
   }
 
+  /*
   async clickLink(selector) {
     const element = await this.driver.wait(
       until.elementLocated(By.css(selector)),
@@ -61,7 +66,7 @@ class LoginPage {
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
   }
-
+*/
   async canNavigateWithTabsInOrder(controls) {
     const { By, Key, until } = require('selenium-webdriver');
 
