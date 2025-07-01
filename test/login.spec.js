@@ -46,40 +46,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toMatch(expectedResult);
   }, CONFIG.TIMEOUT);
 
-  describe.each`
-    testCase    | username            | password            | description
-    ${'TC-008'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
-    ${'TC-009'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
-    ${'TC-010'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
-  `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
-    test(`${description}`, async () => {
-      await loginPage.enterUsername(username);
-      await loginPage.enterPassword(password);
-      await loginPage.submitForm();
-
-      const actualResult = await loginPage.getModalText();
-      const expectedResult = 'Invalid credentials.';
-
-      expect(actualResult).toBe(expectedResult);
-    }, CONFIG.TIMEOUT);
-  });
-
-  describe.each`
-    testCase    | username          | password          | description
-    ${'TC-011'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
-    ${'TC-012'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
-    ${'TC-013'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
-  `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
-    test(`${description}`, async () => {
-      await loginPage.enterUsername(username);
-      await loginPage.enterPassword(password);
-
-      const actualResult = await loginPage.isSubmitButtonDisabled();
-
-      expect(actualResult).toBe(true);
-    }, CONFIG.TIMEOUT);
-  });
-
   test('TC-002:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     await loginPage.openLink(loginPage.selectors.recoverPassword);
 
@@ -157,7 +123,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-  test('TC-014: Username field and Password field should display error messages when both fields are empty', async () => {
+  test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
@@ -173,5 +139,39 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
+
+  describe.each`
+    testCase    | username            | password            | description
+    ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
+    ${'TC-010'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
+    ${'TC-011'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
+  `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
+    test(`${description}`, async () => {
+      await loginPage.enterUsername(username);
+      await loginPage.enterPassword(password);
+      await loginPage.submitForm();
+
+      const actualResult = await loginPage.getModalText();
+      const expectedResult = 'Invalid credentials.';
+
+      expect(actualResult).toBe(expectedResult);
+    }, CONFIG.TIMEOUT);
+  });
+
+  describe.each`
+    testCase    | username          | password          | description
+    ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
+    ${'TC-013'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
+    ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
+  `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
+    test(`${description}`, async () => {
+      await loginPage.enterUsername(username);
+      await loginPage.enterPassword(password);
+
+      const actualResult = await loginPage.isSubmitButtonDisabled();
+
+      expect(actualResult).toBe(true);
+    }, CONFIG.TIMEOUT);
+  });
 
 });
