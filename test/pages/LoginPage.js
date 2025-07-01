@@ -1,8 +1,6 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
-const { fillTextField } = require("../lib/fieldActions");
-const { isButtonDisabled, clickWhenReady } = require("../lib/formActions");
-const { getModalText } = require("../lib/textModalActions");
+const DOMHandler = require('../lib/DOMHandler');
 
 const { By, until, Key } = require('selenium-webdriver');
 const TAB_WAIT_TIME = 100;
@@ -13,6 +11,7 @@ class LoginPage {
     this.baseUrl = baseUrl;
     this.timeout = timeout;
     this.selectors = selectors;
+    this.domHandler = new DOMHandler(driver, timeout);
   }
 
   async open() {
@@ -20,27 +19,27 @@ class LoginPage {
   }
 
   async enterUsername(username) {
-    await fillTextField(this.driver, this.selectors.usernameInput, username);
+    await this.domHandler.fillTextField(this.selectors.usernameInput, username);
   }
 
   async enterPassword(password) {
-    await fillTextField(this.driver, this.selectors.passwordInput, password);
+    await this.domHandler.fillTextField(this.selectors.passwordInput, password);
   }
 
   async submitForm() {
-    await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
+    await this.domHandler.clickWhenReady(this.selectors.submitButton);
   }
 
   async getModalText() {
-    return await getModalText(this.driver, this.selectors.modalMessage, this.timeout);
+    return await this.domHandler.getModalText(this.selectors.modalMessage);
   }
 
   async isSubmitButtonDisabled() {
-    return await isButtonDisabled(this.driver, this.selectors.submitButton);
+    return await this.domHandler.isButtonDisabled(this.selectors.submitButton);
   }
 
   async openLink(selector) {
-    await clickWhenReady(this.driver, selector, this.timeout);
+    await this.domHandler.clickWhenReady(selector);
   }
 
   getSelectors() {
