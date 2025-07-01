@@ -5,7 +5,7 @@ const {
   initPages,
   driver: getDriver
 } = require('./helpers/loginTestSetup');
-const { By, until } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver');
 
 let driver;
 let loginPage;
@@ -61,8 +61,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       const expectedResult = 'Invalid credentials.';
 
       expect(actualResult).toBe(expectedResult);
-    });
-  }, CONFIG.TIMEOUT);
+    }, CONFIG.TIMEOUT);
+  });
 
   describe.each`
     testCase    | username          | password          | description
@@ -77,8 +77,8 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       const actualResult = await loginPage.isSubmitButtonDisabled();
 
       expect(actualResult).toBe(true);
-    });
-  }, CONFIG.TIMEOUT);
+    }, CONFIG.TIMEOUT);
+  });
 
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     await loginPage.openLink(loginPage.selectors.recoverPassword);
@@ -102,13 +102,14 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const actualUrl = await driver.getCurrentUrl();
 
     expect(actualUrl).toBe(expectedUrl);
-  });
+  }, CONFIG.TIMEOUT);
+
   test('TC-010: Tab order should follow expected focus sequence', async () => {
     const actualResult = await loginPage.canNavigateWithTabsInOrder(tabOrderControls);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
-  });
+  }, CONFIG.TIMEOUT);
 
   test('TC-011: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
 
@@ -129,23 +130,22 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-/*
   test('TC-012: Username field should display error message when is empty', async () => {
+    const WARNING_MESSAGE = 'Username is required';
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
     await usernameField.click();
 
-    const WARNING_MESSAGE = 'Username is required';
     const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
-  });
+  }, CONFIG.TIMEOUT);
 
   test('TC-013: Password field should display error message when is empty', async () => {
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
 
-    await loginPage.enterUsername(VALID_USERNAME);
+    await loginPage.enterUsername(CONFIG.VALID_USERNAME);
 
     const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
 
@@ -155,7 +155,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
-  });
+  }, CONFIG.TIMEOUT);
 
   test('TC-014: Username field and Password field should display error messages when both fields are empty', async () => {
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
@@ -172,6 +172,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
-  });
-*/
+  }, CONFIG.TIMEOUT);
+
 });
