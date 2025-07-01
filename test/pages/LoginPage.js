@@ -1,7 +1,7 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
 const { fillTextField } = require("../lib/fieldActions");
-const { clickWhenReady, isButtonDisabled } = require("../lib/formActions");
+const { clickButton, isButtonDisabled } = require("../lib/formActions");
 const { getModalText } = require("../lib/textModalActions");
 
 const { By, until, Key } = require('selenium-webdriver');
@@ -27,8 +27,16 @@ class LoginPage {
     await fillTextField(this.driver, this.selectors.passwordInput, password);
   }
 
+
+  // ojo
+  /*
   async submit() {
     await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
+  }
+  */
+
+  async submitForm() {
+    await clickButton(this.driver, this.selectors.submitButton, this.timeout);
   }
 
   async getModalText() {

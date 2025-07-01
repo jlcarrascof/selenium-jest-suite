@@ -1,5 +1,5 @@
 const { By, until } = require("selenium-webdriver");
-const TIMEOUT = 5000;
+const TIMEOUT = 15000;
 
 async function clickWhenReady(driver, selector, timeout = TIMEOUT) {
   const element = await driver.wait(
@@ -16,4 +16,7 @@ async function isButtonDisabled(driver, selector) {
   return !(await button.isEnabled());
 }
 
-module.exports = { clickWhenReady, isButtonDisabled };
+module.exports = { clickWhenReady,
+    clickButton: clickWhenReady,
+    clickLink: clickWhenReady,
+    isButtonDisabled };

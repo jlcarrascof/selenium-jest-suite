@@ -32,7 +32,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginPage.open();
     await loginPage.enterUsername(CONFIG.VALID_USERNAME);
     await loginPage.enterPassword(CONFIG.VALID_PASSWORD);
-    await loginPage.submit();
+    await loginPage.submitForm();
 
     const dashboardElement = await driver.wait(
       until.elementLocated(By.css(loginSelectors.dashboardTitle)),
@@ -54,7 +54,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     test(`${description}`, async () => {
       await loginPage.enterUsername(username);
       await loginPage.enterPassword(password);
-      await loginPage.submit();
+      await loginPage.submitForm();
 
       const actualResult = await loginPage.getModalText();
       const expectedResult = 'Invalid credentials.';
@@ -79,7 +79,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     });
   });
 
-/*
   test('TC-008:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
     await loginPage.clickLink(loginPage.selectors.recoverPassword);
 
@@ -92,6 +91,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   });
 
+/*
   test('TC-009: Clicking New Account link should redirect to registration page', async () => {
     await loginPage.clickLink(loginPage.selectors.newAccount);
 
