@@ -1,4 +1,9 @@
 // tests/pages/LoginPage.js
+const selectors = require("../selectors/loginSelector");
+const { fillTextField } = require("../lib/fieldActions");
+const { clickButton, clickLink, isButtonDisabled } = require("../lib/formActions");
+const { getModalText } = require("../lib/textModalActions");
+
 const { By, until, Key } = require('selenium-webdriver');
 const TAB_WAIT_TIME = 100;
 
@@ -7,78 +12,50 @@ class LoginPage {
     this.driver = driver;
     this.baseUrl = baseUrl;
     this.timeout = timeout;
-
-    this.selectors = {
-      dashboardTitle: 'h1.text-xl.font-semibold',
-      contactUs: 'button.font-semibold.text-hprimary',
-      recoverPassword: 'form > div.flex.flex-row.gap-2.justify-between > a',
-      newAccount: "a[href*='user-signup']",
-      usernameInput: "input[placeholder='Enter your username']",
-      passwordInput: "input[placeholder='Enter your password']",
-      submitButton: "button[type='submit']",
-      modalMessage: 'div.mb-8.text-md > p',
-      usernameError: "//p[contains(normalize-space(.),'Username is required')]",
-      passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]",
-    };
+    this.selectors = selectors;
   }
 
   async open() {
     await this.driver.get(this.baseUrl);
   }
 
-  async login(username, password) {
-    await loginPage.open();
-    await loginPage.enterUsername(username);
-    await loginPage.enterPassword(password);
-    await loginPage.clickSubmit();
-  }
-
   async enterUsername(username) {
-    const usernameField = await this.driver.findElement(
-      By.css(this.selectors.usernameInput)
-    );
-
-    await usernameField.clear();
-    await usernameField.sendKeys(username);
+    await fillTextField(this.driver, this.selectors.usernameInput, username);
   }
 
   async enterPassword(password) {
-    const passwordField = await this.driver.findElement(
-      By.css(this.selectors.passwordInput)
-    );
-
-    await passwordField.clear();
-    await passwordField.sendKeys(password);
+    await fillTextField(this.driver, this.selectors.passwordInput, password);
   }
 
-  async clickSubmit() {
-    const submitBtn = await this.driver.wait(
-      until.elementLocated(By.css(this.selectors.submitButton)),
-      this.timeout
-    );
 
-    await this.driver.wait(until.elementIsVisible(submitBtn), this.timeout);
-    await this.driver.wait(until.elementIsEnabled(submitBtn), this.timeout);
-    await submitBtn.click();
+  // ojo
+  /*
+  async submit() {
+    await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
+  }
+  */
+
+  async submitForm() {
+    await clickButton(this.driver, this.selectors.submitButton, this.timeout);
   }
 
-  async getModalMessageText() {
-    const modalMsg = await this.driver.wait(
-      until.elementLocated(By.css(this.selectors.modalMessage)),
-      this.timeout
-    );
-
-    return await modalMsg.getText();
+  async getModalText() {
+    return await getModalText(this.driver, this.selectors.modalMessage, this.timeout);
   }
 
   async isSubmitButtonDisabled() {
-    const submitBtn = await this.driver.findElement(
-      By.css(this.selectors.submitButton)
-    );
-
-    return !(await submitBtn.isEnabled());
+    return await isButtonDisabled(this.driver, this.selectors.submitButton);
   }
 
+  getSelectors() {
+    return this.selectors;
+   }
+
+  async openLink(selector) {
+    await clickLink(this.driver, selector, this.timeout);
+  }
+
+  /*
   async clickLink(selector) {
     const element = await this.driver.wait(
       until.elementLocated(By.css(selector)),
@@ -89,7 +66,7 @@ class LoginPage {
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
   }
-
+*/
   async canNavigateWithTabsInOrder(controls) {
     const { By, Key, until } = require('selenium-webdriver');
 
