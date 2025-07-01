@@ -1,7 +1,7 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
 const { fillTextField } = require("../lib/fieldActions");
-const { clickButton, clickLink, isButtonDisabled } = require("../lib/formActions");
+const { clickButton, clickLink, isButtonDisabled, clickWhenReady } = require("../lib/formActions");
 const { getModalText } = require("../lib/textModalActions");
 
 const { By, until, Key } = require('selenium-webdriver');
@@ -48,7 +48,7 @@ class LoginPage {
   }
 
   async openLink(selector) {
-    await clickLink(this.driver, selector, this.timeout);
+    await clickWhenReady(this.driver, selector, this.timeout);
   }
 
   getSelectors() {

@@ -16,7 +16,6 @@ async function isButtonDisabled(driver, selector) {
   return !(await button.isEnabled());
 }
 
-module.exports = { clickWhenReady,
-    clickButton: clickWhenReady,
-    clickLink: clickWhenReady,
-    isButtonDisabled };
+module.exports = {
+  clickWhenReady,
+  isButtonDisabled };
