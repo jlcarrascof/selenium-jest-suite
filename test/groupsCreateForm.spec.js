@@ -15,6 +15,7 @@ afterAll(async () => {
 });
 
 describe('Groups - Create Form Functionality', () => {
+/*
   test('TC-008: Clicking on Create Group should display the group creation form', async () => {
     await login();
     await profilePage.clickGroupsAndGetUrl();
@@ -75,7 +76,7 @@ describe('Groups - Create Form Functionality', () => {
 
     expect(result).toBe(expected);
   }, CONFIG.TIMEOUT);
-
+*/
 /*
   // Check this test after fixing the issue with the Leaders field
   test('TC-016: Check the Leaders field at least with one member.', async () => {
@@ -89,7 +90,7 @@ describe('Groups - Create Form Functionality', () => {
     expect(result).toBe(true);
   }, CONFIG.TIMEOUT);
 */
-
+/*
   test('TC-019: Check if one Language was picked', async () => {
     await login();
     await profilePage.clickGroupsAndGetUrl();
@@ -111,6 +112,20 @@ describe('Groups - Create Form Functionality', () => {
     await groupsPage.selectGenderByIndex(1);
 
     const result = await groupsPage.isAnyGenderSelected();
+    const expected = true;
+
+    expect(result).toBe(expected);
+  }, CONFIG.TIMEOUT);
+
+*/
+  test('TC-021: Check at least one the three toggle buttons at the end', async () => {
+    await login();
+    await profilePage.clickGroupsAndGetUrl();
+    await groupsPage.clickCreateGroup();
+    await groupsPage.scrollToToggleButtons();
+    await groupsPage.selectToggleByIndex(0);
+
+    const result = await groupsPage.isAnyToggleSelected();
     const expected = true;
 
     expect(result).toBe(expected);

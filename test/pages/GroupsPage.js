@@ -334,6 +334,28 @@ class GroupsPage {
     return false;
   }
 
+  async selectToggleByIndex(index) {
+    const toggles = await this.driver.findElements(By.css('input[type="checkbox"][name^="check_"]'));
+    if (toggles[index]) {
+      await toggles[index].click();
+    }
+  }
+
+  async isAnyToggleSelected() {
+    const toggles = await this.driver.findElements(By.css('input[type="checkbox"][name^="check_"]'));
+    for (const toggle of toggles) {
+      if (await toggle.isSelected()) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  async scrollToToggleButtons() {
+    const toggleContainer = await this.driver.findElement(By.css('input[type="checkbox"][name^="check_"]'));
+    await this.driver.executeScript("arguments[0].scrollIntoView(true);", toggleContainer);
+    await this.driver.sleep(500);
+  }
 
 }
 

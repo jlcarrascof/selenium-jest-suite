@@ -1,8 +1,6 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
-const { fillTextField } = require("../lib/fieldActions");
-const { clickButton, clickLink, isButtonDisabled } = require("../lib/formActions");
-const { getModalText } = require("../lib/textModalActions");
+const DOMHandler = require('../lib/DOMHandler');
 
 const { By, until, Key } = require('selenium-webdriver');
 const TAB_WAIT_TIME = 100;
@@ -13,6 +11,7 @@ class LoginPage {
     this.baseUrl = baseUrl;
     this.timeout = timeout;
     this.selectors = selectors;
+    this.domHandler = new DOMHandler(driver, timeout);
   }
 
   async open() {
@@ -20,56 +19,34 @@ class LoginPage {
   }
 
   async enterUsername(username) {
-    await fillTextField(this.driver, this.selectors.usernameInput, username);
+    await this.domHandler.fillTextField(this.selectors.usernameInput, username);
   }
 
   async enterPassword(password) {
-    await fillTextField(this.driver, this.selectors.passwordInput, password);
+    await this.domHandler.fillTextField(this.selectors.passwordInput, password);
   }
-
-
-  // ojo
-  /*
-  async submit() {
-    await clickWhenReady(this.driver, this.selectors.submitButton, this.timeout);
-  }
-  */
 
   async submitForm() {
-    await clickButton(this.driver, this.selectors.submitButton, this.timeout);
+    await this.domHandler.clickWhenReady(this.selectors.submitButton);
   }
 
   async getModalText() {
-    return await getModalText(this.driver, this.selectors.modalMessage, this.timeout);
+    return await this.domHandler.getModalText(this.selectors.modalMessage);
   }
 
   async isSubmitButtonDisabled() {
-    return await isButtonDisabled(this.driver, this.selectors.submitButton);
+    return await this.domHandler.isButtonDisabled(this.selectors.submitButton);
+  }
+
+  async openLink(selector) {
+    await this.domHandler.clickWhenReady(selector);
   }
 
   getSelectors() {
     return this.selectors;
    }
 
-  async openLink(selector) {
-    await clickLink(this.driver, selector, this.timeout);
-  }
-
-  /*
-  async clickLink(selector) {
-    const element = await this.driver.wait(
-      until.elementLocated(By.css(selector)),
-      this.timeout
-    );
-
-    await this.driver.wait(until.elementIsVisible(element), this.timeout);
-    await this.driver.wait(until.elementIsEnabled(element), this.timeout);
-    await element.click();
-  }
-*/
   async canNavigateWithTabsInOrder(controls) {
-    const { By, Key, until } = require('selenium-webdriver');
-
     await this.driver.executeScript('document.body.focus();');
 
     let sentTabs = 0;
