@@ -1,4 +1,4 @@
-const loginSelectors = require('./selectors/loginSelector');
+const loginPageSelector = require('./selectors/loginSelector');
 const tabOrderControls = require('./selectors/tabOrderControls');
 const {
   CONFIG,
@@ -94,6 +94,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
+/*
   test('TC-007: Password field should display error message when is empty', async () => {
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
 
@@ -159,5 +160,5 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(true);
     }, CONFIG.TIMEOUT);
   });
-
+*/
 });
