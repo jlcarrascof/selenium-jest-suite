@@ -68,7 +68,7 @@ class LoginPage {
     return await this.driver.getCurrentUrl();
   }
 
-  async canNavigateWithTabsInOrder(controls) {
+  async pressTabKeysAndNavigate(controls) {
     await this.driver.executeScript('document.body.focus();');
 
     let sentTabs = 0;
@@ -116,7 +116,6 @@ class LoginPage {
   }
 
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
-    const { By, Key, until } = require('selenium-webdriver');
 
     try {
       const locator = isXPath ? By.xpath(selector) : By.css(selector);

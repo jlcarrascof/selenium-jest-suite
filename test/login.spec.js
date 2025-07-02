@@ -62,12 +62,12 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
   }, CONFIG.TIMEOUT);
 
-  // test('TC-004: Tab order should follow expected focus sequence', async () => {
-  //   const actualResult = await loginPage.canNavigateWithTabsInOrder(tabOrderControls);
-  //   const expectedResult = true;
+  test('TC-004: Tab order should follow expected focus sequence', async () => {
+    const actualResult = await loginPage.pressTabKeysAndNavigate(tabOrderControls);
+    const expectedResult = true;
 
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
   // test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
 
