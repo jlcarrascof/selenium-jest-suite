@@ -1,6 +1,5 @@
 const DriverFactory = require('../factories/driverFactory');
 const PageFactory = require('../factories/pagesFactory');
-const { By, until, Key } = require('selenium-webdriver');
 
 const CONFIG = {
     VALID_USERNAME: 'javier',
