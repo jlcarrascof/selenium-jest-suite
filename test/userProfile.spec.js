@@ -33,7 +33,7 @@ const login = async (username, password) => {
   await loginPage.open();
   await loginPage.enterUsername(username);
   await loginPage.enterPassword(password);
-  await loginPage.clickSubmit();
+  await loginPage.submitForm();
   await driver.wait(until.elementLocated(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR)), CONFIG.TIMEOUT);
 };
 
@@ -63,11 +63,11 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   test('TC-002: Invalid username should deny access', async () => {
     await loginPage.open();
-    await loginPage.enterUsername(CONFIG.INVALID_USERNAME);
-    await loginPage.enterPassword(CONFIG.PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.enterUsername(CONFIG.USERNAME);
+    await loginPage.enterPassword(CONFIG.INVALID_PASSWORD);
+    await loginPage.submitForm();
 
-    const actualResult = await loginPage.getModalMessageText();
+    const actualResult = await loginPage.getModalText();
     const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
 
     expect(actualResult).toBe(expectedResult);
@@ -77,9 +77,9 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     await loginPage.open();
     await loginPage.enterUsername(CONFIG.USERNAME);
     await loginPage.enterPassword(CONFIG.INVALID_PASSWORD);
-    await loginPage.clickSubmit();
+    await loginPage.submitForm();
 
-    const actualResult = await loginPage.getModalMessageText();
+    const actualResult = await loginPage.getModalText();
     const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
 
     expect(actualResult).toBe(expectedResult);
