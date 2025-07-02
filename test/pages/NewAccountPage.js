@@ -84,7 +84,7 @@ class NewAccountPage {
         const actualValidation = await validationElement.getText();
         return actualValidation === expectedValidation;
       } else {
-        const errorSelector = this.errorMapping[selector] || this.selectors.nameError; // Default to name error if not specified
+        const errorSelector = this.errorMapping[selector] || this.selectors.nameError;
         const elements = await this.driver.findElements(By.xpath(errorSelector));
         return elements.length === 0;
       }
