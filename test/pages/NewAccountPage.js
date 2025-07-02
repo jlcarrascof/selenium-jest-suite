@@ -1,4 +1,7 @@
 // tests/pages/NewAccountPage.js
+const selectors = require("../selectors/newAccountSelector");
+const DOMHandler = require('../lib/DOMHandler');
+
 const { By, until, Key } = require('selenium-webdriver');
 
 class NewAccountPage {
@@ -6,25 +9,7 @@ class NewAccountPage {
     this.driver = driver;
     this.baseUrl = baseUrl;
     this.timeout = timeout;
-
-    this.selectors = {
-      nameInput: "input[placeholder='Enter your name']",
-      surnameInput: "input[placeholder='Enter your surname']",
-      emailInput: "input[placeholder='Enter your email']",
-      usernameInput: "input[placeholder='Enter your username']",
-      passwordInput: "input[placeholder='Enter your password']",
-      confirmPasswordInput: "input[placeholder='Repeat password']",
-      termsCheckbox: '//*[@id="checkbox"]',
-      createButton: "button[type='submit']",
-      nameError: "//p[contains(normalize-space(.),'Name is required')]",
-      surnameError: "//p[contains(normalize-space(.),'Surname is required')]",
-      emailError: "//p[contains(normalize-space(.),'Please enter a valid email')]",
-      usernameError: "//p[contains(normalize-space(.),'Username is required')]",
-      passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]",
-      termsError: "//p[contains(normalize-space(.),'Terms and Conditions')]",
-      confirmPasswordError: "//p[contains(normalize-space(.),'Password must match')]"
-    };
-
+    this.selectors = selectors;
     this.errorMapping = {
       [this.selectors.nameInput]: this.selectors.nameError,
       [this.selectors.surnameInput]: this.selectors.surnameError,
@@ -34,6 +19,7 @@ class NewAccountPage {
       [this.selectors.termsCheckbox]: this.selectors.termsError,
       [this.selectors.confirmPasswordInput]: this.selectors.confirmPasswordError
     };
+    this.domHandler = new DOMHandler(driver, timeout);
   }
 
   async open() {
