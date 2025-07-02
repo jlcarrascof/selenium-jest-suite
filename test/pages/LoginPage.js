@@ -1,6 +1,7 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
 const DOMHandler = require('../lib/DOMHandler');
+const validationMessages = require('../lib/testConfig');
 
 const { By, until, Key } = require('selenium-webdriver');
 const TAB_WAIT_TIME = 100;
@@ -69,6 +70,14 @@ class LoginPage {
     } catch {
       await this.driver.get(expectedUrl);
     }
+  }
+
+  async verifyUsernameRequiredMessage() {
+    await this.domHandler.clickWhenReady(this.selectors.usernameInput);
+
+    const expectedMessage = validationMessages.requiredUsername;
+
+    return await this.verifyBlurValidation(this.selectors.usernameInput, expectedMessage);
   }
 
   async openUrlAndGetCurrent(expectedUrl) {

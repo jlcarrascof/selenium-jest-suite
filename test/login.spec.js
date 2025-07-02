@@ -83,6 +83,14 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-006: Username field should display error message when is empty', async () => {
+    const actualResult = await loginPage.verifyUsernameRequiredMessage();
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
+
+/*
+  test('TC-006: Username field should display error message when is empty', async () => {
     const WARNING_MESSAGE = 'Username is required';
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
@@ -93,6 +101,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
+*/
 
 /*
   test('TC-007: Password field should display error message when is empty', async () => {
