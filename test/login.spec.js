@@ -51,15 +51,15 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-003: Clicking New Account link should redirect to registration page', async () => {
-    await loginPage.openLink(loginPage.selectors.newAccount);
+    await loginPage.clickNewAccountLink();
 
     const expectedUrl = global.testConfig.baseNewAccountUrl;
+    await loginPage.waitForUrl(expectedUrl);
 
-    await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
-
-    const actualUrl = await driver.getCurrentUrl();
+    const actualUrl = await loginPage.getCurrentUrl();
 
     expect(actualUrl).toBe(expectedUrl);
+
   }, CONFIG.TIMEOUT);
 
   // test('TC-004: Tab order should follow expected focus sequence', async () => {

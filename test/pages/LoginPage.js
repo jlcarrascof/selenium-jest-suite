@@ -51,6 +51,14 @@ class LoginPage {
     await this.domHandler.clickWhenReady(this.selectors.recoverPassword);
   }
 
+  async clickNewAccountLink() {
+    await this.domHandler.clickWhenReady(this.selectors.newAccount);
+  }
+
+  async waitForUrl(expectedUrl) {
+    await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
+  }
+
   async openUrlAndGetCurrent(expectedUrl) {
     await this.driver.get(expectedUrl);
     return await this.driver.getCurrentUrl();
