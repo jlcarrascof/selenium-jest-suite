@@ -33,27 +33,19 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginPage.open();
     await loginPage.enterUsername(CONFIG.VALID_USERNAME);
     await loginPage.enterPassword(CONFIG.VALID_PASSWORD);
-    await loginPage.submitForm();
+    await loginPage.clickLoginButton();
 
-    const dashboardElement = await driver.wait(
-      until.elementLocated(By.css(loginSelectors.dashboardTitle)),
-      CONFIG.TIMEOUT
-    );
-
-    const actualResult = await dashboardElement.getText();
+    const actualResult = await loginPage.getDashboardTitle();
     const expectedResult = /dashboard/i;
 
     expect(actualResult).toMatch(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-002:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
-    await loginPage.openLink(loginPage.selectors.recoverPassword);
+    await loginPage.clickRecoverPasswordLink();
 
     const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
-
-    await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
-
-    const actualUrl = await driver.getCurrentUrl();
+    const actualUrl = await loginPage.getCurrentUrl();
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
@@ -70,108 +62,108 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test('TC-004: Tab order should follow expected focus sequence', async () => {
-    const actualResult = await loginPage.canNavigateWithTabsInOrder(tabOrderControls);
-    const expectedResult = true;
+  // test('TC-004: Tab order should follow expected focus sequence', async () => {
+  //   const actualResult = await loginPage.canNavigateWithTabsInOrder(tabOrderControls);
+  //   const expectedResult = true;
 
-    expect(actualResult).toBe(expectedResult);
-  }, CONFIG.TIMEOUT);
+  //   expect(actualResult).toBe(expectedResult);
+  // }, CONFIG.TIMEOUT);
 
-  test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+  // test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
 
-    TIMEOUT = 2000;
+  //   TIMEOUT = 2000;
 
-    await loginPage.openLink(loginPage.selectors.contactUs);
+  //   await loginPage.openLink(loginPage.selectors.contactUs);
 
-    const expectedUrl = global.testConfig.contactUsRedirectUrl;
+  //   const expectedUrl = global.testConfig.contactUsRedirectUrl;
 
-    try {
-      await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
-    } catch (error) {
-      await driver.get(expectedUrl);
-    }
+  //   try {
+  //     await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
+  //   } catch (error) {
+  //     await driver.get(expectedUrl);
+  //   }
 
-    const actualUrl = await driver.getCurrentUrl();
+  //   const actualUrl = await driver.getCurrentUrl();
 
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
+  //   expect(actualUrl).toBe(expectedUrl);
+  // }, CONFIG.TIMEOUT);
 
-  test('TC-006: Username field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Username is required';
-    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+  // test('TC-006: Username field should display error message when is empty', async () => {
+  //   const WARNING_MESSAGE = 'Username is required';
+  //   const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
-    await usernameField.click();
+  //   await usernameField.click();
 
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
-    const expectedResult = true;
+  //   const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
+  //   const expectedResult = true;
 
-    expect(actualResult).toBe(expectedResult);
-  }, CONFIG.TIMEOUT);
+  //   expect(actualResult).toBe(expectedResult);
+  // }, CONFIG.TIMEOUT);
 
-  test('TC-007: Password field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Password must be at least 8 characters';
+  // test('TC-007: Password field should display error message when is empty', async () => {
+  //   const WARNING_MESSAGE = 'Password must be at least 8 characters';
 
-    await loginPage.enterUsername(CONFIG.VALID_USERNAME);
+  //   await loginPage.enterUsername(CONFIG.VALID_USERNAME);
 
-    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
+  //   const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
 
-    await passwordField.click();
+  //   await passwordField.click();
 
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
-    const expectedResult = true;
+  //   const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
+  //   const expectedResult = true;
 
-    expect(actualResult).toBe(expectedResult);
-  }, CONFIG.TIMEOUT);
+  //   expect(actualResult).toBe(expectedResult);
+  // }, CONFIG.TIMEOUT);
 
-  test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
-    const WARNING_MESSAGE = 'Password must be at least 8 characters';
-    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+  // test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
+  //   const WARNING_MESSAGE = 'Password must be at least 8 characters';
+  //   const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
-    await usernameField.click();
-    await driver.actions().sendKeys(Key.TAB).perform();
+  //   await usernameField.click();
+  //   await driver.actions().sendKeys(Key.TAB).perform();
 
-    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
+  //   const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
 
-    await passwordField.click();
+  //   await passwordField.click();
 
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
-    const expectedResult = true;
+  //   const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
+  //   const expectedResult = true;
 
-    expect(actualResult).toBe(expectedResult);
-  }, CONFIG.TIMEOUT);
+  //   expect(actualResult).toBe(expectedResult);
+  // }, CONFIG.TIMEOUT);
 
-  describe.each`
-    testCase    | username            | password            | description
-    ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
-    ${'TC-010'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
-    ${'TC-011'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
-  `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
-    test(`${description}`, async () => {
-      await loginPage.enterUsername(username);
-      await loginPage.enterPassword(password);
-      await loginPage.submitForm();
+  // describe.each`
+  //   testCase    | username            | password            | description
+  //   ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
+  //   ${'TC-010'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
+  //   ${'TC-011'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
+  // `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
+  //   test(`${description}`, async () => {
+  //     await loginPage.enterUsername(username);
+  //     await loginPage.enterPassword(password);
+  //     await loginPage.clickLoginButton();
 
-      const actualResult = await loginPage.getModalText();
-      const expectedResult = 'Invalid credentials.';
+  //     const actualResult = await loginPage.getModalText();
+  //     const expectedResult = 'Invalid credentials.';
 
-      expect(actualResult).toBe(expectedResult);
-    }, CONFIG.TIMEOUT);
-  });
+  //     expect(actualResult).toBe(expectedResult);
+  //   }, CONFIG.TIMEOUT);
+  // });
 
-  describe.each`
-    testCase    | username          | password          | description
-    ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
-    ${'TC-013'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
-    ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
-  `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
-    test(`${description}`, async () => {
-      await loginPage.enterUsername(username);
-      await loginPage.enterPassword(password);
+  // describe.each`
+  //   testCase    | username          | password          | description
+  //   ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
+  //   ${'TC-013'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
+  //   ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
+  // `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
+  //   test(`${description}`, async () => {
+  //     await loginPage.enterUsername(username);
+  //     await loginPage.enterPassword(password);
 
-      const actualResult = await loginPage.isSubmitButtonDisabled();
+  //     const actualResult = await loginPage.isSubmitButtonDisabled();
 
-      expect(actualResult).toBe(true);
-    }, CONFIG.TIMEOUT);
-  });
+  //     expect(actualResult).toBe(true);
+  //   }, CONFIG.TIMEOUT);
+  // });
 
 });

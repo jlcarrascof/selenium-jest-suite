@@ -26,8 +26,17 @@ class LoginPage {
     await this.domHandler.fillTextField(this.selectors.passwordInput, password);
   }
 
-  async submitForm() {
+  async clickLoginButton() {
     await this.domHandler.clickWhenReady(this.selectors.submitButton);
+  }
+
+  async getDashboardTitle() {
+    const dashboardElement = await this.driver.wait(
+      until.elementLocated(By.css(this.selectors.dashboardTitle)),
+      this.timeout
+    );
+    const result = await dashboardElement.getText();
+    return result;
   }
 
   async getModalText() {
@@ -38,13 +47,18 @@ class LoginPage {
     return await this.domHandler.isButtonDisabled(this.selectors.submitButton);
   }
 
-  async openLink(selector) {
-    await this.domHandler.clickWhenReady(selector);
+  async clickRecoverPasswordLink() {
+    await this.domHandler.clickWhenReady(this.selectors.recoverPassword);
   }
 
-  getSelectors() {
-    return this.selectors;
-   }
+  async openUrlAndGetCurrent(expectedUrl) {
+    await this.driver.get(expectedUrl);
+    return await this.driver.getCurrentUrl();
+  }
+
+  async getCurrentUrl() {
+    return await this.driver.getCurrentUrl();
+  }
 
   async canNavigateWithTabsInOrder(controls) {
     await this.driver.executeScript('document.body.focus();');

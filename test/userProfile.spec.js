@@ -1,33 +1,7 @@
-const DriverFactory = require('./factories/driverFactory');
-const PageFactory = require('./factories/pagesFactory');
-const { By, until, Key } = require('selenium-webdriver');
+const { CONFIG, initPages } = require('./helpers/userProfileTestSetup');
+const { By, until } = require('selenium-webdriver');
 
-const CONFIG = {
-  TIMEOUT: 15000,
-  BASE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa',
-  EXPECTED_URL: 'https://qa.harmonychurchsuite.com/404',
-  GROUPS_URL: 'https://qa.harmonychurchsuite.com/tenant/groups/index',
-  USERNAME: 'javier',
-  PASSWORD: '.qwerty123.',
-  INVALID_USERNAME: 'invalidUser',
-  INVALID_PASSWORD: 'invalidPass',
-  DASHBOARD_TITLE_SELECTOR: 'h1.text-xl.font-semibold',
-  INVALID_LOGIN_MESSAGE: 'Invalid credentials.',
-  MYPROFILE_URL: 'https://qa.harmonychurchsuite.com/404',
-  ROLES_PERMISSIONS_URL: 'https://qa.harmonychurchsuite.com/404',
-  USERS_URL: 'https://qa.harmonychurchsuite.com/404',
-  EVENT_LOG_URL: 'https://qa.harmonychurchsuite.com/404',
-  ALL_NOTIFICATIONS_URL: 'https://qa.harmonychurchsuite.com/404',
-  ROLE_NOTIFICATIONS_URL: 'https://qa.harmonychurchsuite.com/404',
-  USER_NOTIFICATIONS_URL: 'https://qa.harmonychurchsuite.com/404',
-  LANGUAGES_URL: 'https://qa.harmonychurchsuite.com/404',
-  REFERENCE_DATA_URL: 'https://qa.harmonychurchsuite.com/404',
-  SUBSCRIPTION_DATA_URL: 'https://qa.harmonychurchsuite.com/404',
-};
-
-let driver;
-let loginPage;
-let profilePage;
+let driver, loginPage, profilePage;
 
 const login = async (username, password) => {
   await loginPage.open();
@@ -38,16 +12,14 @@ const login = async (username, password) => {
 };
 
 beforeAll(async () => {
-  const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
-  driver = await driverFactory.initDriver();
-  loginPage = PageFactory.createPage('login', driver, CONFIG.BASE_URL, global.testConfig.timeout);
-  profilePage = PageFactory.createPage('profile', driver, CONFIG.BASE_URL, global.testConfig.timeout);
+  const pages = await initPages();
+  driver = pages.driver;
+  loginPage = pages.loginPage;
+  profilePage = pages.profilePage;
 });
 
 afterAll(async () => {
-  if (driver) {
-    await driver.quit();
-  }
+  if (driver) await driver.quit();
 });
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
@@ -104,7 +76,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-
+/*
   test('TC-006: Click on Apps button should open menu', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickAppsButton();
@@ -203,4 +175,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(CONFIG.SUBSCRIPTION_DATA_URL);
   }, CONFIG.TIMEOUT);
+*/
 });

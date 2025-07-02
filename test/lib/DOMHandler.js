@@ -39,6 +39,15 @@ class DOMHandler {
     );
     return await modal.getText();
   }
+
+  async openUrlAndGetCurrent(driver, expectedUrl) {
+    await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
+
+    const result = await driver.getCurrentUrl();
+
+    return result;
+  }
+
 }
 
 module.exports = DOMHandler;
