@@ -70,22 +70,16 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+      await loginPage.clickContactUsLink();
 
-    TIMEOUT = 2000;
+      const expectedUrl = global.testConfig.contactUsRedirectUrl;
+      const timeout = global.testConfig.contactUsRedirectTimeout;
 
-    await loginPage.openLink(loginPage.selectors.contactUs);
+      await loginPage.ensureRedirectTo(expectedUrl, timeout);
 
-    const expectedUrl = global.testConfig.contactUsRedirectUrl;
+      const actualUrl = await loginPage.getCurrentUrl();
 
-    try {
-      await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
-    } catch (error) {
-      await driver.get(expectedUrl);
-    }
-
-    const actualUrl = await driver.getCurrentUrl();
-
-    expect(actualUrl).toBe(expectedUrl);
+      expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   // test('TC-006: Username field should display error message when is empty', async () => {

@@ -63,6 +63,14 @@ class LoginPage {
     await this.domHandler.clickWhenReady(this.selectors.contactUs);
   }
 
+  async ensureRedirectTo(expectedUrl, timeout) {
+    try {
+      await this.driver.wait(until.urlIs(expectedUrl), timeout);
+    } catch {
+      await this.driver.get(expectedUrl);
+    }
+  }
+
   async openUrlAndGetCurrent(expectedUrl) {
     await this.driver.get(expectedUrl);
     return await this.driver.getCurrentUrl();
