@@ -69,24 +69,24 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-  // test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+  test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
 
-  //   TIMEOUT = 2000;
+    TIMEOUT = 2000;
 
-  //   await loginPage.openLink(loginPage.selectors.contactUs);
+    await loginPage.openLink(loginPage.selectors.contactUs);
 
-  //   const expectedUrl = global.testConfig.contactUsRedirectUrl;
+    const expectedUrl = global.testConfig.contactUsRedirectUrl;
 
-  //   try {
-  //     await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
-  //   } catch (error) {
-  //     await driver.get(expectedUrl);
-  //   }
+    try {
+      await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
+    } catch (error) {
+      await driver.get(expectedUrl);
+    }
 
-  //   const actualUrl = await driver.getCurrentUrl();
+    const actualUrl = await driver.getCurrentUrl();
 
-  //   expect(actualUrl).toBe(expectedUrl);
-  // }, CONFIG.TIMEOUT);
+    expect(actualUrl).toBe(expectedUrl);
+  }, CONFIG.TIMEOUT);
 
   // test('TC-006: Username field should display error message when is empty', async () => {
   //   const WARNING_MESSAGE = 'Username is required';

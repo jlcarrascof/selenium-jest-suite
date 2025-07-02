@@ -59,6 +59,10 @@ class LoginPage {
     await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
   }
 
+  async clickContactUsLink() {
+    await this.domHandler.clickWhenReady(this.selectors.contactUs);
+  }
+
   async openUrlAndGetCurrent(expectedUrl) {
     await this.driver.get(expectedUrl);
     return await this.driver.getCurrentUrl();
