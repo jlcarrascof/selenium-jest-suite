@@ -82,82 +82,82 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  // test('TC-006: Username field should display error message when is empty', async () => {
-  //   const WARNING_MESSAGE = 'Username is required';
-  //   const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+  test('TC-006: Username field should display error message when is empty', async () => {
+    const WARNING_MESSAGE = 'Username is required';
+    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
-  //   await usernameField.click();
+    await usernameField.click();
 
-  //   const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
-  //   const expectedResult = true;
+    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
+    const expectedResult = true;
 
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
-  // test('TC-007: Password field should display error message when is empty', async () => {
-  //   const WARNING_MESSAGE = 'Password must be at least 8 characters';
+  test('TC-007: Password field should display error message when is empty', async () => {
+    const WARNING_MESSAGE = 'Password must be at least 8 characters';
 
-  //   await loginPage.enterUsername(CONFIG.VALID_USERNAME);
+    await loginPage.enterUsername(CONFIG.VALID_USERNAME);
 
-  //   const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
+    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
 
-  //   await passwordField.click();
+    await passwordField.click();
 
-  //   const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
-  //   const expectedResult = true;
+    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
+    const expectedResult = true;
 
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
-  // test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
-  //   const WARNING_MESSAGE = 'Password must be at least 8 characters';
-  //   const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+  test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
+    const WARNING_MESSAGE = 'Password must be at least 8 characters';
+    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
-  //   await usernameField.click();
-  //   await driver.actions().sendKeys(Key.TAB).perform();
+    await usernameField.click();
+    await driver.actions().sendKeys(Key.TAB).perform();
 
-  //   const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
+    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
 
-  //   await passwordField.click();
+    await passwordField.click();
 
-  //   const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
-  //   const expectedResult = true;
+    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
+    const expectedResult = true;
 
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
-  // describe.each`
-  //   testCase    | username            | password            | description
-  //   ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
-  //   ${'TC-010'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
-  //   ${'TC-011'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
-  // `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
-  //   test(`${description}`, async () => {
-  //     await loginPage.enterUsername(username);
-  //     await loginPage.enterPassword(password);
-  //     await loginPage.clickLoginButton();
+  describe.each`
+    testCase    | username            | password            | description
+    ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
+    ${'TC-010'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
+    ${'TC-011'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
+  `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
+    test(`${description}`, async () => {
+      await loginPage.enterUsername(username);
+      await loginPage.enterPassword(password);
+      await loginPage.clickLoginButton();
 
-  //     const actualResult = await loginPage.getModalText();
-  //     const expectedResult = 'Invalid credentials.';
+      const actualResult = await loginPage.getModalText();
+      const expectedResult = 'Invalid credentials.';
 
-  //     expect(actualResult).toBe(expectedResult);
-  //   }, CONFIG.TIMEOUT);
-  // });
+      expect(actualResult).toBe(expectedResult);
+    }, CONFIG.TIMEOUT);
+  });
 
-  // describe.each`
-  //   testCase    | username          | password          | description
-  //   ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
-  //   ${'TC-013'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
-  //   ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
-  // `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
-  //   test(`${description}`, async () => {
-  //     await loginPage.enterUsername(username);
-  //     await loginPage.enterPassword(password);
+  describe.each`
+    testCase    | username          | password          | description
+    ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
+    ${'TC-013'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
+    ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
+  `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
+    test(`${description}`, async () => {
+      await loginPage.enterUsername(username);
+      await loginPage.enterPassword(password);
 
-  //     const actualResult = await loginPage.isSubmitButtonDisabled();
+      const actualResult = await loginPage.isSubmitButtonDisabled();
 
-  //     expect(actualResult).toBe(true);
-  //   }, CONFIG.TIMEOUT);
-  // });
+      expect(actualResult).toBe(true);
+    }, CONFIG.TIMEOUT);
+  });
 
 });
