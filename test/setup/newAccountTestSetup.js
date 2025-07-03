@@ -23,7 +23,12 @@ const CONFIG = {
     confirmPassword: 'Password must match',
     invalidEmail: 'Please enter a valid email'
   },
-  TIMEOUT: 90000
+  TIMEOUT: 90000,
+  INVALID_PASSWORDS: {
+    onlyNumbers: '12345678',
+    onlyLetters: 'abcdefgh',
+    shortMixed:   'ab1@'
+  },
 };
 
 let driver, newAccountPage;

@@ -79,15 +79,14 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-/*
   test('TC-005: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
     await fillFormFields({
-      name: VALID_DATA.name,
-      surname: VALID_DATA.surname,
-      email: VALID_DATA.email,
-      username: VALID_DATA.username,
-      password: VALID_DATA.password,
-      confirmPassword: VALID_DATA.confirmPassword
+      name: CONFIG.VALID_DATA.name,
+      surname: CONFIG.VALID_DATA.surname,
+      email: CONFIG.VALID_DATA.email,
+      username: CONFIG.VALID_DATA.username,
+      password: CONFIG.VALID_DATA.password,
+      confirmPassword: CONFIG.VALID_DATA.confirmPassword
     });
 
     const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
@@ -102,12 +101,17 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-006: Password field should display error message when using only numbers', async () => {
-    const actualResult = await newAccountPage.isValidPassword('12345678', ERROR_MESSAGES.password);
+    // const actualResult = await newAccountPage.isValidPassword('12345678', ERROR_MESSAGES.password);
+    // const expectedResult = true;
+
+    // expect(actualResult).toBe(expectedResult);
+    const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
+  /*
   test('TC-007: Password field should display error message when using only letters', async () => {
     const actualResult = await newAccountPage.isValidPassword('abcdefgh', ERROR_MESSAGES.password);
     const expectedResult = true;

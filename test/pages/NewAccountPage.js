@@ -124,6 +124,19 @@ class NewAccountPage {
     return (await btn.getAttribute('disabled')) === null;
   }
 
+  async showsPasswordRequiredError(password, expectedValidationMessage) {
+    await this.domHandler.fillTextField(this.selectors.passwordInput, password);
+
+    const el = await this.domHandler.findElement(this.selectors.passwordInput);
+
+    await this.driver.executeScript('arguments[0].blur();', el);
+
+    return await this.verifyBlurValidation(
+      this.selectors.passwordInput,
+      expectedValidationMessage,
+    );
+  }
+
 }
 
 module.exports = NewAccountPage;
