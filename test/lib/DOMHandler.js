@@ -37,6 +37,16 @@ class DOMHandler {
       until.elementLocated(By.css(selector)),
       this.timeout
     );
+
+    await this.driver.wait(
+      async () => {
+        const text = await modal.getText();
+        return text && text.trim().length > 0;
+      },
+      this.timeout,
+      `Modal text not found in element with selector: ${selector}`
+    );
+
     return await modal.getText();
   }
 

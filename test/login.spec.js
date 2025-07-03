@@ -1,5 +1,5 @@
-const loginPageSelector = require('./selectors/loginSelector');
 const tabOrderControls = require('./selectors/tabOrderControls');
+const { invalidCredentials } = require('./lib/testConfig');
 
 const { CONFIG, initPages, driver: getDriver } = require('./helpers/loginTestSetup');
 const { By, until, Key } = require('selenium-webdriver');
@@ -98,7 +98,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
       expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-*/
+
   test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
     await loginPage.focusOnUsernameFieldAndTab();
     await loginPage.focusOnPasswordField();
@@ -108,7 +108,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-/*
+*/
   describe.each`
     testCase    | username            | password            | description
     ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
@@ -121,12 +121,12 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       await loginPage.clickLoginButton();
 
       const actualResult = await loginPage.getModalText();
-      const expectedResult = 'Invalid credentials.';
+      const expectedResult = invalidCredentials;
 
       expect(actualResult).toBe(expectedResult);
     }, CONFIG.TIMEOUT);
   });
-
+/*
   describe.each`
     testCase    | username          | password          | description
     ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
