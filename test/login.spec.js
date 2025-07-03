@@ -2,7 +2,6 @@ const tabOrderControls = require('./selectors/tabOrderControls');
 const { invalidCredentials } = require('./lib/testConfig');
 
 const { CONFIG, initPages, driver: getDriver } = require('./helpers/loginTestSetup');
-const { By, until, Key } = require('selenium-webdriver');
 
 let driver;
 let loginPage;

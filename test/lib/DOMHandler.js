@@ -50,6 +50,7 @@ class DOMHandler {
     return await modal.getText();
   }
 
+  /*
   async openUrlAndGetCurrent(driver, expectedUrl) {
     await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
 
@@ -57,21 +58,7 @@ class DOMHandler {
 
     return result;
   }
-
-  async isValidationMessageVisible(selector, expectedMessage) {
-    try {
-      const element = await this.driver.wait(
-        until.elementLocated(By.css(selector)),
-        this.timeout
-      );
-      await this.driver.wait(until.elementIsVisible(element), this.timeout);
-      const text = await element.getText();
-      return text === expectedMessage;
-    } catch (error) {
-      return false;
-    }
-  }
-
+*/
   async findElement(selector) {
     const locator = selector.startsWith('//') ? By.xpath(selector) : By.css(selector);
     return await this.driver.wait(until.elementLocated(locator), this.timeout);

@@ -72,14 +72,6 @@ class LoginPage {
     }
   }
 
-  async verifyUsernameRequiredMessage() {
-    await this.domHandler.clickWhenReady(this.selectors.usernameInput);
-
-    const expectedMessage = validationMessages.requiredUsername;
-
-    return await this.verifyBlurValidation(this.selectors.usernameInput, expectedMessage);
-  }
-
   async focusOnPasswordField() {
     const passwordField = await this.domHandler.findElement(this.selectors.passwordInput);
     await passwordField.click();
@@ -102,11 +94,6 @@ class LoginPage {
     const usernameField = await this.domHandler.findElement(this.selectors.usernameInput);
     await usernameField.click();
     await this.driver.actions().sendKeys(Key.TAB).perform();
-  }
-
-  async openUrlAndGetCurrent(expectedUrl) {
-    await this.driver.get(expectedUrl);
-    return await this.driver.getCurrentUrl();
   }
 
   async getCurrentUrl() {
