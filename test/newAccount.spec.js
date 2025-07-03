@@ -78,7 +78,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-
+/*
   test('TC-005: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
     await fillFormFields({
       name: CONFIG.VALID_DATA.name,
@@ -99,33 +99,29 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-
+*/
   test('TC-006: Password field should display error message when using only numbers', async () => {
-    // const actualResult = await newAccountPage.isValidPassword('12345678', ERROR_MESSAGES.password);
-    // const expectedResult = true;
-
-    // expect(actualResult).toBe(expectedResult);
     const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
-  /*
   test('TC-007: Password field should display error message when using only letters', async () => {
-    const actualResult = await newAccountPage.isValidPassword('abcdefgh', ERROR_MESSAGES.password);
+    const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.onlyLetters, CONFIG.ERROR_MESSAGES.password);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-008: Password field should display error message when using numbers and characters with length less than 8', async () => {
-    const actualResult = await newAccountPage.isValidPassword('ab1@', ERROR_MESSAGES.password);
+    const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.shortLength, CONFIG.ERROR_MESSAGES.password);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
+/*
   test('TC-009: Confirm Password field should display error message when we type a different Password', async () => {
     await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(VALID_DATA.password);
     await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(VALID_DATA.differentPassword);

@@ -27,7 +27,7 @@ const CONFIG = {
   INVALID_PASSWORDS: {
     onlyNumbers: '12345678',
     onlyLetters: 'abcdefgh',
-    shortMixed:   'ab1@'
+    shortLength:   'ab1@'
   },
 };
 
