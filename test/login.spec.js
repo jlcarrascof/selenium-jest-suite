@@ -25,7 +25,6 @@ beforeEach(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-/*
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.open();
@@ -108,7 +107,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-*/
+
   describe.each`
     testCase    | username            | password            | description
     ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
@@ -126,7 +125,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(expectedResult);
     }, CONFIG.TIMEOUT);
   });
-/*
+
   describe.each`
     testCase    | username          | password          | description
     ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
@@ -138,9 +137,9 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       await loginPage.enterPassword(password);
 
       const actualResult = await loginPage.isSubmitButtonDisabled();
+      const expectedResult = true;
 
-      expect(actualResult).toBe(true);
+      expect(actualResult).toBe(expectedResult);
     }, CONFIG.TIMEOUT);
   });
-*/
 });
