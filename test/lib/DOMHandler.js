@@ -62,6 +62,11 @@ class DOMHandler {
     }
   }
 
+  async findElement(selector) {
+    const locator = selector.startsWith('//') ? By.xpath(selector) : By.css(selector);
+    return await this.driver.wait(until.elementLocated(locator), this.timeout);
+  }
+
 }
 
 module.exports = DOMHandler;

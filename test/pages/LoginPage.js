@@ -81,12 +81,27 @@ class LoginPage {
   }
 
   async focusOnPasswordField() {
-    await this.domHandler.clickWhenReady(this.selectors.passwordInput);
+    const passwordField = await this.domHandler.findElement(this.selectors.passwordInput);
+    await passwordField.click();
   }
 
-  async passwordIsRequired() {
-    const expectedMessage = validationMessages.requiredPassword;
-    return await this.domHandler.isValidationMessageVisible(this.selectors.passwordError, expectedMessage);
+  async focusOnUsernameField() {
+    const usernameField = await this.domHandler.findElement(this.selectors.usernameInput);
+    await usernameField.click();
+  }
+
+  async hasUsernameError() {
+    return await this.verifyBlurValidation(this.selectors.usernameInput, validationMessages.requiredUsername);
+  }
+
+  async hasPasswordError() {
+    return await this.verifyBlurValidation(this.selectors.passwordInput, validationMessages.requiredPassword);
+  }
+
+  async focusOnUsernameFieldAndTab() {
+    const usernameField = await this.domHandler.findElement(this.selectors.usernameInput);
+    await usernameField.click();
+    await this.driver.actions().sendKeys(Key.TAB).perform();
   }
 
   async openUrlAndGetCurrent(expectedUrl) {

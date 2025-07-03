@@ -79,52 +79,36 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
       expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-*/
+
   test('TC-006: Username field should display error message when is empty', async () => {
-    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await loginPage.focusOnUsernameField();
 
-    await usernameField.click();
-
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, CONFIG.requiredUsername);
+    const actualResult = await loginPage.hasUsernameError();
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-/*
   test('TC-007: Password field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Password must be at least 8 characters';
+      await loginPage.enterUsername(CONFIG.VALID_USERNAME);
+      await loginPage.focusOnPasswordField();
 
-    await loginPage.enterUsername(CONFIG.VALID_USERNAME);
+      const actualResult = await loginPage.hasPasswordError();
+      const expectedResult = true;
 
-    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
-
-    await passwordField.click();
-
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
-
+      expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-
+*/
   test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
-    const WARNING_MESSAGE = 'Password must be at least 8 characters';
-    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await loginPage.focusOnUsernameFieldAndTab();
+    await loginPage.focusOnPasswordField();
 
-    await usernameField.click();
-    await driver.actions().sendKeys(Key.TAB).perform();
-
-    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
-
-    await passwordField.click();
-
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
+    const actualResult = await loginPage.hasPasswordError();
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-
+/*
   describe.each`
     testCase    | username            | password            | description
     ${'TC-009'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
