@@ -1,6 +1,5 @@
 const DriverFactory = require('../factories/driverFactory');
 const PageFactory = require('../factories/pagesFactory');
-const { By, until, Key } = require('selenium-webdriver');
 
 const CONFIG = {
     VALID_USERNAME: 'javier',
@@ -9,7 +8,9 @@ const CONFIG = {
     INVALID_PASSWORD: '.12345.qwerty.',
     EMPTY_USERNAME: '',
     EMPTY_PASSWORD: '',
-    TIMEOUT: 90000
+    TIMEOUT: 90000,
+    requiredUsername: 'Username is required',
+    requiredPassword: 'Password must be at least 8 characters',
 };
 
 let driver, loginPage, landingPage;

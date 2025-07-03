@@ -1,11 +1,7 @@
-const loginSelectors = require('./selectors/loginSelector');
 const tabOrderControls = require('./selectors/tabOrderControls');
-const {
-  CONFIG,
-  initPages,
-  driver: getDriver
-} = require('./helpers/loginTestSetup');
-const { By, until, Key } = require('selenium-webdriver');
+const { invalidCredentials } = require('./lib/testConfig');
+
+const { CONFIG, initPages, driver: getDriver } = require('./helpers/loginTestSetup');
 
 let driver;
 let loginPage;
@@ -33,108 +29,79 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     await loginPage.open();
     await loginPage.enterUsername(CONFIG.VALID_USERNAME);
     await loginPage.enterPassword(CONFIG.VALID_PASSWORD);
-    await loginPage.submitForm();
+    await loginPage.clickLoginButton();
 
-    const dashboardElement = await driver.wait(
-      until.elementLocated(By.css(loginSelectors.dashboardTitle)),
-      CONFIG.TIMEOUT
-    );
-
-    const actualResult = await dashboardElement.getText();
+    const actualResult = await loginPage.getDashboardTitle();
     const expectedResult = /dashboard/i;
 
     expect(actualResult).toMatch(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-002:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
-    await loginPage.openLink(loginPage.selectors.recoverPassword);
+    await loginPage.clickRecoverPasswordLink();
 
     const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
-
-    await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
-
-    const actualUrl = await driver.getCurrentUrl();
+    const actualUrl = await loginPage.getCurrentUrl();
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-003: Clicking New Account link should redirect to registration page', async () => {
-    await loginPage.openLink(loginPage.selectors.newAccount);
+    await loginPage.clickNewAccountLink();
 
     const expectedUrl = global.testConfig.baseNewAccountUrl;
+    await loginPage.waitForUrl(expectedUrl);
 
-    await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
-
-    const actualUrl = await driver.getCurrentUrl();
+    const actualUrl = await loginPage.getCurrentUrl();
 
     expect(actualUrl).toBe(expectedUrl);
+
   }, CONFIG.TIMEOUT);
 
   test('TC-004: Tab order should follow expected focus sequence', async () => {
-    const actualResult = await loginPage.canNavigateWithTabsInOrder(tabOrderControls);
+    const actualResult = await loginPage.pressTabKeysAndNavigate(tabOrderControls);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-005: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+      await loginPage.clickContactUsLink();
 
-    TIMEOUT = 2000;
+      const expectedUrl = global.testConfig.contactUsRedirectUrl;
+      const timeout = global.testConfig.contactUsRedirectTimeout;
 
-    await loginPage.openLink(loginPage.selectors.contactUs);
+      await loginPage.ensureRedirectTo(expectedUrl, timeout);
 
-    const expectedUrl = global.testConfig.contactUsRedirectUrl;
+      const actualUrl = await loginPage.getCurrentUrl();
 
-    try {
-      await driver.wait(until.urlIs(expectedUrl), TIMEOUT);
-    } catch (error) {
-      await driver.get(expectedUrl);
-    }
-
-    const actualUrl = await driver.getCurrentUrl();
-
-    expect(actualUrl).toBe(expectedUrl);
+      expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-006: Username field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Username is required';
-    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await loginPage.focusOnUsernameField();
 
-    await usernameField.click();
-
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
+    const actualResult = await loginPage.hasUsernameError();
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-007: Password field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Password must be at least 8 characters';
+      await loginPage.enterUsername(CONFIG.VALID_USERNAME);
+      await loginPage.focusOnPasswordField();
 
-    await loginPage.enterUsername(CONFIG.VALID_USERNAME);
+      const actualResult = await loginPage.hasPasswordError();
+      const expectedResult = true;
 
-    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
-
-    await passwordField.click();
-
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
+      expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
-    const WARNING_MESSAGE = 'Password must be at least 8 characters';
-    const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
+    await loginPage.focusOnUsernameFieldAndTab();
+    await loginPage.focusOnPasswordField();
 
-    await usernameField.click();
-    await driver.actions().sendKeys(Key.TAB).perform();
-
-    const passwordField = await driver.findElement(By.css(loginPage.selectors.passwordInput));
-
-    await passwordField.click();
-
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.passwordInput, WARNING_MESSAGE);
+    const actualResult = await loginPage.hasPasswordError();
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
@@ -149,10 +116,10 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     test(`${description}`, async () => {
       await loginPage.enterUsername(username);
       await loginPage.enterPassword(password);
-      await loginPage.submitForm();
+      await loginPage.clickLoginButton();
 
       const actualResult = await loginPage.getModalText();
-      const expectedResult = 'Invalid credentials.';
+      const expectedResult = invalidCredentials;
 
       expect(actualResult).toBe(expectedResult);
     }, CONFIG.TIMEOUT);
@@ -169,9 +136,9 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       await loginPage.enterPassword(password);
 
       const actualResult = await loginPage.isSubmitButtonDisabled();
+      const expectedResult = true;
 
-      expect(actualResult).toBe(true);
+      expect(actualResult).toBe(expectedResult);
     }, CONFIG.TIMEOUT);
   });
-
 });

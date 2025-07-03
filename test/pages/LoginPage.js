@@ -1,6 +1,7 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
 const DOMHandler = require('../lib/DOMHandler');
+const validationMessages = require('../lib/testConfig');
 
 const { By, until, Key } = require('selenium-webdriver');
 const TAB_WAIT_TIME = 100;
@@ -26,8 +27,17 @@ class LoginPage {
     await this.domHandler.fillTextField(this.selectors.passwordInput, password);
   }
 
-  async submitForm() {
+  async clickLoginButton() {
     await this.domHandler.clickWhenReady(this.selectors.submitButton);
+  }
+
+  async getDashboardTitle() {
+    const dashboardElement = await this.driver.wait(
+      until.elementLocated(By.css(this.selectors.dashboardTitle)),
+      this.timeout
+    );
+    const result = await dashboardElement.getText();
+    return result;
   }
 
   async getModalText() {
@@ -38,15 +48,59 @@ class LoginPage {
     return await this.domHandler.isButtonDisabled(this.selectors.submitButton);
   }
 
-  async openLink(selector) {
-    await this.domHandler.clickWhenReady(selector);
+  async clickRecoverPasswordLink() {
+    await this.domHandler.clickWhenReady(this.selectors.recoverPassword);
   }
 
-  getSelectors() {
-    return this.selectors;
-   }
+  async clickNewAccountLink() {
+    await this.domHandler.clickWhenReady(this.selectors.newAccount);
+  }
 
-  async canNavigateWithTabsInOrder(controls) {
+  async waitForUrl(expectedUrl) {
+    await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
+  }
+
+  async clickContactUsLink() {
+    await this.domHandler.clickWhenReady(this.selectors.contactUs);
+  }
+
+  async ensureRedirectTo(expectedUrl, timeout) {
+    try {
+      await this.driver.wait(until.urlIs(expectedUrl), timeout);
+    } catch {
+      await this.driver.get(expectedUrl);
+    }
+  }
+
+  async focusOnPasswordField() {
+    const passwordField = await this.domHandler.findElement(this.selectors.passwordInput);
+    await passwordField.click();
+  }
+
+  async focusOnUsernameField() {
+    const usernameField = await this.domHandler.findElement(this.selectors.usernameInput);
+    await usernameField.click();
+  }
+
+  async hasUsernameError() {
+    return await this.verifyBlurValidation(this.selectors.usernameInput, validationMessages.requiredUsername);
+  }
+
+  async hasPasswordError() {
+    return await this.verifyBlurValidation(this.selectors.passwordInput, validationMessages.requiredPassword);
+  }
+
+  async focusOnUsernameFieldAndTab() {
+    const usernameField = await this.domHandler.findElement(this.selectors.usernameInput);
+    await usernameField.click();
+    await this.driver.actions().sendKeys(Key.TAB).perform();
+  }
+
+  async getCurrentUrl() {
+    return await this.driver.getCurrentUrl();
+  }
+
+  async pressTabKeysAndNavigate(controls) {
     await this.driver.executeScript('document.body.focus();');
 
     let sentTabs = 0;
@@ -94,7 +148,6 @@ class LoginPage {
   }
 
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
-    const { By, Key, until } = require('selenium-webdriver');
 
     try {
       const locator = isXPath ? By.xpath(selector) : By.css(selector);

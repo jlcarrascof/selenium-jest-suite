@@ -7,4 +7,5 @@ global.testConfig = {
     forgotPasswordRedirectUrl: 'https://login.harmonychurchsuite.com/landing',
     contactUsRedirectUrl: 'https://login.harmonychurchsuite.com/404',
     currentBrowser: 'chrome',
+    contactUsRedirectTimeout: 2000,
 };
