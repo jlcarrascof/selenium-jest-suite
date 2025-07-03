@@ -4,21 +4,21 @@ const { CONFIG, initPages, driver: getDriver, newAccountPage: getNewAccountPage 
 
 let driver, newAccountPage;
 
-const fillFormFields = async (fields) => {
-  for (const [key, value] of Object.entries(fields)) {
-    const selector = newAccountPage.selectors[`${key}Input`];
+// const fillFormFields = async (fields) => {
+//   for (const [key, value] of Object.entries(fields)) {
+//     const selector = newAccountPage.selectors[`${key}Input`];
 
-    await driver.findElement(By.css(selector)).sendKeys(value);
-  }
-};
+//     await driver.findElement(By.css(selector)).sendKeys(value);
+//   }
+// };
 
-const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
-  const element = await driver.findElement(by(selector));
+// const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
+//   const element = await driver.findElement(by(selector));
 
-  await driver.wait(until.elementIsVisible(element), timeout);
+//   await driver.wait(until.elementIsVisible(element), timeout);
 
-  return element;
-};
+//   return element;
+// };
 
 beforeAll(async () => {
   const pages = await initPages();
