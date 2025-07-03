@@ -93,6 +93,16 @@ class NewAccountPage {
     return await this.verifyBlurValidation(selector, expectedMessage);
   }
 
+  async createButtonDisabledWhenTermsUnchecked() {
+    const checkbox = await this.domHandler.findElement(this.selectors.termsCheckbox);
+    if (await checkbox.isSelected()) {
+      await checkbox.click();
+    }
+    const createBtn = await this.domHandler.findElement(this.selectors.createButton);
+
+    return (await createBtn.getAttribute('disabled')) !== null;
+  }
+
 }
 
 module.exports = NewAccountPage;

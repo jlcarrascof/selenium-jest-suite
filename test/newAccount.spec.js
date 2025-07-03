@@ -62,19 +62,14 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     }
   });
 
-/*
   test('TC-003: Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked', async () => {
-    const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
-
-    if (await checkbox.isSelected()) await checkbox.click();
-
-    const createButton = await waitForElement(By.css, newAccountPage.selectors.createButton);
-    const actualResult = await createButton.getAttribute('disabled') !== null;
+    const actualResult = await newAccountPage.createButtonDisabledWhenTermsUnchecked();
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
+/*
   test('TC-004: Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked', async () => {
     await fillFormFields({
       name: VALID_DATA.name,
