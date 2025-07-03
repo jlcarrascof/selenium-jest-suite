@@ -76,7 +76,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-/*
+
   test('TC-006: Click on Apps button should open menu', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickAppsButton();
@@ -175,5 +175,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(CONFIG.SUBSCRIPTION_DATA_URL);
   }, CONFIG.TIMEOUT);
-*/
+
 });
