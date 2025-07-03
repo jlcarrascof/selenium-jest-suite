@@ -69,28 +69,17 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-/*
   test('TC-004: Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked', async () => {
-    await fillFormFields({
-      name: VALID_DATA.name,
-      surname: VALID_DATA.surname,
-      email: VALID_DATA.email,
-      username: VALID_DATA.username,
-      password: VALID_DATA.password,
-      confirmPassword: VALID_DATA.confirmPassword
-    });
+    await newAccountPage.fillAllFieldsWithValidData(CONFIG.VALID_DATA);
+    await newAccountPage.acceptTermsAndConditions();
 
-    const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
-
-    if (!(await checkbox.isSelected())) await checkbox.click();
-
-    const createButton = await waitForElement(By.css, newAccountPage.selectors.createButton);
-    const actualResult = await createButton.getAttribute('disabled') == null;
+    const actualResult = await newAccountPage.isCreateAccountButtonEnabled();
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
+/*
   test('TC-005: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
     await fillFormFields({
       name: VALID_DATA.name,

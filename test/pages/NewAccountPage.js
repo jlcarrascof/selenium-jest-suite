@@ -103,6 +103,27 @@ class NewAccountPage {
     return (await createBtn.getAttribute('disabled')) !== null;
   }
 
+  async fillAllFieldsWithValidData(data) {
+    await this.domHandler.fillTextField(this.selectors.nameInput, data.name);
+    await this.domHandler.fillTextField(this.selectors.surnameInput, data.surname);
+    await this.domHandler.fillTextField(this.selectors.emailInput, data.email);
+    await this.domHandler.fillTextField(this.selectors.usernameInput, data.username);
+    await this.domHandler.fillTextField(this.selectors.passwordInput, data.password);
+    await this.domHandler.fillTextField(this.selectors.confirmPasswordInput, data.confirmPassword);
+  }
+
+  async acceptTermsAndConditions() {
+    const checkbox = await this.domHandler.findElement(this.selectors.termsCheckbox);
+    if (!(await checkbox.isSelected())) {
+      await checkbox.click();
+    }
+  }
+
+  async isCreateAccountButtonEnabled() {
+    const btn = await this.domHandler.findElement(this.selectors.createButton);
+    return (await btn.getAttribute('disabled')) === null;
+  }
+
 }
 
 module.exports = NewAccountPage;
