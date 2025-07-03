@@ -16,10 +16,11 @@ class DOMHandler {
 
   // General Actions
   async clickWhenReady(selector) {
-    const element = await this.driver.wait(
-      until.elementLocated(By.css(selector)),
-      this.timeout
-    );
+    // const element = await this.driver.wait(
+    //   until.elementLocated(By.css(selector)),
+    //   this.timeout
+    // );
+    const element = await this.findElement(selector);
     await this.driver.wait(until.elementIsVisible(element), this.timeout);
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
@@ -50,15 +51,6 @@ class DOMHandler {
     return await modal.getText();
   }
 
-  /*
-  async openUrlAndGetCurrent(driver, expectedUrl) {
-    await driver.wait(until.urlIs(expectedUrl), loginPage.timeout);
-
-    const result = await driver.getCurrentUrl();
-
-    return result;
-  }
-*/
   async findElement(selector) {
     const locator = selector.startsWith('//') ? By.xpath(selector) : By.css(selector);
     return await this.driver.wait(until.elementLocated(locator), this.timeout);

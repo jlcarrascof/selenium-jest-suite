@@ -83,7 +83,6 @@ class NewAccountPage {
 
   async submitWithoutAgreeingTerms() {
     await this.domHandler.clickWhenReady(this.selectors.termsCheckbox);
-    // mover foco o tabulador si es necesario
   }
   async hasTermsError() {
     return await this.verifyBlurValidation(this.selectors.termsCheckbox, messages.terms, true);
