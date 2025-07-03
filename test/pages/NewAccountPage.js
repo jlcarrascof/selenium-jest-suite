@@ -1,6 +1,7 @@
 // tests/pages/NewAccountPage.js
 const selectors = require("../selectors/newAccountSelector");
 const DOMHandler = require('../lib/DOMHandler');
+const messages = require('../lib/testConfig');
 
 const { By, until, Key } = require('selenium-webdriver');
 
@@ -78,6 +79,14 @@ class NewAccountPage {
       console.error(`Error verifying onBlur for ${selector}:`, error.message);
       return false;
     }
+  }
+
+  async submitWithoutAgreeingTerms() {
+    await this.domHandler.clickWhenReady(this.selectors.termsCheckbox);
+    // mover foco o tabulador si es necesario
+  }
+  async hasTermsError() {
+    return await this.verifyBlurValidation(this.selectors.termsCheckbox, messages.terms, true);
   }
 }
 

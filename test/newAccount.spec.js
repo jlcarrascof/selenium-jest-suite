@@ -44,10 +44,17 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-001: Terms and Conditions checkbox should display error message when unchecked', async () => {
-    const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
+    await newAccountPage.submitWithoutAgreeingTerms();
 
-    await checkbox.click();
-    await validateError(newAccountPage.selectors.termsCheckbox, CONFIG.ERROR_MESSAGES.terms, true);
+    const actualResult = await newAccountPage.hasTermsError();
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
+
+    // const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
+
+    // await checkbox.click();
+    // await validateError(newAccountPage.selectors.termsCheckbox, CONFIG.ERROR_MESSAGES.terms, true);
   });
 /*
   test('TC-002: All fields should display error messages when are empty', async () => {
