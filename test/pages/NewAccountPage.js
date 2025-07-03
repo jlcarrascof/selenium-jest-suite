@@ -81,7 +81,7 @@ class NewAccountPage {
     }
   }
 
-  async submitWithoutAgreeingTerms() {
+  async submitWithoutTerms() {
     await this.domHandler.clickWhenReady(this.selectors.termsCheckbox);
   }
   async hasTermsError() {
