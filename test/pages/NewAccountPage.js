@@ -87,6 +87,12 @@ class NewAccountPage {
   async hasTermsError() {
     return await this.verifyBlurValidation(this.selectors.termsCheckbox, messages.terms, true);
   }
+
+  async requiredErrorVisible(fieldKey, expectedMessage) {
+    const selector = this.selectors[fieldKey];
+    return await this.verifyBlurValidation(selector, expectedMessage);
+  }
+
 }
 
 module.exports = NewAccountPage;

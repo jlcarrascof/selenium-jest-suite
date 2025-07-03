@@ -20,13 +20,6 @@ const waitForElement = async (by, selector, timeout = newAccountPage.timeout) =>
   return element;
 };
 
-const validateError = async (selector, errorMessage, isXPath = false) => {
-  const actualResult = await newAccountPage.verifyBlurValidation(selector, errorMessage, isXPath);
-  const expectedResult = true;
-
-  expect(actualResult).toBe(expectedResult);
-};
-
 beforeAll(async () => {
   const pages = await initPages();
   driver = pages.driver;
@@ -51,25 +44,25 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-/*
+
   test('TC-002: All fields should display error messages when are empty', async () => {
     const requiredFields = [
-      ['nameInput', ERROR_MESSAGES.name],
-      ['surnameInput', ERROR_MESSAGES.surname],
-      ['emailInput', ERROR_MESSAGES.email],
-      ['usernameInput', ERROR_MESSAGES.username],
-      ['passwordInput', ERROR_MESSAGES.password],
+      ['nameInput',   CONFIG.ERROR_MESSAGES.name],
+      ['surnameInput',CONFIG.ERROR_MESSAGES.surname],
+      ['emailInput',  CONFIG.ERROR_MESSAGES.email],
+      ['usernameInput',CONFIG.ERROR_MESSAGES.username],
+      ['passwordInput',CONFIG.ERROR_MESSAGES.password],
     ];
 
-    for (const [selectorKey, errorMessage] of requiredFields) {
-      const selector = newAccountPage.selectors[selectorKey];
+    for (const [fieldKey, expectedMessage] of requiredFields) {
+      const actualResult = await newAccountPage.requiredErrorVisible(fieldKey, expectedMessage);
+      const expectedResult = true;
 
-      await driver.findElement(By.css(selector)).click();
-      await driver.actions().sendKeys(Key.TAB).perform();
-      await validateError(selector, errorMessage);
+      expect(actualResult).toBe(expectedResult);
     }
   });
 
+/*
   test('TC-003: Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked', async () => {
     const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
 

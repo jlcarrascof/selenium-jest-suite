@@ -16,11 +16,8 @@ class DOMHandler {
 
   // General Actions
   async clickWhenReady(selector) {
-    // const element = await this.driver.wait(
-    //   until.elementLocated(By.css(selector)),
-    //   this.timeout
-    // );
     const element = await this.findElement(selector);
+
     await this.driver.wait(until.elementIsVisible(element), this.timeout);
     await this.driver.wait(until.elementIsEnabled(element), this.timeout);
     await element.click();
