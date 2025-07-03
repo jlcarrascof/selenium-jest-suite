@@ -80,6 +80,15 @@ class LoginPage {
     return await this.verifyBlurValidation(this.selectors.usernameInput, expectedMessage);
   }
 
+  async focusOnPasswordField() {
+    await this.domHandler.clickWhenReady(this.selectors.passwordInput);
+  }
+
+  async passwordIsRequired() {
+    const expectedMessage = validationMessages.requiredPassword;
+    return await this.domHandler.isValidationMessageVisible(this.selectors.passwordError, expectedMessage);
+  }
+
   async openUrlAndGetCurrent(expectedUrl) {
     await this.driver.get(expectedUrl);
     return await this.driver.getCurrentUrl();

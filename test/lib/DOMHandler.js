@@ -48,6 +48,20 @@ class DOMHandler {
     return result;
   }
 
+  async isValidationMessageVisible(selector, expectedMessage) {
+    try {
+      const element = await this.driver.wait(
+        until.elementLocated(By.css(selector)),
+        this.timeout
+      );
+      await this.driver.wait(until.elementIsVisible(element), this.timeout);
+      const text = await element.getText();
+      return text === expectedMessage;
+    } catch (error) {
+      return false;
+    }
+  }
+
 }
 
 module.exports = DOMHandler;

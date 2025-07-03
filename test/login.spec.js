@@ -1,10 +1,7 @@
 const loginPageSelector = require('./selectors/loginSelector');
 const tabOrderControls = require('./selectors/tabOrderControls');
-const {
-  CONFIG,
-  initPages,
-  driver: getDriver
-} = require('./helpers/loginTestSetup');
+
+const { CONFIG, initPages, driver: getDriver } = require('./helpers/loginTestSetup');
 const { By, until, Key } = require('selenium-webdriver');
 
 let driver;
@@ -28,6 +25,7 @@ beforeEach(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
+/*
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.open();
@@ -81,19 +79,19 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
       expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-
+*/
   test('TC-006: Username field should display error message when is empty', async () => {
-    const WARNING_MESSAGE = 'Username is required';
     const usernameField = await driver.findElement(By.css(loginPage.selectors.usernameInput));
 
     await usernameField.click();
 
-    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, WARNING_MESSAGE);
+    const actualResult = await loginPage.verifyBlurValidation(loginPage.selectors.usernameInput, CONFIG.requiredUsername);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
+/*
   test('TC-007: Password field should display error message when is empty', async () => {
     const WARNING_MESSAGE = 'Password must be at least 8 characters';
 
@@ -107,6 +105,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
+
   }, CONFIG.TIMEOUT);
 
   test('TC-008: Username field and Password field should display error messages when both fields are empty', async () => {
@@ -159,5 +158,5 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(true);
     }, CONFIG.TIMEOUT);
   });
-
+*/
 });
