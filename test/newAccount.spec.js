@@ -94,22 +94,12 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  test('TC-006: Password field should display error message when using only numbers', async () => {
-    const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
-  });
-
-  test('TC-007: Password field should display error message when using only letters', async () => {
-    const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.onlyLetters, CONFIG.ERROR_MESSAGES.password);
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
-  });
-
-  test('TC-008: Password field should display error message when using numbers and characters with length less than 8', async () => {
-    const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.shortLength, CONFIG.ERROR_MESSAGES.password);
+  test.each([
+    ['TC-006', 'only numbers', CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password],
+    ['TC-007', 'only letters', CONFIG.INVALID_PASSWORDS.onlyLetters, CONFIG.ERROR_MESSAGES.password],
+    ['TC-008', 'short length (< 8 chars)', CONFIG.INVALID_PASSWORDS.shortLength, CONFIG.ERROR_MESSAGES.password],
+  ])('%s: Password field should display error message when using %s', async (tc, desc, inputPassword, expectedMessage) => {
+    const actualResult = await newAccountPage.showsPasswordRequiredError(inputPassword, expectedMessage);
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
