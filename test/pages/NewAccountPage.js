@@ -138,6 +138,10 @@ class NewAccountPage {
     await this.domHandler.fillTextField(selector, value);
   }
 
+  async fillEmailField(email) {
+    await this.domHandler.fillTextField(this.selectors.emailInput, email);
+  }
+
 }
 
 module.exports = NewAccountPage;
