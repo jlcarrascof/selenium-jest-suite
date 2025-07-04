@@ -12,13 +12,13 @@ let driver, newAccountPage;
 //   }
 // };
 
-// const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
-//   const element = await driver.findElement(by(selector));
+const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
+  const element = await driver.findElement(by(selector));
 
-//   await driver.wait(until.elementIsVisible(element), timeout);
+  await driver.wait(until.elementIsVisible(element), timeout);
 
-//   return element;
-// };
+  return element;
+};
 
 beforeAll(async () => {
   const pages = await initPages();
@@ -31,7 +31,6 @@ afterAll(async () => {
 });
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
-
   beforeEach(async () => {
     await newAccountPage.open();
   });
@@ -62,44 +61,39 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     }
   });
 
-  test('TC-003: Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked', async () => {
-    const actualResult = await newAccountPage.createButtonDisabledWhenTermsUnchecked();
-    const expectedResult = true;
+  test.each([
+    {
+      tc: 'TC-003',
+      description: 'Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked',
+      fillFields: false,
+      acceptTerms: false,
+      expectedResult: false
+    },
+    {
+      tc: 'TC-004',
+      description: 'Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked',
+      fillFields: true,
+      acceptTerms: true,
+      expectedResult: true
+    },
+    {
+      tc: 'TC-005',
+      description: 'Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked',
+      fillFields: true,
+      acceptTerms: false,
+      expectedResult: false
+    }
+  ])('$tc: $description', async ({ fillFields, acceptTerms, expectedResult }) => {
+    if (fillFields) {
+      await newAccountPage.fillAllFieldsWithValidData(CONFIG.VALID_DATA);
+    }
 
-    expect(actualResult).toBe(expectedResult);
-  });
-
-  test('TC-004: Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked', async () => {
-    await newAccountPage.fillAllFieldsWithValidData(CONFIG.VALID_DATA);
-    await newAccountPage.acceptTermsAndConditions();
+    await newAccountPage.setTermsAndConditions(acceptTerms);
 
     const actualResult = await newAccountPage.isCreateAccountButtonEnabled();
-    const expectedResult = true;
-
     expect(actualResult).toBe(expectedResult);
   });
-/*
-  test('TC-005: Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked', async () => {
-    await fillFormFields({
-      name: CONFIG.VALID_DATA.name,
-      surname: CONFIG.VALID_DATA.surname,
-      email: CONFIG.VALID_DATA.email,
-      username: CONFIG.VALID_DATA.username,
-      password: CONFIG.VALID_DATA.password,
-      confirmPassword: CONFIG.VALID_DATA.confirmPassword
-    });
 
-    const checkbox = await waitForElement(By.xpath, newAccountPage.selectors.termsCheckbox);
-
-    if (await checkbox.isSelected()) await checkbox.click();
-
-    const createButton = await waitForElement(By.css, newAccountPage.selectors.createButton);
-    const actualResult = await createButton.getAttribute('disabled') !== null;
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
-  });
-*/
   test('TC-006: Password field should display error message when using only numbers', async () => {
     const actualResult = await newAccountPage.showsPasswordRequiredError(CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password);
     const expectedResult = true;

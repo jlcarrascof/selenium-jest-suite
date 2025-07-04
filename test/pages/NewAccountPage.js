@@ -93,16 +93,6 @@ class NewAccountPage {
     return await this.verifyBlurValidation(selector, expectedMessage);
   }
 
-  async createButtonDisabledWhenTermsUnchecked() {
-    const checkbox = await this.domHandler.findElement(this.selectors.termsCheckbox);
-    if (await checkbox.isSelected()) {
-      await checkbox.click();
-    }
-    const createBtn = await this.domHandler.findElement(this.selectors.createButton);
-
-    return (await createBtn.getAttribute('disabled')) !== null;
-  }
-
   async fillAllFieldsWithValidData(data) {
     await this.domHandler.fillTextField(this.selectors.nameInput, data.name);
     await this.domHandler.fillTextField(this.selectors.surnameInput, data.surname);
@@ -112,9 +102,11 @@ class NewAccountPage {
     await this.domHandler.fillTextField(this.selectors.confirmPasswordInput, data.confirmPassword);
   }
 
-  async acceptTermsAndConditions() {
+  async setTermsAndConditions(beChecked) {
     const checkbox = await this.domHandler.findElement(this.selectors.termsCheckbox);
-    if (!(await checkbox.isSelected())) {
+    const isChecked = await checkbox.isSelected();
+
+    if (isChecked !== beChecked) {
       await checkbox.click();
     }
   }
