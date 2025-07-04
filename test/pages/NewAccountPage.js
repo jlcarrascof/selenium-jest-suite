@@ -138,8 +138,20 @@ class NewAccountPage {
     await this.domHandler.fillTextField(selector, value);
   }
 
-  async fillEmailField(email) {
+  async enterEmailAndBlur(email) {
     await this.domHandler.fillTextField(this.selectors.emailInput, email);
+
+    const el = await this.domHandler.findElement(this.selectors.emailInput);
+
+    await this.driver.executeScript('arguments[0].blur();', el);
+  }
+
+  async emailHasNoError() {
+    const visibles = await this.domHandler.findVisibleElements(
+      this.selectors.emailError,
+      true
+    );
+    return visibles.length === 0;
   }
 
 }
