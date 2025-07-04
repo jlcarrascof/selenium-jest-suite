@@ -138,20 +138,24 @@ class NewAccountPage {
     await this.domHandler.fillTextField(selector, value);
   }
 
-  async enterEmailAndBlur(email) {
+  async enterEmail(email) {
     await this.domHandler.fillTextField(this.selectors.emailInput, email);
-
-    const el = await this.domHandler.findElement(this.selectors.emailInput);
-
-    await this.driver.executeScript('arguments[0].blur();', el);
   }
 
-  async emailHasNoError() {
-    const visibles = await this.domHandler.findVisibleElements(
-      this.selectors.emailError,
-      true
-    );
-    return visibles.length === 0;
+  async leaveEmailField() {
+    console.log('Focusing email field');
+    await this.domHandler.clickWhenReady(this.selectors.emailInput);
+    console.log('Sending TAB');
+    await this.driver.actions().sendKeys(Key.TAB).perform();
+    console.log('TAB sent, focus should be on username');
+  }
+
+  async isEmailErrorAbsent() {
+    const errorSelector = this.errorMapping[this.selectors.emailInput];
+    console.log('Checking error selector:', errorSelector);
+    const isAbsent = await this.domHandler.isElementAbsent(errorSelector);
+    console.log('Error absent:', isAbsent);
+    return isAbsent;
   }
 
 }
