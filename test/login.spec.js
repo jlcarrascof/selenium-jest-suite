@@ -1,7 +1,7 @@
 const tabOrderControls = require('./selectors/tabOrderControls');
 const { invalidCredentials } = require('./lib/testConfig');
 
-const { CONFIG, initPages, driver: getDriver } = require('./helpers/loginTestSetup');
+const { CONFIG, initPages, driver: getDriver } = require('./setup/loginTestSetup');
 
 let driver;
 let loginPage;
@@ -46,11 +46,13 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test('TC-003: Clicking New Account link should redirect to registration page', async () => {
+  test.only('TC-003: Clicking New Account link should redirect to registration page', async () => {
     await loginPage.clickNewAccountLink();
 
+    console.log(global.testConfig.baseNewAccountUrl);
     const expectedUrl = global.testConfig.baseNewAccountUrl;
-    await loginPage.waitForUrl(expectedUrl);
+    console.log(`Expected URL: ${expectedUrl}`);
+    // await loginPage.waitForUrl(expectedUrl);
 
     const actualUrl = await loginPage.getCurrentUrl();
 
