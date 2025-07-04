@@ -129,6 +129,15 @@ class NewAccountPage {
     );
   }
 
+  async fillPasswordAndConfirmation(password, confirmation) {
+    await this.domHandler.fillTextField(this.selectors.passwordInput, password);
+    await this.domHandler.fillTextField(this.selectors.confirmPasswordInput, confirmation);
+  }
+
+  async fillTextField(selector, value) {
+    await this.domHandler.fillTextField(selector, value);
+  }
+
 }
 
 module.exports = NewAccountPage;

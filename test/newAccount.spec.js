@@ -89,14 +89,36 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-/*
   test('TC-009: Confirm Password field should display error message when we type a different Password', async () => {
-    await driver.findElement(By.css(newAccountPage.selectors.passwordInput)).sendKeys(VALID_DATA.password);
-    await driver.findElement(By.css(newAccountPage.selectors.confirmPasswordInput)).sendKeys(VALID_DATA.differentPassword);
-    await driver.actions().sendKeys(Key.TAB).perform();
-    await validateError(newAccountPage.selectors.confirmPasswordInput, ERROR_MESSAGES.confirmPassword);
+    await newAccountPage.fillPasswordAndConfirmation(
+      CONFIG.VALID_DATA.password, CONFIG.VALID_DATA.differentPassword
+    );
+
+    const actualResult = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.confirmPasswordInput, CONFIG.ERROR_MESSAGES.confirmPassword
+    );
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
   });
 
+  test('TC-010: Email field should display error message when using an invalid email format', async () => {
+    await newAccountPage.fillTextField(
+      newAccountPage.selectors.emailInput,
+      CONFIG.INVALID_EMAILS.incomplete
+    );
+
+    const actualResult = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.emailInput,
+      CONFIG.ERROR_MESSAGES.invalidEmail
+    );
+    const expectedResult = true;
+
+    expect(actualResult).toBe(expectedResult);
+  });
+
+
+/*
   test('TC-010: Email field should display error message when using an invalid email format', async () => {
     const emailField = await waitForElement(By.css, newAccountPage.selectors.emailInput);
 

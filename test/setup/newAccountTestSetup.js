@@ -29,6 +29,11 @@ const CONFIG = {
     onlyLetters: 'abcdefgh',
     shortLength:   'ab1@'
   },
+  INVALID_EMAILS: {
+    incomplete: 'test@',
+    noDomain: 'user@domain',
+    noAtSymbol: 'userdomain.com'
+  }
 };
 
 let driver, newAccountPage;
