@@ -118,15 +118,13 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test.only('TC-011: Email field should not display error message when using a valid email format', async () => {
-    await newAccountPage.fillEmailField(CONFIG.VALID_DATA.email);
+    await newAccountPage.enterEmailAndBlur(CONFIG.VALID_DATA.email);
 
-    const actualResult = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.emailInput
-    );
+    const actualResult   = await newAccountPage.emailHasNoError();
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
-  });
+  }, CONFIG.TIMEOUT);
 
 /*
   test('TC-011: Email field should not display error message when using a valid email format', async () => {
