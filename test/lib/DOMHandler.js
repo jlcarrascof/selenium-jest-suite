@@ -53,18 +53,10 @@ class DOMHandler {
     return await this.driver.wait(until.elementLocated(locator), this.timeout);
   }
 
-    async findVisibleElements(selector, isXPath = false) {
-      const locator = isXPath ? By.xpath(selector) : By.css(selector);
-      const all = await this.driver.findElements(locator);
-      const visible = [];
-
-      for (const el of all) {
-        if (await el.isDisplayed()) {
-          visible.push(el);
-        }
-      }
-
-      return visible;
+  async isElementAbsent(selector) {
+    const locator = selector.startsWith('//') ? By.xpath(selector) : By.css(selector);
+    const elements = await this.driver.findElements(locator);
+    return elements.length === 0;
   }
 
 }
