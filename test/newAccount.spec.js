@@ -117,7 +117,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  test.only('TC-011: Email field should not display error message when using a valid email format', async () => {
+  test('TC-011: Email field should not display error message when using a valid email format', async () => {
     await newAccountPage.enterEmail(CONFIG.VALID_DATA.email);
     await newAccountPage.leaveEmailField();
     const actualResult = await newAccountPage.verifyBlurValidation(
@@ -129,23 +129,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  // test.only('TC-011: Email field should not display error message when using a valid email format', async () => {
-  //   await newAccountPage.enterEmailAndBlur(CONFIG.VALID_DATA.email);
-
-  //   const actualResult   = await newAccountPage.emailHasNoError();
-  //   const expectedResult = true;
-
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
-
 /*
-  test('TC-011: Email field should not display error message when using a valid email format', async () => {
-    const emailField = await waitForElement(By.css, newAccountPage.selectors.emailInput);
-
-    await emailField.sendKeys(VALID_DATA.email);
-    await driver.actions().sendKeys(Key.TAB).perform();
-    await validateError(newAccountPage.selectors.usernameInput, ERROR_MESSAGES.username);
-  });
 
   test('TC-012: Clicking Login link should redirect to login page', async () => {
     const LOGIN_LINK_SELECTOR = '/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a';
