@@ -193,6 +193,18 @@ async enterEmail(email) {
     return isAbsent;
   }
 
+  async clickLoginLink() {
+    const loginLinkSelector = this.selectors.loginLink;
+
+    await this.domHandler.clickWhenReady(loginLinkSelector);
+  }
+
+  async isRedirectedToLoginPage(expectedUrl) {
+    const currentUrl = await this.driver.getCurrentUrl();
+
+    return currentUrl === expectedUrl;
+  }
+
 }
 
 module.exports = NewAccountPage;
