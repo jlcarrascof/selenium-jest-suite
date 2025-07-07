@@ -13,5 +13,6 @@ module.exports = {
     usernameError: "//p[contains(normalize-space(.),'Username is required')]",
     passwordError: "//p[contains(normalize-space(.),'Password must be at least 8 characters')]",
     termsError: "//p[contains(normalize-space(.),'Terms and Conditions')]",
-    confirmPasswordError: "//p[contains(normalize-space(.),'Password must match')]"
+    confirmPasswordError: "//p[contains(normalize-space(.),'Password must match')]",
+    loginLink: 'a[routerlink="/tenant/user-signin"]',
 };

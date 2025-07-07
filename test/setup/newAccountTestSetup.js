@@ -11,7 +11,8 @@ const CONFIG = {
     username: 'javiermartinez',
     password: 'Password123!',
     confirmPassword: 'Password123!',
-    differentPassword: 'Password123*'
+    differentPassword: 'Password123*',
+    LOGIN_PAGE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin',
   },
   ERROR_MESSAGES: {
     name: 'Name is required',

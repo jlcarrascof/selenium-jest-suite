@@ -72,7 +72,9 @@ class NewAccountPage {
         return actualValidation === expectedValidation;
       } else {
         const errorSelector = this.errorMapping[selector] || this.selectors.nameError;
+        await this.driver.manage().setTimeouts({ implicit: 500 });
         const elements = await this.driver.findElements(By.xpath(errorSelector));
+        await this.driver.manage().setTimeouts({ implicit: 0 });
         return elements.length === 0;
       }
     } catch (error) {
@@ -138,24 +140,32 @@ class NewAccountPage {
     await this.domHandler.fillTextField(selector, value);
   }
 
-  async enterEmail(email) {
+async enterEmail(email) {
     await this.domHandler.fillTextField(this.selectors.emailInput, email);
   }
 
   async leaveEmailField() {
-    console.log('Focusing email field');
     await this.domHandler.clickWhenReady(this.selectors.emailInput);
-    console.log('Sending TAB');
-    await this.driver.actions().sendKeys(Key.TAB).perform();
-    console.log('TAB sent, focus should be on username');
+    await this.domHandler.clickWhenReady(this.selectors.usernameInput);
   }
 
   async isEmailErrorAbsent() {
     const errorSelector = this.errorMapping[this.selectors.emailInput];
-    console.log('Checking error selector:', errorSelector);
     const isAbsent = await this.domHandler.isElementAbsent(errorSelector);
-    console.log('Error absent:', isAbsent);
+
     return isAbsent;
+  }
+
+  async clickLoginLink() {
+    await this.domHandler.clickWhenReady(this.selectors.loginLink);
+  }
+
+  async waitForUrl(expectedUrl) {
+    await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
+  }
+
+  async getCurrentUrl() {
+    return await this.driver.getCurrentUrl();
   }
 
 }

@@ -4,6 +4,14 @@ const { CONFIG, initPages, driver: getDriver, newAccountPage: getNewAccountPage 
 
 let driver, newAccountPage;
 
+const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
+  const element = await driver.findElement(by(selector));
+
+  await driver.wait(until.elementIsVisible(element), timeout);
+
+  return element;
+};
+
 beforeAll(async () => {
   const pages = await initPages();
   driver = pages.driver;
@@ -117,45 +125,29 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  test.only('TC-011: Email field should not display error message when using a valid email format', async () => {
-    console.log('Starting TC-011');
+  test('TC-011: Email field should not display error message when using a valid email format', async () => {
     await newAccountPage.enterEmail(CONFIG.VALID_DATA.email);
     await newAccountPage.leaveEmailField();
-    const actualResult = await newAccountPage.isEmailErrorAbsent();
+    const actualResult = await newAccountPage.verifyBlurValidation(
+      newAccountPage.selectors.emailInput,
+      '',
+      false
+    );
     const expectedResult = true;
     expect(actualResult).toBe(expectedResult);
   });
 
-  // test.only('TC-011: Email field should not display error message when using a valid email format', async () => {
-  //   await newAccountPage.enterEmailAndBlur(CONFIG.VALID_DATA.email);
-
-  //   const actualResult   = await newAccountPage.emailHasNoError();
-  //   const expectedResult = true;
-
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
-
-/*
-  test('TC-011: Email field should not display error message when using a valid email format', async () => {
-    const emailField = await waitForElement(By.css, newAccountPage.selectors.emailInput);
-
-    await emailField.sendKeys(VALID_DATA.email);
-    await driver.actions().sendKeys(Key.TAB).perform();
-    await validateError(newAccountPage.selectors.usernameInput, ERROR_MESSAGES.username);
-  });
-
   test('TC-012: Clicking Login link should redirect to login page', async () => {
-    const LOGIN_LINK_SELECTOR = '/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a';
-    const EXPECTED_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin';
-    const loginLink = await waitForElement(By.xpath, LOGIN_LINK_SELECTOR, TIMEOUTS.elementVisibility);
+    await newAccountPage.clickLoginLink();
 
-    await loginLink.click();
-    await driver.wait(until.urlIs(EXPECTED_URL), TIMEOUTS.redirection);
+    const expectedUrl = CONFIG.LOGIN_PAGE_URL;
 
-    const actualResult = await driver.getCurrentUrl();
-    const expectedResult = EXPECTED_URL;
+    await newAccountPage.waitForUrl(expectedUrl);
 
-    expect(actualResult).toBe(expectedResult);
+    const actualUrl = await newAccountPage.getCurrentUrl();
+    const expectedResult = expectedUrl;
+
+    expect(actualUrl).toBe(expectedResult);
   });
-*/
+
 });
