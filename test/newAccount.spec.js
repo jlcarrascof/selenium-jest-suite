@@ -130,16 +130,14 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test.only('TC-012: Clicking Login link should redirect to login page', async () => {
-
     await newAccountPage.clickLoginLink();
+    await newAccountPage.waitForLoginPage(CONFIG.LOGIN_PAGE_URL);
 
-    const actualResult = await newAccountPage.isRedirectedToLoginPage(CONFIG.EXPECTED_LOGIN_URL);
+    const actualURL   = await newAccountPage.getCurrentUrl();
+    const expectedURL = CONFIG.LOGIN_PAGE_URL;
 
-    const expectedResult = true;
-
-    expect(actualResult).toBe(expectedResult);
-  });
-
+    expect(actualURL).toBe(expectedURL);
+  }, CONFIG.TIMEOUT);
 /*
 
   test('TC-012: Clicking Login link should redirect to login page', async () => {
