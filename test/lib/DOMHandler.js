@@ -67,6 +67,21 @@ class DOMHandler {
     return await this.driver.getCurrentUrl();
   }
 
+  async waitForElementVisible(selector, isXPath = false) {
+    const locator = isXPath ? By.xpath(selector) : By.css(selector);
+    const element = await this.driver.wait(
+      until.elementLocated(locator),
+      this.timeout,
+      `Element with selector "${selector}" not found`
+    );
+    await this.driver.wait(
+      until.elementIsVisible(element),
+      this.timeout,
+      `Element with selector "${selector}" is not visible`
+    );
+    return element;
+  }
+
 }
 
 module.exports = DOMHandler;

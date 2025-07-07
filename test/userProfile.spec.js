@@ -24,7 +24,7 @@ afterAll(async () => {
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test('TC-001: Valid credentials should login successfully', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+    await loginPage.loginWithValidCredentials(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const dashboardElement = await driver.findElement(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR));
     const actualResult = await dashboardElement.getText();

@@ -185,6 +185,13 @@ class LoginPage {
       return false;
     }
   }
-}
 
+  async loginWithValidCredentials(username, password) {
+    await this.open();
+    await this.enterUsername(username);
+    await this.enterPassword(password);
+    await this.clickLoginButton();
+    await this.domHandler.waitForElementVisible(this.selectors.dashboardTitle);
+  }
+}
 module.exports = LoginPage;
