@@ -44,6 +44,43 @@ class NewAccountPage {
     return result;
   }
 
+  // async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
+  //   try {
+  //     const locator = isXPath ? By.xpath(selector) : By.css(selector);
+  //     const element = await this.driver.wait(
+  //       until.elementLocated(locator),
+  //       this.timeout,
+  //       `Element with selector ${selector} not found`
+  //     );
+  //     await this.driver.wait(until.elementIsVisible(element), this.timeout);
+
+  //     await element.click();
+  //     await this.driver.actions().sendKeys(Key.TAB).perform();
+
+  //     if (expectedValidation) {
+  //       const errorSelector = this.errorMapping[selector];
+  //       if (!errorSelector) {
+  //         throw new Error(`No error selector defined for ${selector}`);
+  //       }
+  //       const validationElement = await this.driver.wait(
+  //         until.elementLocated(By.xpath(errorSelector)),
+  //         this.timeout,
+  //         `Validation message "${expectedValidation}" not found`
+  //       );
+  //       await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
+  //       const actualValidation = await validationElement.getText();
+  //       return actualValidation === expectedValidation;
+  //     } else {
+  //       const errorSelector = this.errorMapping[selector] || this.selectors.nameError;
+  //       const elements = await this.driver.findElements(By.xpath(errorSelector));
+  //       return elements.length === 0;
+  //     }
+  //   } catch (error) {
+  //     console.error(`Error verifying onBlur for ${selector}:`, error.message);
+  //     return false;
+  //   }
+  // }
+
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
     try {
       const locator = isXPath ? By.xpath(selector) : By.css(selector);
@@ -72,7 +109,9 @@ class NewAccountPage {
         return actualValidation === expectedValidation;
       } else {
         const errorSelector = this.errorMapping[selector] || this.selectors.nameError;
+        await this.driver.manage().setTimeouts({ implicit: 500 });
         const elements = await this.driver.findElements(By.xpath(errorSelector));
+        await this.driver.manage().setTimeouts({ implicit: 0 });
         return elements.length === 0;
       }
     } catch (error) {
@@ -138,23 +177,19 @@ class NewAccountPage {
     await this.domHandler.fillTextField(selector, value);
   }
 
-  async enterEmail(email) {
+async enterEmail(email) {
     await this.domHandler.fillTextField(this.selectors.emailInput, email);
   }
 
   async leaveEmailField() {
-    console.log('Focusing email field');
     await this.domHandler.clickWhenReady(this.selectors.emailInput);
-    console.log('Sending TAB');
-    await this.driver.actions().sendKeys(Key.TAB).perform();
-    console.log('TAB sent, focus should be on username');
+    await this.domHandler.clickWhenReady(this.selectors.usernameInput);
   }
 
   async isEmailErrorAbsent() {
     const errorSelector = this.errorMapping[this.selectors.emailInput];
-    console.log('Checking error selector:', errorSelector);
     const isAbsent = await this.domHandler.isElementAbsent(errorSelector);
-    console.log('Error absent:', isAbsent);
+
     return isAbsent;
   }
 
