@@ -12,7 +12,7 @@ const CONFIG = {
   EXPECTED_URL: 'https://qa.harmonychurchsuite.com/404',
   GROUPS_URL: 'https://qa.harmonychurchsuite.com/tenant/groups/index',
   TIMEOUT: 15000,
-  EXPECTED_DASHBOARD_TITLE: /dashboard/i,
+  DASHBOARD_TITLE: /dashboard/i,
 
   // URLs for 404 pages
   MYPROFILE_URL: 'https://qa.harmonychurchsuite.com/404',
