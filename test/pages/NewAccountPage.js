@@ -44,43 +44,6 @@ class NewAccountPage {
     return result;
   }
 
-  // async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
-  //   try {
-  //     const locator = isXPath ? By.xpath(selector) : By.css(selector);
-  //     const element = await this.driver.wait(
-  //       until.elementLocated(locator),
-  //       this.timeout,
-  //       `Element with selector ${selector} not found`
-  //     );
-  //     await this.driver.wait(until.elementIsVisible(element), this.timeout);
-
-  //     await element.click();
-  //     await this.driver.actions().sendKeys(Key.TAB).perform();
-
-  //     if (expectedValidation) {
-  //       const errorSelector = this.errorMapping[selector];
-  //       if (!errorSelector) {
-  //         throw new Error(`No error selector defined for ${selector}`);
-  //       }
-  //       const validationElement = await this.driver.wait(
-  //         until.elementLocated(By.xpath(errorSelector)),
-  //         this.timeout,
-  //         `Validation message "${expectedValidation}" not found`
-  //       );
-  //       await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
-  //       const actualValidation = await validationElement.getText();
-  //       return actualValidation === expectedValidation;
-  //     } else {
-  //       const errorSelector = this.errorMapping[selector] || this.selectors.nameError;
-  //       const elements = await this.driver.findElements(By.xpath(errorSelector));
-  //       return elements.length === 0;
-  //     }
-  //   } catch (error) {
-  //     console.error(`Error verifying onBlur for ${selector}:`, error.message);
-  //     return false;
-  //   }
-  // }
-
   async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
     try {
       const locator = isXPath ? By.xpath(selector) : By.css(selector);
