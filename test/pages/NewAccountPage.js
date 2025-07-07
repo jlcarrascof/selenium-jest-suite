@@ -168,6 +168,18 @@ async enterEmail(email) {
     return currentUrl === expectedUrl;
   }
 
+ async clickLoginLink() {
+    await this.domHandler.clickWhenReady(this.selectors.loginLink);
+  }
+
+  async waitForLoginPage(url) {
+    await this.domHandler.waitForUrl(url);
+  }
+
+  async getCurrentUrl() {
+    return await this.domHandler.getCurrentUrl();
+  }
+
 }
 
 module.exports = NewAccountPage;
