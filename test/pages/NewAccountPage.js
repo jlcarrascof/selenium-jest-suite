@@ -160,12 +160,12 @@ async enterEmail(email) {
     await this.domHandler.clickWhenReady(this.selectors.loginLink);
   }
 
-  async waitForLoginPage(url) {
-    await this.domHandler.waitForUrl(url);
+  async waitForUrl(expectedUrl) {
+    await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
   }
 
   async getCurrentUrl() {
-    return await this.domHandler.getCurrentUrl();
+    return await this.driver.getCurrentUrl();
   }
 
 }

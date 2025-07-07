@@ -4,6 +4,14 @@ const { CONFIG, initPages, driver: getDriver, newAccountPage: getNewAccountPage 
 
 let driver, newAccountPage;
 
+const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
+  const element = await driver.findElement(by(selector));
+
+  await driver.wait(until.elementIsVisible(element), timeout);
+
+  return element;
+};
+
 beforeAll(async () => {
   const pages = await initPages();
   driver = pages.driver;
@@ -129,29 +137,17 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  test.only('TC-012: Clicking Login link should redirect to login page', async () => {
-    await newAccountPage.clickLoginLink();
-    await newAccountPage.waitForLoginPage(CONFIG.LOGIN_PAGE_URL);
-
-    const actualURL   = await newAccountPage.getCurrentUrl();
-    const expectedURL = CONFIG.LOGIN_PAGE_URL;
-
-    expect(actualURL).toBe(expectedURL);
-  }, CONFIG.TIMEOUT);
-/*
-
   test('TC-012: Clicking Login link should redirect to login page', async () => {
-    const LOGIN_LINK_SELECTOR = '/html/body/app-root/div/tenat-user-sign-up/app-authentication-layout/div/section[1]/p/a';
-    const EXPECTED_URL = 'https://login.harmonychurchsuite.com/tenant/user-signin';
-    const loginLink = await waitForElement(By.xpath, LOGIN_LINK_SELECTOR, TIMEOUTS.elementVisibility);
+    await newAccountPage.clickLoginLink();
 
-    await loginLink.click();
-    await driver.wait(until.urlIs(EXPECTED_URL), TIMEOUTS.redirection);
+    const expectedUrl = CONFIG.LOGIN_PAGE_URL;
 
-    const actualResult = await driver.getCurrentUrl();
-    const expectedResult = EXPECTED_URL;
+    await newAccountPage.waitForUrl(expectedUrl);
 
-    expect(actualResult).toBe(expectedResult);
+    const actualUrl = await newAccountPage.getCurrentUrl();
+    const expectedResult = expectedUrl;
+
+    expect(actualUrl).toBe(expectedResult);
   });
-*/
+
 });

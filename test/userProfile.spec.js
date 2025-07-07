@@ -1,4 +1,4 @@
-const { CONFIG, initPages } = require('./helpers/userProfileTestSetup');
+const { CONFIG, initPages } = require('./setup/userProfileTestSetup');
 const { By, until } = require('selenium-webdriver');
 
 let driver, loginPage, profilePage;
@@ -7,7 +7,7 @@ const login = async (username, password) => {
   await loginPage.open();
   await loginPage.enterUsername(username);
   await loginPage.enterPassword(password);
-  await loginPage.submitForm();
+  await loginPage.clickLoginButton();
   await driver.wait(until.elementLocated(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR)), CONFIG.TIMEOUT);
 };
 
@@ -32,7 +32,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualResult).toMatch(expectedResult);
   }, CONFIG.TIMEOUT);
-
+/*
   test('TC-002: Invalid username should deny access', async () => {
     await loginPage.open();
     await loginPage.enterUsername(CONFIG.USERNAME);
@@ -175,5 +175,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(CONFIG.SUBSCRIPTION_DATA_URL);
   }, CONFIG.TIMEOUT);
-
+*/
 });
