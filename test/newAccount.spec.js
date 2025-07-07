@@ -137,7 +137,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  test('TC-012: Clicking Login link should redirect to login page', async () => {
+  test.only('TC-012: Clicking Login link should redirect to login page', async () => {
     await newAccountPage.clickLoginLink();
 
     const expectedUrl = CONFIG.LOGIN_PAGE_URL;
