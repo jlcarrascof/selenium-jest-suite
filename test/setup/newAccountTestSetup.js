@@ -4,6 +4,7 @@ const DriverFactory = require('../factories/driverFactory');
 const PageFactory = require('../factories/pagesFactory');
 
 const CONFIG = {
+  LOGIN_PAGE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin',
   VALID_DATA: {
     name: 'Javier',
     surname: 'Martinez',
@@ -12,7 +13,6 @@ const CONFIG = {
     password: 'Password123!',
     confirmPassword: 'Password123!',
     differentPassword: 'Password123*',
-    LOGIN_PAGE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin',
   },
   ERROR_MESSAGES: {
     name: 'Name is required',

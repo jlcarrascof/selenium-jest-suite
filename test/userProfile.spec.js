@@ -1,4 +1,5 @@
 const { CONFIG, initPages } = require('./setup/userProfileTestSetup');
+const { invalidCredentials } = require('./lib/testConfig');
 const { By, until } = require('selenium-webdriver');
 
 let driver, loginPage, profilePage;
@@ -24,23 +25,22 @@ afterAll(async () => {
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test('TC-001: Valid credentials should login successfully', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+    await loginPage.loginWithValidCredentials(CONFIG.USERNAME, CONFIG.PASSWORD);
 
-    const dashboardElement = await driver.findElement(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR));
-    const actualResult = await dashboardElement.getText();
-    const expectedResult = /dashboard/i;
+    const actualResult = await loginPage.getDashboardTitleText();
+    const expectedResult = CONFIG.DASHBOARD_TITLE;
 
     expect(actualResult).toMatch(expectedResult);
   }, CONFIG.TIMEOUT);
-/*
+
   test('TC-002: Invalid username should deny access', async () => {
     await loginPage.open();
-    await loginPage.enterUsername(CONFIG.USERNAME);
-    await loginPage.enterPassword(CONFIG.INVALID_PASSWORD);
-    await loginPage.submitForm();
+    await loginPage.enterUsername(CONFIG.INVALID_USERNAME);
+    await loginPage.enterPassword(CONFIG.PASSWORD);
+    await loginPage.clickLoginButton();
 
     const actualResult = await loginPage.getModalText();
-    const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
+    const expectedResult = invalidCredentials;
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
@@ -49,12 +49,13 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     await loginPage.open();
     await loginPage.enterUsername(CONFIG.USERNAME);
     await loginPage.enterPassword(CONFIG.INVALID_PASSWORD);
-    await loginPage.submitForm();
+    await loginPage.clickLoginButton();
 
     const actualResult = await loginPage.getModalText();
-    const expectedResult = CONFIG.INVALID_LOGIN_MESSAGE;
+    const expectedResult = invalidCredentials;
 
     expect(actualResult).toBe(expectedResult);
+
   }, CONFIG.TIMEOUT);
 
   test('TC-004: User profile icon should open menu', async () => {
@@ -86,7 +87,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(isMenuOpen).toBe(true);
   }, CONFIG.TIMEOUT);
 
-  test('TC-007: Click on Groups should redirect to correct URL', async () => {
+  test('TC-007: Click on Groups should redirect to Groups URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickAppsButton();
     await profilePage.isGroupsOptionVisible();
@@ -96,7 +97,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(CONFIG.GROUPS_URL);
   }, CONFIG.TIMEOUT);
 
-  test('TC-008: Click on My Profile should redirect to expected URL', async () => {
+  test('TC-008: Click on My Profile should redirect to My Profile URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickProfileIcon();
     await profilePage.isLogoutButtonVisible();
@@ -105,8 +106,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(CONFIG.MYPROFILE_URL);
   }, CONFIG.TIMEOUT);
-
-  test('TC-009: Click on Roles and Permissions should redirect to expected URL', async () => {
+/*
+  test('TC-009: Click on Roles and Permissions should redirect to roles and permissions URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickRolesPermissionsAndGetUrl();
@@ -114,6 +115,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(CONFIG.ROLES_PERMISSIONS_URL);
   }, CONFIG.TIMEOUT);
 
+/*
   test('TC-010: Click on Users should redirect to expected URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 

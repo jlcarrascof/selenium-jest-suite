@@ -46,7 +46,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test.only('TC-003: Clicking New Account link should redirect to registration page', async () => {
+  test('TC-003: Clicking New Account link should redirect to registration page', async () => {
     await loginPage.clickNewAccountLink();
 
     const expectedUrl = global.testConfig.baseNewAccountUrl;
