@@ -59,6 +59,14 @@ class DOMHandler {
     return elements.length === 0;
   }
 
+  async waitForUrl(expectedUrl) {
+    await this.driver.wait(until.urlIs(expectedUrl), this.timeout);
+  }
+
+  async getCurrentUrl() {
+    return await this.driver.getCurrentUrl();
+  }
+
 }
 
 module.exports = DOMHandler;

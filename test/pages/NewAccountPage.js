@@ -157,18 +157,6 @@ async enterEmail(email) {
   }
 
   async clickLoginLink() {
-    const loginLinkSelector = this.selectors.loginLink;
-
-    await this.domHandler.clickWhenReady(loginLinkSelector);
-  }
-
-  async isRedirectedToLoginPage(expectedUrl) {
-    const currentUrl = await this.driver.getCurrentUrl();
-
-    return currentUrl === expectedUrl;
-  }
-
- async clickLoginLink() {
     await this.domHandler.clickWhenReady(this.selectors.loginLink);
   }
 
