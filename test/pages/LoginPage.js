@@ -193,5 +193,11 @@ class LoginPage {
     await this.clickLoginButton();
     await this.domHandler.waitForElementVisible(this.selectors.dashboardTitle);
   }
+
+  async getDashboardTitleText() {
+    const element = await this.domHandler.waitForElementVisible(this.selectors.dashboardTitle);
+    return await element.getText();
+  }
+  
 }
 module.exports = LoginPage;
