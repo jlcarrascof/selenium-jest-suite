@@ -56,7 +56,6 @@ describe('Groups - General Functionality', () => {
     expect(Boolean(actualResult)).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-/*
   test('TC-007: Click on Log out should terminate session successfully', async () => {
     await login();
     await profilePage.clickProfileIcon();
@@ -66,5 +65,4 @@ describe('Groups - General Functionality', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-*/
 });
