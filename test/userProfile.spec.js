@@ -62,9 +62,10 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickProfileIcon();
 
-    const isVisible = await profilePage.isLogoutButtonVisible();
+    const actualResult = await profilePage.isLogoutButtonVisible();
+    const expectedResult = true;
 
-    expect(Boolean(isVisible)).toBe(true);
+    expect(Boolean(actualResult)).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-005: Logout should terminate session successfully', async () => {
@@ -96,8 +97,9 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     await profilePage.seeGroupsOption();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
+    const expectedUrl = CONFIG.GROUPS_URL;
 
-    expect(actualUrl).toBe(CONFIG.GROUPS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-008: Click on My Profile should redirect to My Profile URL', async () => {
@@ -106,78 +108,90 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     await profilePage.isLogoutButtonVisible();
 
     const actualUrl = await profilePage.clickMyProfileAndGetUrl();
+    const expectedUrl = CONFIG.MYPROFILE_URL;
 
-    expect(actualUrl).toBe(CONFIG.MYPROFILE_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-009: Click on Roles and Permissions should redirect to Roles and Permissions URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickRolesPermissionsAndGetUrl();
+    const expectedUrl = CONFIG.ROLES_PERMISSIONS_URL;
 
-    expect(actualUrl).toBe(CONFIG.ROLES_PERMISSIONS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-010: Click on Users should redirect to Users URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickUsersAndGetUrl();
+    const expectedUrl = CONFIG.USERS_URL;
 
-    expect(actualUrl).toBe(CONFIG.USERS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-011: Click on Event log should redirect to Event log URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
     const actualUrl = await profilePage.clickEventLogAndGetUrl();
-    expect(actualUrl).toBe(CONFIG.EVENT_LOG_URL);
+    const expectedUrl = CONFIG.EVENT_LOG_URL;
+
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-012: Click on All notifications should redirect to All notifications URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickAllNotificationsAndGetUrl();
+    const expectedUrl = CONFIG.ALL_NOTIFICATIONS_URL;
 
-    expect(actualUrl).toBe(CONFIG.ALL_NOTIFICATIONS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-013: Click on Role notifications should redirect to Role notifications URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickRoleNotificationsAndGetUrl();
+    const expectedUrl = CONFIG.ROLE_NOTIFICATIONS_URL;
 
-    expect(actualUrl).toBe(CONFIG.ROLE_NOTIFICATIONS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-014: Click on User notifications should redirect to User notifications URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickUserNotificationsAndGetUrl();
+    const expectedUrl = CONFIG.USER_NOTIFICATIONS_URL;
 
-    expect(actualUrl).toBe(CONFIG.USER_NOTIFICATIONS_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-015: Click on Languages should redirect to Languages URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickLanguagesAndGetUrl();
+    const expectedUrl = CONFIG.LANGUAGES_URL;
 
-    expect(actualUrl).toBe(CONFIG.LANGUAGES_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-016: Click on Reference data should redirect to Reference data URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickReferenceDataAndGetUrl();
+    const expectedUrl = CONFIG.REFERENCE_DATA_URL;
 
-    expect(actualUrl).toBe(CONFIG.REFERENCE_DATA_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
   test('TC-017: Click on Subscription data should redirect to Subscription data URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualUrl = await profilePage.clickSubscriptionAndGetUrl();
+    const expectedUrl = CONFIG.SUBSCRIPTION_DATA_URL;
 
-    expect(actualUrl).toBe(CONFIG.SUBSCRIPTION_DATA_URL);
+    expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
 });
