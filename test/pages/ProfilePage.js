@@ -102,7 +102,7 @@ class ProfilePage {
     return currentUrl.startsWith(this.baseUrl); // Más flexible para parámetros adicionales
   }
 
-  async clickAppsButton() {
+  async openMainMenu() {
     const appsButton = await this.driver.wait(
       until.elementLocated(By.xpath(this.selectors.appsButton)),
       this.timeout
@@ -110,7 +110,7 @@ class ProfilePage {
     await appsButton.click();
   }
 
-  async isGroupsOptionVisible() {
+  async seeGroupsOption() {
     try {
       const groupsOption = await this.driver.wait(
         until.elementLocated(By.xpath(this.selectors.groupsOption)),

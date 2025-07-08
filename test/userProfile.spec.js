@@ -78,19 +78,22 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test('TC-006: Click on Apps button should open menu', async () => {
+  test('TC-006: Clicking on the Apps button should display the main menu options', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-    await profilePage.clickAppsButton();
 
-    const isMenuOpen = await profilePage.isGroupsOptionVisible();
+    await profilePage.openMainMenu();
 
-    expect(isMenuOpen).toBe(true);
+    const actualMenuState = await profilePage.seeGroupsOption();
+    const expectedMenuState = true;
+
+    expect(actualMenuState).toBe(expectedMenuState);
   }, CONFIG.TIMEOUT);
+
 
   test('TC-007: Click on Groups should redirect to Groups URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-    await profilePage.clickAppsButton();
-    await profilePage.isGroupsOptionVisible();
+    await profilePage.openMainMenu();
+    await profilePage.seeGroupsOption();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
 
