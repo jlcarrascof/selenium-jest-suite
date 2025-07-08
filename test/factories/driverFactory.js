@@ -1,5 +1,7 @@
 // tests/factories/driverFactory.js
 const { Builder } = require('selenium-webdriver');
+const chrome = require('selenium-webdriver/chrome');
+const chromeDriverPath = require('chromedriver').path;
 
 class DriverFactory {
   constructor(browser, timeout) {
@@ -9,7 +11,15 @@ class DriverFactory {
   }
 
   async initDriver() {
-    this.driver = await new Builder().forBrowser(this.browser).build();
+    const service = new chrome.ServiceBuilder(chromeDriverPath); // <- sin .build()
+    const options = new chrome.Options();
+
+    this.driver = await new Builder()
+      .forBrowser(this.browser)
+      .setChromeService(service)
+      .setChromeOptions(options)
+      .build();
+
     await this.driver.manage().setTimeouts({ implicit: this.timeout });
     return this.driver;
   }

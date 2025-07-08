@@ -1,6 +1,7 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
 const selectors = require("../selectors/profileSelector");
+const DOMHandler = require('../lib/DOMHandler');
 
 const WAIT_TIME = 2000;
 
@@ -116,6 +117,18 @@ class ProfilePage {
       console.error('Error verifying Groups option visibility:', error.message);
       return false;
     }
+  }
+
+  async clickLogoutAndGetUrl() {
+    return await this.clickElementAndGetUrl(this.selectors.logoutButton);
+  }
+
+  async clickGroupsAndGetUrl() {
+    return await this.clickElementAndGetUrl(this.selectors.groupsOption);
+  }
+
+  async clickMyProfileAndGetUrl() {
+    return await this.clickElementAndGetUrl(this.selectors.myProfileLink);
   }
 
   async clickElementAndGetUrl(selectorKey) {
