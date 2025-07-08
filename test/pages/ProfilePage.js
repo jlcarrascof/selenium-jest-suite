@@ -1,5 +1,7 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
+const selectors = require("../selectors/profileSelector");
+
 const WAIT_TIME = 2000;
 
 class ProfilePage {
@@ -7,10 +9,18 @@ class ProfilePage {
     this.driver = driver;
     this.baseUrl = baseUrl;
     this.timeout = timeout;
-
-    this.selectors = {
-
+    this.selectors = selectors;
+    this.sectionMap = {
+      roles:            this.selectors.rolesPermissionsLink,
+      eventLog:         this.selectors.eventLogLink,
+      allNotifications: this.selectors.allNotificationsLink,
+      roleNotifications:this.selectors.roleNotificationsLink,
+      userNotifications:this.selectors.userNotificationsLink,
+      languages:        this.selectors.languagesLink,
+      referenceData:    this.selectors.referenceDataLink,
+      subscription:     this.selectors.subscriptionLink,
     };
+    this.domHandler = new DOMHandler(driver, timeout);
   }
 
   async enterUsername(username) {
@@ -114,60 +124,33 @@ class ProfilePage {
       until.elementLocated(By.xpath(selector)),
       this.timeout
     );
+
     await element.click();
+
     await this.driver.sleep(WAIT_TIME);
+
     const url = await this.driver.getCurrentUrl();
+
     return url;
   }
 
-  async clickLogoutAndGetUrl() {
-    return await this.clickElementAndGetUrl('logoutButton');
-  }
+  async openSectionAndGetUrl(sectionKey) {
+    const selector = this.sectionMap[sectionKey];
 
-  async clickGroupsAndGetUrl() {
-    return await this.clickElementAndGetUrl('groupsOption');
-  }
+    if (!selector) {
+      throw new Error(`Unknown sectionKey: "${sectionKey}"`);
+    }
 
-  async clickMyProfileAndGetUrl() {
-    return await this.clickElementAndGetUrl('myProfileLink');
-  }
+    const element = await this.driver.wait(
+      until.elementLocated(By.xpath(selector)),
+      this.timeout
+    );
 
-  async clickUsersAndGetUrl() {
-    return await this.clickElementAndGetUrl('usersLink');
-  }
+    await element.click();
+    await this.driver.sleep(WAIT_TIME); // o idealmente waitForNavigation
 
-  async clickRolesPermissionsAndGetUrl() {
-    return await this.clickElementAndGetUrl('rolesPermissionsLink');
+    return await this.driver.getCurrentUrl();
   }
-
-  async clickEventLogAndGetUrl() {
-    return await this.clickElementAndGetUrl('eventLogLink');
-  }
-
-  async clickAllNotificationsAndGetUrl() {
-    return await this.clickElementAndGetUrl('allNotificationsLink');
-  }
-
-  async clickRoleNotificationsAndGetUrl() {
-    return await this.clickElementAndGetUrl('roleNotificationsLink');
-  }
-
-  async clickUserNotificationsAndGetUrl() {
-    return await this.clickElementAndGetUrl('userNotificationsLink');
-  }
-
-  async clickLanguagesAndGetUrl() {
-    return await this.clickElementAndGetUrl('languagesLink');
-  }
-
-  async clickReferenceDataAndGetUrl() {
-    return await this.clickElementAndGetUrl('referenceDataLink');
-  }
-
-  async clickSubscriptionAndGetUrl() {
-    return await this.clickElementAndGetUrl('subscriptionLink');
-  }
-
 }
 
 module.exports = ProfilePage;
