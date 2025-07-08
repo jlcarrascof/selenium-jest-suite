@@ -1,5 +1,7 @@
 // tests/pages/LoginPage.js
 const selectors = require("../selectors/loginSelector");
+const tabOrderControls = require('../selectors/tabOrderControls');
+
 const DOMHandler = require('../lib/DOMHandler');
 const validationMessages = require('../lib/testConfig');
 
@@ -100,13 +102,14 @@ class LoginPage {
     return await this.driver.getCurrentUrl();
   }
 
-  async pressTabKeysAndNavigate(controls) {
+  async canPressTabKeysAndNavigateAll() {
+
     await this.driver.executeScript('document.body.focus();');
 
     let sentTabs = 0;
     let allPassed = true;
 
-    for (const { selector, name, tabCount, isXPath = false } of controls) {
+    for (const { selector, name, tabCount, isXPath = false } of tabOrderControls) {
       try {
         const locator = isXPath ? By.xpath(selector) : By.css(selector);
         const expectedElement = await this.driver.wait(
@@ -136,7 +139,6 @@ class LoginPage {
         );
 
         if (!isFocused) {
-          const activeElementHTML = await activeElement.getAttribute('outerHTML');
           allPassed = false;
         }
       } catch (error) {
@@ -186,8 +188,14 @@ class LoginPage {
     }
   }
 
+  async login(username, password) {
+    await this.enterUsername(username);
+    await this.enterPassword(password);
+    await this.clickLoginButton();
+  }
+
+
   async loginWithValidCredentials(username, password) {
-    await this.open();
     await this.enterUsername(username);
     await this.enterPassword(password);
     await this.clickLoginButton();

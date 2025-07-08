@@ -27,14 +27,5 @@ const initPages = async () => {
 
 module.exports = {
   CONFIG,
-  initPages,
-  get driver() {
-    return driver;
-  },
-  get loginPage() {
-    return loginPage;
-  },
-  get landingPage() {
-    return landingPage;
-  }
+  initPages
 };
