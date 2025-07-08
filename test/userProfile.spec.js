@@ -109,7 +109,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(CONFIG.MYPROFILE_URL);
   }, CONFIG.TIMEOUT);
-/*
+
   test('TC-009: Click on Roles and Permissions should redirect to roles and permissions URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -118,7 +118,6 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(CONFIG.ROLES_PERMISSIONS_URL);
   }, CONFIG.TIMEOUT);
 
-/*
   test('TC-010: Click on Users should redirect to expected URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -127,6 +126,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(CONFIG.USERS_URL);
   }, CONFIG.TIMEOUT);
 
+/*
   test('TC-011: Click on Event log should redirect to expected URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     const actualUrl = await profilePage.clickEventLogAndGetUrl();

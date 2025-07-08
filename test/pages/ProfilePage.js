@@ -1,6 +1,6 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const WAIT_TIME = 1000;
+const WAIT_TIME = 2000;
 
 class ProfilePage {
   constructor(driver, baseUrl, timeout) {
