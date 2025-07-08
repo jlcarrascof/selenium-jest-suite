@@ -2,7 +2,6 @@ const { CONFIG, initPages } = require('./setup/userProfileTestSetup');
 const { invalidCredentials } = require('./lib/testConfig');
 const { By, until } = require('selenium-webdriver');
 
-
 let driver, loginPage, profilePage;
 
 const login = async (username, password) => {
@@ -25,7 +24,6 @@ afterAll(async () => {
 });
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
-/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await loginPage.loginWithValidCredentials(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -114,7 +112,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-*/
+
   test.each([
     ['TC-009', 'roles',            'ROLES_PERMISSIONS_URL'],
     ['TC-010', 'users',            'USERS_URL'],
@@ -136,88 +134,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
       expect(actualLink).toBe(expectedLink);
     }, CONFIG.TIMEOUT
   );
-
-/*
-  test('TC-009: Click on Roles and Permissions should redirect to Roles and Permissions URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickRolesPermissionsAndGetUrl();
-    const expectedUrl = CONFIG.ROLES_PERMISSIONS_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-010: Click on Users should redirect to Users URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickUsersAndGetUrl();
-    const expectedUrl = CONFIG.USERS_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-011: Click on Event log should redirect to Event log URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickEventLogAndGetUrl();
-    const expectedUrl = CONFIG.EVENT_LOG_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-012: Click on All notifications should redirect to All notifications URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickAllNotificationsAndGetUrl();
-    const expectedUrl = CONFIG.ALL_NOTIFICATIONS_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-013: Click on Role notifications should redirect to Role notifications URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickRoleNotificationsAndGetUrl();
-    const expectedUrl = CONFIG.ROLE_NOTIFICATIONS_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-014: Click on User notifications should redirect to User notifications URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickUserNotificationsAndGetUrl();
-    const expectedUrl = CONFIG.USER_NOTIFICATIONS_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-015: Click on Languages should redirect to Languages URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickLanguagesAndGetUrl();
-    const expectedUrl = CONFIG.LANGUAGES_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-016: Click on Reference data should redirect to Reference data URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickReferenceDataAndGetUrl();
-    const expectedUrl = CONFIG.REFERENCE_DATA_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-
-  test('TC-017: Click on Subscription data should redirect to Subscription data URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    const actualUrl = await profilePage.clickSubscriptionAndGetUrl();
-    const expectedUrl = CONFIG.SUBSCRIPTION_DATA_URL;
-
-    expect(actualUrl).toBe(expectedUrl);
-  }, CONFIG.TIMEOUT);
-*/
 
 });

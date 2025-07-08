@@ -87,7 +87,7 @@ class ProfilePage {
     );
 
     await logoutButton.click();
-    await this.driver.sleep(WAIT_TIME); // Añadir espera
+    await this.driver.sleep(WAIT_TIME);
   }
 
   async isOnLoginPage() {
@@ -95,7 +95,7 @@ class ProfilePage {
 
     const currentUrl = await this.driver.getCurrentUrl();
 
-    return currentUrl.startsWith(this.baseUrl); // Más flexible para parámetros adicionales
+    return currentUrl.startsWith(this.baseUrl);
   }
 
   async openMainMenu() {
@@ -161,7 +161,7 @@ class ProfilePage {
     );
 
     await element.click();
-    await this.driver.sleep(WAIT_TIME); 
+    await this.driver.sleep(WAIT_TIME);
 
     return await this.driver.getCurrentUrl();
   }
