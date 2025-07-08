@@ -8,7 +8,8 @@ const CONFIG = {
   PASSWORD: '.qwerty123.',
   DASHBOARD_TITLE_SELECTOR: 'h1.text-xl.font-semibold',
   BASE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin?tenant=qa',
-  NOT_FOUND_URL: 'https://qa.harmonychurchsuite.com/404'
+  NOT_FOUND_URL: 'https://qa.harmonychurchsuite.com/404',
+  GROUPS_URL: `${global.testConfig.baseUrl}/tenant/groups/index`,
 };
 
 let driver, loginPage, profilePage, groupsPage;

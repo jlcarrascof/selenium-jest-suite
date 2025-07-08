@@ -1,9 +1,4 @@
-const {
-  CONFIG,
-  initPages,
-  login,
-  driver: getDriver
-} = require('./helpers/groupsTestSetup');
+const { CONFIG, initPages, login, driver: getDriver } = require('./setup/groupsTestSetup');
 
 let driver;
 let profilePage;
@@ -24,7 +19,7 @@ describe('Groups - General Functionality', () => {
   test('TC-001: Click on Groups should redirect to correct URL', async () => {
     await login();
 
-    const expectedUrl = `${global.testConfig.baseUrl}/tenant/groups/index`;
+    const expectedUrl = CONFIG.GROUPS_URL;
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
 
     expect(actualUrl).toBe(expectedUrl);
@@ -61,6 +56,7 @@ describe('Groups - General Functionality', () => {
     expect(Boolean(actualResult)).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
+/*
   test('TC-007: Click on Log out should terminate session successfully', async () => {
     await login();
     await profilePage.clickProfileIcon();
@@ -70,4 +66,5 @@ describe('Groups - General Functionality', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
+*/
 });

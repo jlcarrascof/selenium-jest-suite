@@ -124,7 +124,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     ['TC-016', 'referenceData', 'Reference Data', 'REFERENCE_DATA_URL'],
     ['TC-017', 'subscription', 'Subscription Data', 'SUBSCRIPTION_DATA_URL'],
   ])(
-    '%s: opening section "%s" redirects to %s URL',
+    '%s: Opening section "%s" redirects to %s URL',
     async (_tc, sectionKey, title,  expectedUrlKey) => {
       await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
