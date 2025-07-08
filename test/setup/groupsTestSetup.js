@@ -29,9 +29,9 @@ const login = async () => {
   await loginPage.open();
   await loginPage.enterUsername(CONFIG.USERNAME);
   await loginPage.enterPassword(CONFIG.PASSWORD);
-  await loginPage.submitForm();
+  await loginPage.clickLoginButton();
   await driver.wait(until.elementLocated(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR)), CONFIG.TIMEOUT);
-  await profilePage.clickAppsButton();
+  await profilePage.openMainMenu();
 };
 
 module.exports = {
