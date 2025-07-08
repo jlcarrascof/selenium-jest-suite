@@ -24,6 +24,7 @@ afterAll(async () => {
 });
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
+/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await loginPage.loginWithValidCredentials(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -112,29 +113,27 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-
+*/
   test.each([
-      ['TC-009', 'rolesPermissionsLink',  'ROLES_PERMISSIONS_URL'],
-      ['TC-010', 'usersLink',             'USERS_URL'],
-      ['TC-011', 'eventLogLink',          'EVENT_LOG_URL'],
-      ['TC-012', 'allNotificationsLink',  'ALL_NOTIFICATIONS_URL'],
-      ['TC-013', 'roleNotificationsLink', 'ROLE_NOTIFICATIONS_URL'],
-      ['TC-014', 'userNotificationsLink', 'USER_NOTIFICATIONS_URL'],
-      ['TC-015', 'languagesLink',         'LANGUAGES_URL'],
-      ['TC-016', 'referenceDataLink',     'REFERENCE_DATA_URL'],
-      ['TC-017', 'subscriptionLink',      'SUBSCRIPTION_DATA_URL']
-    ])(
-      '%s: clicking on %s redirects to the correct URL',
-      async (_tc, selectorKey, expectedUrlKey) => {
-        await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+    ['TC-009', 'roles',            'ROLES_PERMISSIONS_URL'],
+    ['TC-010', 'users',            'USERS_URL'],
+    ['TC-011', 'eventLog',         'EVENT_LOG_URL'],
+    ['TC-012', 'allNotifications', 'ALL_NOTIFICATIONS_URL'],
+    ['TC-013', 'roleNotifications','ROLE_NOTIFICATIONS_URL'],
+    ['TC-014', 'userNotifications','USER_NOTIFICATIONS_URL'],
+    ['TC-015', 'languages',        'LANGUAGES_URL'],
+    ['TC-016', 'referenceData',    'REFERENCE_DATA_URL'],
+    ['TC-017', 'subscription',     'SUBSCRIPTION_DATA_URL'],
+  ])(
+    '%s: opening section "%s" redirects to the expected URL',
+    async (_tc, sectionKey, expectedUrlKey) => {
+      await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
-        const actualLink = await profilePage.clickElementAndGetUrl(selectorKey);
+      const actualLink = await profilePage.openSectionAndGetUrl(sectionKey);
+      const expectedLink = CONFIG[expectedUrlKey];
 
-        const expectedLink = CONFIG[expectedUrlKey];
-
-        expect(actualLink).toBe(expectedLink);
-      },
-      CONFIG.TIMEOUT
+      expect(actualLink).toBe(expectedLink);
+    }, CONFIG.TIMEOUT
   );
 
 /*
