@@ -13,6 +13,7 @@ class ProfilePage {
     this.selectors = selectors;
     this.sectionMap = {
       roles:            this.selectors.rolesPermissionsLink,
+      users:            this.selectors.usersLink,
       eventLog:         this.selectors.eventLogLink,
       allNotifications: this.selectors.allNotificationsLink,
       roleNotifications:this.selectors.roleNotificationsLink,
@@ -160,7 +161,7 @@ class ProfilePage {
     );
 
     await element.click();
-    await this.driver.sleep(WAIT_TIME); // o idealmente waitForNavigation
+    await this.driver.sleep(WAIT_TIME); 
 
     return await this.driver.getCurrentUrl();
   }
