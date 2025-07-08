@@ -16,7 +16,7 @@ afterAll(async () => {
 });
 
 describe('Groups - General Functionality', () => {
-  test('TC-001: Click on Groups should redirect to correct URL', async () => {
+  test('TC-001: Click on Groups should redirect to Groups URL', async () => {
     await login();
 
     const expectedUrl = CONFIG.GROUPS_URL;
@@ -26,11 +26,11 @@ describe('Groups - General Functionality', () => {
   }, CONFIG.TIMEOUT);
 
   test.each([
-    ['TC-002', 'Click on Reports', 'reportsLink', 'groupsPage'],
-    ['TC-003', 'Click on Calendar', 'calendarLink', 'groupsPage'],
-    ['TC-004', 'Click on Resources', 'resourcesLink', 'groupsPage'],
-    ['TC-005', 'Click on My Profile', 'myProfileLink', 'profilePage']
-  ])('%s: %s should redirect to expected URL', async (_tc, desc, selectorKey, page) => {
+    ['TC-002', 'Click on Reports', 'Reports', 'reportsLink', 'groupsPage'],
+    ['TC-003', 'Click on Calendar', 'Calendar', 'calendarLink', 'groupsPage'],
+    ['TC-004', 'Click on Resources', 'Resources', 'resourcesLink', 'groupsPage'],
+    ['TC-005', 'Click on My Profile', 'My Profile', 'myProfileLink', 'profilePage']
+  ])('%s: %s should redirect to %s URL', async (_tc, desc, kind, selectorKey, page) => {
     await login();
 
     if (page === 'groupsPage') {
