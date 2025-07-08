@@ -1,16 +1,6 @@
-// test/NewAccount.spec.js
-const { By, until, Key } = require('selenium-webdriver');
-const { CONFIG, initPages, driver: getDriver, newAccountPage: getNewAccountPage } = require('./setup/newAccountTestSetup');
+const { CONFIG, initPages } = require('./setup/newAccountTestSetup');
 
 let driver, newAccountPage;
-
-const waitForElement = async (by, selector, timeout = newAccountPage.timeout) => {
-  const element = await driver.findElement(by(selector));
-
-  await driver.wait(until.elementIsVisible(element), timeout);
-
-  return element;
-};
 
 beforeAll(async () => {
   const pages = await initPages();
@@ -22,12 +12,14 @@ afterAll(async () => {
   if (driver) await driver.quit();
 });
 
+ beforeEach(async () => {
+   await newAccountPage.open();
+ });
+
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
-  beforeEach(async () => {
-    await newAccountPage.open();
-  });
 
   test('TC-001: Terms and Conditions checkbox should display error message when unchecked', async () => {
+
     await newAccountPage.submitWithoutTerms();
 
     const actualResult = await newAccountPage.hasTermsError();
@@ -36,17 +28,42 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  test('TC-002: All fields should display error messages when are empty', async () => {
-    const requiredFields = [
-      ['nameInput',   CONFIG.ERROR_MESSAGES.name],
-      ['surnameInput',CONFIG.ERROR_MESSAGES.surname],
-      ['emailInput',  CONFIG.ERROR_MESSAGES.email],
-      ['usernameInput',CONFIG.ERROR_MESSAGES.username],
-      ['passwordInput',CONFIG.ERROR_MESSAGES.password],
-    ];
+  test.each([
+    {
+      tc: 'TC-003',
+      field: 'name',
+      method: newAccountPage.nameHasErrorVisibleWhenEmpty,
+      errorMessage: CONFIG.ERROR_MESSAGES.name,
+    },
+    {
+      tc: 'TC-004',
+      field: 'surname',
+      method: newAccountPage.surnameHasErrorVisibleWhenEmpty,
+      errorMessage: CONFIG.ERROR_MESSAGES.surname,
+    },
+    {
+      tc: 'TC-005',
+      field: 'email',
+      method: newAccountPage.emailHasErrorVisibleWhenEmpty,
+      errorMessage: CONFIG.ERROR_MESSAGES.email,
+    },
+    {
+      tc: 'TC-006',
+      field: 'username',
+      method: newAccountPage.usernameHasErrorVisibleWhenEmpty,
+      errorMessage: CONFIG.ERROR_MESSAGES.username,
+    },
+    {
+      tc: 'TC-007',
+      field: 'password',
+      method: newAccountPage.passwordHasErrorVisibleWhenEmpty,
+      errorMessage: CONFIG.ERROR_MESSAGES.password,
+    },
+  ])('$tc: Field $field should display error messages when are empty', async ({ method, errorMessage }) => {
 
-    for (const [fieldKey, expectedMessage] of requiredFields) {
-      const actualResult = await newAccountPage.requiredErrorVisible(fieldKey, expectedMessage);
+    for (const [method, errorMessage] of methods) {
+
+      const actualResult = await method(errorMessage);
       const expectedResult = true;
 
       expect(actualResult).toBe(expectedResult);
@@ -77,7 +94,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     }
   ])('$tc: $description', async ({ fillFields, acceptTerms, expectedResult }) => {
     if (fillFields) {
-      await newAccountPage.fillAllFieldsWithValidData(CONFIG.VALID_DATA);
+      await newAccountPage.fillOutAllFieldsWithValidData(CONFIG.VALID_DATA);
     }
 
     await newAccountPage.setTermsAndConditions(acceptTerms);
@@ -98,42 +115,35 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-009: Confirm Password field should display error message when we type a different Password', async () => {
-    await newAccountPage.fillPasswordAndConfirmation(
-      CONFIG.VALID_DATA.password, CONFIG.VALID_DATA.differentPassword
-    );
 
-    const actualResult = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.confirmPasswordInput, CONFIG.ERROR_MESSAGES.confirmPassword
-    );
+    await newAccountPage.emterPasswordAndConfirmation(CONFIG.VALID_DATA.password, CONFIG.VALID_DATA.differentPassword );
+
+    const actualResult = await newAccountPage.isConfirmPasswordShowingMessageWhenBlur(CONFIG.ERROR_MESSAGES.confirmPassword);
+
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-010: Email field should display error message when using an invalid email format', async () => {
-    await newAccountPage.fillTextField(
-      newAccountPage.selectors.emailInput,
-      CONFIG.INVALID_EMAILS.incomplete
-    );
 
-    const actualResult = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.emailInput,
-      CONFIG.ERROR_MESSAGES.invalidEmail
-    );
+     await newAccountPage.enterEmail(CONFIG.INVALID_EMAILS.incomplete);
+
+    const actualResult = await newAccountPage.isInvalidEmailShowingMessageWhenBlur(CONFIG.INVALID_EMAILS.incomplete, CONFIG.ERROR_MESSAGES.invalidEmail);
+
     const expectedResult = true;
 
     expect(actualResult).toBe(expectedResult);
   });
 
   test('TC-011: Email field should not display error message when using a valid email format', async () => {
+   
     await newAccountPage.enterEmail(CONFIG.VALID_DATA.email);
-    await newAccountPage.leaveEmailField();
-    const actualResult = await newAccountPage.verifyBlurValidation(
-      newAccountPage.selectors.emailInput,
-      '',
-      false
-    );
+
+    const actualResult = await newAccountPage.isValidEmailNotShowingMessageWhenBlur();
+
     const expectedResult = true;
+
     expect(actualResult).toBe(expectedResult);
   });
 

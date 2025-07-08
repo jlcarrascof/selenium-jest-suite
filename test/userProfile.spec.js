@@ -4,14 +4,6 @@ const { By, until } = require('selenium-webdriver');
 
 let driver, loginPage, profilePage;
 
-const login = async (username, password) => {
-  await loginPage.open();
-  await loginPage.enterUsername(username);
-  await loginPage.enterPassword(password);
-  await loginPage.clickLoginButton();
-  await driver.wait(until.elementLocated(By.css(CONFIG.DASHBOARD_TITLE_SELECTOR)), CONFIG.TIMEOUT);
-};
-
 beforeAll(async () => {
   const pages = await initPages();
   driver = pages.driver;
@@ -25,7 +17,8 @@ afterAll(async () => {
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test('TC-001: Valid credentials should login successfully', async () => {
-    await loginPage.loginWithValidCredentials(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualResult = await loginPage.getDashboardTitleText();
     const expectedResult = CONFIG.DASHBOARD_TITLE;
@@ -34,10 +27,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-002: Invalid username should deny access', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(CONFIG.INVALID_USERNAME);
-    await loginPage.enterPassword(CONFIG.PASSWORD);
-    await loginPage.clickLoginButton();
+
+    await loginPage.login(CONFIG.INVALID_USERNAME, CONFIG.PASSWORD);
 
     const actualResult = await loginPage.getModalText();
     const expectedResult = invalidCredentials;
@@ -46,10 +37,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-003: Invalid password should deny access', async () => {
-    await loginPage.open();
-    await loginPage.enterUsername(CONFIG.USERNAME);
-    await loginPage.enterPassword(CONFIG.INVALID_PASSWORD);
-    await loginPage.clickLoginButton();
+
+    await loginPage.login(CONFIG.INVALID_USERNAME, CONFIG.INVALID_PASSWORD);
 
     const actualResult = await loginPage.getModalText();
     const expectedResult = invalidCredentials;
@@ -59,7 +48,9 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-004: User profile icon should open menu', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
     await profilePage.clickProfileIcon();
 
     const actualResult = await profilePage.isLogoutButtonVisible();
@@ -69,8 +60,11 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-005: Logout should terminate session successfully', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
     await profilePage.clickProfileIcon();
+
     await profilePage.isLogoutButtonVisible();
 
     const actualUrl = await profilePage.clickLogoutAndGetUrl();
@@ -80,7 +74,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-006: Clicking on the Apps button should display the main menu options', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     await profilePage.openMainMenu();
 
@@ -92,7 +87,9 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
 
   test('TC-007: Click on Groups should redirect to Groups URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
     await profilePage.openMainMenu();
     await profilePage.seeGroupsOption();
 
@@ -103,7 +100,9 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-008: Click on My Profile should redirect to My Profile URL', async () => {
-    await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
     await profilePage.clickProfileIcon();
     await profilePage.isLogoutButtonVisible();
 
@@ -126,7 +125,8 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   ])(
     '%s: Opening section "%s" redirects to %s URL',
     async (_tc, sectionKey, title,  expectedUrlKey) => {
-      await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+      await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
       const actualLink = await profilePage.openSectionAndGetUrl(sectionKey);
       const expectedLink = CONFIG[expectedUrlKey];

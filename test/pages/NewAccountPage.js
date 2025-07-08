@@ -36,7 +36,7 @@ class NewAccountPage {
     await passwordField.sendKeys(password);
     await this.driver.actions().sendKeys(Key.TAB).perform();
 
-    const result = await this.verifyBlurValidation(
+    const result = await this.domHandler.isShowingValidationMessageWhenBlur(
       this.selectors.passwordInput,
       errorMessage
     );
@@ -44,58 +44,64 @@ class NewAccountPage {
     return result;
   }
 
-  async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
-    try {
-      const locator = isXPath ? By.xpath(selector) : By.css(selector);
-      const element = await this.driver.wait(
-        until.elementLocated(locator),
-        this.timeout,
-        `Element with selector ${selector} not found`
-      );
-      await this.driver.wait(until.elementIsVisible(element), this.timeout);
-
-      await element.click();
-      await this.driver.actions().sendKeys(Key.TAB).perform();
-
-      if (expectedValidation) {
-        const errorSelector = this.errorMapping[selector];
-        if (!errorSelector) {
-          throw new Error(`No error selector defined for ${selector}`);
-        }
-        const validationElement = await this.driver.wait(
-          until.elementLocated(By.xpath(errorSelector)),
-          this.timeout,
-          `Validation message "${expectedValidation}" not found`
-        );
-        await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
-        const actualValidation = await validationElement.getText();
-        return actualValidation === expectedValidation;
-      } else {
-        const errorSelector = this.errorMapping[selector] || this.selectors.nameError;
-        await this.driver.manage().setTimeouts({ implicit: 500 });
-        const elements = await this.driver.findElements(By.xpath(errorSelector));
-        await this.driver.manage().setTimeouts({ implicit: 0 });
-        return elements.length === 0;
-      }
-    } catch (error) {
-      console.error(`Error verifying onBlur for ${selector}:`, error.message);
-      return false;
-    }
-  }
-
   async submitWithoutTerms() {
     await this.domHandler.clickWhenReady(this.selectors.termsCheckbox);
   }
   async hasTermsError() {
-    return await this.verifyBlurValidation(this.selectors.termsCheckbox, messages.terms, true);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.termsCheckbox, messages.terms, true);
   }
 
-  async requiredErrorVisible(fieldKey, expectedMessage) {
+  async nameHasErrorVisibleWhenEmpty(errorMessage) {
+    return await this.requiredErrorVisible('nameInput', errorMessage);
+  }
+
+ async surnameHasErrorVisibleWhenEmpty(errorMessage) {
+    return await this.requiredErrorVisible('surnameInput', errorMessage);
+  }
+
+ async emailHasErrorVisibleWhenEmpty(errorMessage) {
+    return await this.requiredErrorVisible('emailInput', errorMessage);
+  }
+
+ async usernameHasErrorVisibleWhenEmpty(errorMessage) {
+    return await this.requiredErrorVisible('usernameInput', errorMessage);
+  }
+
+ async passwordHasErrorVisibleWhenEmpty(errorMessage) {
+    return await this.requiredErrorVisible('passwordInput', errorMessage);
+  }
+
+async requiredErrorVisible(fieldKey, expectedMessage) {
     const selector = this.selectors[fieldKey];
-    return await this.verifyBlurValidation(selector, expectedMessage);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(selector, expectedMessage);
   }
 
-  async fillAllFieldsWithValidData(data) {
+async isConfirmPasswordShowingMessageWhenBlur(validationMessage) {
+  
+    const result = await this.domHandler.isShowingValidationMessageWhenBlur(
+     this.selectors.confirmPasswordInput, validationMessage);
+
+    return result;
+}
+
+async isValidEmailNotShowingMessageWhenBlur() {
+  
+    const result = await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.emailInput, '', false);
+
+    return result;
+}
+
+async isInvalidEmailShowingMessageWhenBlur(email, errorMesage) {
+  
+   await this.domHandler.fillTextField(this.selectors.emailInput, email);
+
+    const result = await this.domHandler.isShowingValidationMessageWhenBlur(
+      newAccountPage.selectors.emailInput ,errorMesage);
+
+    return result;
+}
+
+  async fillOutAllFieldsWithValidData(data) {
     await this.domHandler.fillTextField(this.selectors.nameInput, data.name);
     await this.domHandler.fillTextField(this.selectors.surnameInput, data.surname);
     await this.domHandler.fillTextField(this.selectors.emailInput, data.email);
@@ -125,28 +131,25 @@ class NewAccountPage {
 
     await this.driver.executeScript('arguments[0].blur();', el);
 
-    return await this.verifyBlurValidation(
+    return await this.isShowingValidationMessageWhenBlur(
       this.selectors.passwordInput,
       expectedValidationMessage,
     );
   }
 
-  async fillPasswordAndConfirmation(password, confirmation) {
+  async enterPasswordAndConfirmation(password, confirmation) {
     await this.domHandler.fillTextField(this.selectors.passwordInput, password);
     await this.domHandler.fillTextField(this.selectors.confirmPasswordInput, confirmation);
   }
 
-  async fillTextField(selector, value) {
-    await this.domHandler.fillTextField(selector, value);
-  }
-
-async enterEmail(email) {
+ async enterEmail(email) {
     await this.domHandler.fillTextField(this.selectors.emailInput, email);
   }
 
   async leaveEmailField() {
-    await this.domHandler.clickWhenReady(this.selectors.emailInput);
-    await this.domHandler.clickWhenReady(this.selectors.usernameInput);
+    
+    const element = await this.domHandler.findElement(this.selectors.emailInput);
+    await this.domHandler.makeElementLoseFocus(element);
   }
 
   async isEmailErrorAbsent() {

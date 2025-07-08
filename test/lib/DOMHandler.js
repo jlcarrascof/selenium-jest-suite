@@ -1,4 +1,4 @@
-const { By, until } = require('selenium-webdriver');
+const { By, until, Key } = require('selenium-webdriver');
 const TIMEOUT = 15000;
 class DOMHandler {
 
@@ -80,6 +80,49 @@ class DOMHandler {
       `Element with selector "${selector}" is not visible`
     );
     return element;
+  }
+
+  async makeElementLoseFocus(element) {
+      await element.click();
+      await this.driver.actions().sendKeys(Key.TAB).perform();
+  }
+
+async isShowingValidationMessageWhenBlur(selector, expectedValidation = '', isXPath = false) {
+    try {
+      const locator = isXPath ? By.xpath(selector) : By.css(selector);
+      const element = await this.driver.wait(
+        until.elementLocated(locator),
+        this.timeout,
+        `Element with selector ${selector} not found`
+      );
+      await this.driver.wait(until.elementIsVisible(element), this.timeout);
+
+      await this.makeElementLoseFocus(element);
+
+      if (expectedValidation) {
+        const errorSelector = this.errorMapping[selector];
+        if (!errorSelector) {
+          throw new Error(`No error selector defined for ${selector}`);
+        }
+        const validationElement = await this.driver.wait(
+          until.elementLocated(By.xpath(errorSelector)),
+          this.timeout,
+          `Validation message "${expectedValidation}" not found`
+        );
+        await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
+        const actualValidation = await validationElement.getText();
+        return actualValidation === expectedValidation;
+      } else {
+        const errorSelector = this.errorMapping[selector] || this.selectors.nameError;
+        await this.driver.manage().setTimeouts({ implicit: 500 });
+        const elements = await this.driver.findElements(By.xpath(errorSelector));
+        await this.driver.manage().setTimeouts({ implicit: 0 });
+        return elements.length === 0;
+      }
+    } catch (error) {
+      console.error(`Error verifying onBlur for ${selector}:`, error.message);
+      return false;
+    }
   }
 
 }

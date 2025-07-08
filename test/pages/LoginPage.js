@@ -85,11 +85,11 @@ class LoginPage {
   }
 
   async hasUsernameError() {
-    return await this.verifyBlurValidation(this.selectors.usernameInput, validationMessages.requiredUsername);
+    return await this.isShowingValidationMessageWhenBlur(this.selectors.usernameInput, validationMessages.requiredUsername);
   }
 
   async hasPasswordError() {
-    return await this.verifyBlurValidation(this.selectors.passwordInput, validationMessages.requiredPassword);
+    return await this.isShowingValidationMessageWhenBlur(this.selectors.passwordInput, validationMessages.requiredPassword);
   }
 
   async focusOnUsernameFieldAndTab() {
@@ -149,57 +149,10 @@ class LoginPage {
     return allPassed;
   }
 
-  async verifyBlurValidation(selector, expectedValidation = '', isXPath = false) {
-
-    try {
-      const locator = isXPath ? By.xpath(selector) : By.css(selector);
-      const element = await this.driver.wait(
-        until.elementLocated(locator),
-        this.timeout,
-        `Element with selector ${selector} not found`
-      );
-      await this.driver.wait(until.elementIsVisible(element), this.timeout);
-
-      await element.click();
-      await this.driver.actions().sendKeys(Key.TAB).perform();
-
-      if (expectedValidation) {
-        const errorSelector = selector === this.selectors.usernameInput
-          ? this.selectors.usernameError
-          : this.selectors.passwordError;
-        const validationElement = await this.driver.wait(
-          until.elementLocated(By.xpath(errorSelector)),
-          this.timeout,
-          `Validation message "${expectedValidation}" not found`
-        );
-        await this.driver.wait(until.elementIsVisible(validationElement), this.timeout);
-        const actualValidation = await validationElement.getText();
-        return actualValidation === expectedValidation;
-      } else {
-        const errorSelector = selector === this.selectors.usernameInput
-          ? this.selectors.usernameError
-          : this.selectors.passwordError;
-        const elements = await this.driver.findElements(By.xpath(errorSelector));
-        return elements.length === 0;
-      }
-    } catch (error) {
-      console.error(`Error verifying onBlur for ${selector}:`, error.message);
-      return false;
-    }
-  }
-
   async login(username, password) {
     await this.enterUsername(username);
     await this.enterPassword(password);
     await this.clickLoginButton();
-  }
-
-
-  async loginWithValidCredentials(username, password) {
-    await this.enterUsername(username);
-    await this.enterPassword(password);
-    await this.clickLoginButton();
-    await this.domHandler.waitForElementVisible(this.selectors.dashboardTitle);
   }
 
   async getDashboardTitleText() {

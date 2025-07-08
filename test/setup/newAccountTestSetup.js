@@ -1,5 +1,3 @@
-// helpers/newAccountTestSetup.js
-
 const DriverFactory = require('../factories/driverFactory');
 const PageFactory = require('../factories/pagesFactory');
 
@@ -49,11 +47,5 @@ const initPages = async () => {
 
 module.exports = {
   CONFIG,
-  initPages,
-  get driver() {
-    return driver;
-  },
-  get newAccountPage() {
-    return newAccountPage;
-  }
+  initPages
 };
