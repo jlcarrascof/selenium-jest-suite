@@ -126,7 +126,6 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(CONFIG.USERS_URL);
   }, CONFIG.TIMEOUT);
 
-/*
   test('TC-011: Click on Event log should redirect to expected URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
     const actualUrl = await profilePage.clickEventLogAndGetUrl();
@@ -180,5 +179,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(CONFIG.SUBSCRIPTION_DATA_URL);
   }, CONFIG.TIMEOUT);
-*/
+
 });
