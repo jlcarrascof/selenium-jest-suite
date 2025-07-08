@@ -29,7 +29,7 @@ describe('Groups - General Functionality', () => {
     ['TC-002', 'Click on Reports', 'reportsLink', 'groupsPage'],
     ['TC-003', 'Click on Calendar', 'calendarLink', 'groupsPage'],
     ['TC-004', 'Click on Resources', 'resourcesLink', 'groupsPage'],
-    ['TC-006', 'Click on My Profile', 'myProfileLink', 'profilePage']
+    ['TC-005', 'Click on My Profile', 'myProfileLink', 'profilePage']
   ])('%s: %s should redirect to expected URL', async (_tc, desc, selectorKey, page) => {
     await login();
 
@@ -46,7 +46,7 @@ describe('Groups - General Functionality', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
-  test('TC-005: Click on User profile icon should open menu', async () => {
+  test('TC-006: Click on User profile icon should open menu', async () => {
     await login();
     await groupsPage.clickProfileIcon();
 
