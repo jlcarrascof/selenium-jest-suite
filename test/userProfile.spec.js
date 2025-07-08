@@ -114,18 +114,18 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test.each([
-    ['TC-009', 'roles',            'ROLES_PERMISSIONS_URL'],
-    ['TC-010', 'users',            'USERS_URL'],
-    ['TC-011', 'eventLog',         'EVENT_LOG_URL'],
-    ['TC-012', 'allNotifications', 'ALL_NOTIFICATIONS_URL'],
-    ['TC-013', 'roleNotifications','ROLE_NOTIFICATIONS_URL'],
-    ['TC-014', 'userNotifications','USER_NOTIFICATIONS_URL'],
-    ['TC-015', 'languages',        'LANGUAGES_URL'],
-    ['TC-016', 'referenceData',    'REFERENCE_DATA_URL'],
-    ['TC-017', 'subscription',     'SUBSCRIPTION_DATA_URL'],
+    ['TC-009', 'roles', 'Roles and Permissions', 'ROLES_PERMISSIONS_URL'],
+    ['TC-010', 'users', 'Users', 'USERS_URL'],
+    ['TC-011', 'eventLog', 'Event Log', 'EVENT_LOG_URL'],
+    ['TC-012', 'allNotifications', 'All Notifications', 'ALL_NOTIFICATIONS_URL'],
+    ['TC-013', 'roleNotifications', 'Role Notifications', 'ROLE_NOTIFICATIONS_URL'],
+    ['TC-014', 'userNotifications', 'User Notifications', 'USER_NOTIFICATIONS_URL'],
+    ['TC-015', 'languages', 'Languages', 'LANGUAGES_URL'],
+    ['TC-016', 'referenceData', 'Reference Data', 'REFERENCE_DATA_URL'],
+    ['TC-017', 'subscription', 'Subscription Data', 'SUBSCRIPTION_DATA_URL'],
   ])(
-    '%s: opening section "%s" redirects to the expected URL',
-    async (_tc, sectionKey, expectedUrlKey) => {
+    '%s: opening section "%s" redirects to %s URL',
+    async (_tc, sectionKey, title,  expectedUrlKey) => {
       await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
       const actualLink = await profilePage.openSectionAndGetUrl(sectionKey);
