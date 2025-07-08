@@ -113,6 +113,31 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
 
+  test.each([
+      ['TC-009', 'rolesPermissionsLink',  'ROLES_PERMISSIONS_URL'],
+      ['TC-010', 'usersLink',             'USERS_URL'],
+      ['TC-011', 'eventLogLink',          'EVENT_LOG_URL'],
+      ['TC-012', 'allNotificationsLink',  'ALL_NOTIFICATIONS_URL'],
+      ['TC-013', 'roleNotificationsLink', 'ROLE_NOTIFICATIONS_URL'],
+      ['TC-014', 'userNotificationsLink', 'USER_NOTIFICATIONS_URL'],
+      ['TC-015', 'languagesLink',         'LANGUAGES_URL'],
+      ['TC-016', 'referenceDataLink',     'REFERENCE_DATA_URL'],
+      ['TC-017', 'subscriptionLink',      'SUBSCRIPTION_DATA_URL']
+    ])(
+      '%s: clicking on %s redirects to the correct URL',
+      async (_tc, selectorKey, expectedUrlKey) => {
+        await login(CONFIG.USERNAME, CONFIG.PASSWORD);
+
+        const actualLink = await profilePage.clickElementAndGetUrl(selectorKey);
+
+        const expectedLink = CONFIG[expectedUrlKey];
+
+        expect(actualLink).toBe(expectedLink);
+      },
+      CONFIG.TIMEOUT
+  );
+
+/*
   test('TC-009: Click on Roles and Permissions should redirect to Roles and Permissions URL', async () => {
     await login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -193,5 +218,6 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
+*/
 
 });
