@@ -1,5 +1,8 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
+const selectors = require("../selectors/profileSelector");
+const DOMHandler = require('../lib/DOMHandler');
+
 const WAIT_TIME = 2000;
 
 class ProfilePage {
@@ -7,26 +10,19 @@ class ProfilePage {
     this.driver = driver;
     this.baseUrl = baseUrl;
     this.timeout = timeout;
-
-    this.selectors = {
-      usernameInput: "input[placeholder='Enter your username']",
-      passwordInput: "input[placeholder='Enter your password']",
-      submitButton: "button[type='submit']",
-      profileIcon: 'div.menu-item[data-menu-item-toggle="dropdown"]',
-      logoutButton: '//button[contains(text(), "Log out")]',
-      appsButton: '//*[@id="header_container"]/div[3]/div[2]/button',
-      groupsOption: '//div[span[text()="Groups"]]',
-      myProfileLink: '//*[@id="header_container"]/div[3]/div[3]/div/div[2]/div[3]/div/a',
-      usersLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
-      rolesPermissionsLink: '//span[normalize-space()="Users" and contains(@class, "menu-title")]',
-      eventLogLink: '//span[normalize-space()="Event log" and contains(@class, "menu-title")]',
-      allNotificationsLink: '//span[normalize-space()="All notifications" and contains(@class, "menu-title")]',
-      roleNotificationsLink: '//span[normalize-space()="Role notifications" and contains(@class, "menu-title")]',
-      userNotificationsLink: '//span[normalize-space()="User notifications" and contains(@class, "menu-title")]',
-      languagesLink: '//span[normalize-space()="Languages" and contains(@class, "menu-title")]',
-      referenceDataLink: '//span[normalize-space()="Reference data" and contains(@class, "menu-title")]',
-      subscriptionLink: '//span[normalize-space()="Subscription" and contains(@class, "menu-title")]',
+    this.selectors = selectors;
+    this.sectionMap = {
+      roles:            this.selectors.rolesPermissionsLink,
+      users:            this.selectors.usersLink,
+      eventLog:         this.selectors.eventLogLink,
+      allNotifications: this.selectors.allNotificationsLink,
+      roleNotifications:this.selectors.roleNotificationsLink,
+      userNotifications:this.selectors.userNotificationsLink,
+      languages:        this.selectors.languagesLink,
+      referenceData:    this.selectors.referenceDataLink,
+      subscription:     this.selectors.subscriptionLink,
     };
+    this.domHandler = new DOMHandler(driver, timeout);
   }
 
   async enterUsername(username) {
@@ -91,7 +87,7 @@ class ProfilePage {
     );
 
     await logoutButton.click();
-    await this.driver.sleep(WAIT_TIME); // Añadir espera
+    await this.driver.sleep(WAIT_TIME);
   }
 
   async isOnLoginPage() {
@@ -99,7 +95,7 @@ class ProfilePage {
 
     const currentUrl = await this.driver.getCurrentUrl();
 
-    return currentUrl.startsWith(this.baseUrl); // Más flexible para parámetros adicionales
+    return currentUrl.startsWith(this.baseUrl);
   }
 
   async openMainMenu() {
@@ -124,18 +120,6 @@ class ProfilePage {
     }
   }
 
-  async clickElementAndGetUrl(selectorKey) {
-    const selector = this.selectors[selectorKey];
-    const element = await this.driver.wait(
-      until.elementLocated(By.xpath(selector)),
-      this.timeout
-    );
-    await element.click();
-    await this.driver.sleep(WAIT_TIME);
-    const url = await this.driver.getCurrentUrl();
-    return url;
-  }
-
   async clickLogoutAndGetUrl() {
     return await this.clickElementAndGetUrl('logoutButton');
   }
@@ -148,42 +132,39 @@ class ProfilePage {
     return await this.clickElementAndGetUrl('myProfileLink');
   }
 
-  async clickUsersAndGetUrl() {
-    return await this.clickElementAndGetUrl('usersLink');
+  async clickElementAndGetUrl(selectorKey) {
+    const selector = this.selectors[selectorKey];
+    const element = await this.driver.wait(
+      until.elementLocated(By.xpath(selector)),
+      this.timeout
+    );
+
+    await element.click();
+
+    await this.driver.sleep(WAIT_TIME);
+
+    const url = await this.driver.getCurrentUrl();
+
+    return url;
   }
 
-  async clickRolesPermissionsAndGetUrl() {
-    return await this.clickElementAndGetUrl('rolesPermissionsLink');
-  }
+  async openSectionAndGetUrl(sectionKey) {
+    const selector = this.sectionMap[sectionKey];
 
-  async clickEventLogAndGetUrl() {
-    return await this.clickElementAndGetUrl('eventLogLink');
-  }
+    if (!selector) {
+      throw new Error(`Unknown sectionKey: "${sectionKey}"`);
+    }
 
-  async clickAllNotificationsAndGetUrl() {
-    return await this.clickElementAndGetUrl('allNotificationsLink');
-  }
+    const element = await this.driver.wait(
+      until.elementLocated(By.xpath(selector)),
+      this.timeout
+    );
 
-  async clickRoleNotificationsAndGetUrl() {
-    return await this.clickElementAndGetUrl('roleNotificationsLink');
-  }
+    await element.click();
+    await this.driver.sleep(WAIT_TIME);
 
-  async clickUserNotificationsAndGetUrl() {
-    return await this.clickElementAndGetUrl('userNotificationsLink');
+    return await this.driver.getCurrentUrl();
   }
-
-  async clickLanguagesAndGetUrl() {
-    return await this.clickElementAndGetUrl('languagesLink');
-  }
-
-  async clickReferenceDataAndGetUrl() {
-    return await this.clickElementAndGetUrl('referenceDataLink');
-  }
-
-  async clickSubscriptionAndGetUrl() {
-    return await this.clickElementAndGetUrl('subscriptionLink');
-  }
-
 }
 
 module.exports = ProfilePage;
