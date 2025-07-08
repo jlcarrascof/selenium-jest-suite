@@ -120,15 +120,15 @@ class ProfilePage {
   }
 
   async clickLogoutAndGetUrl() {
-    return await this.clickElementAndGetUrl(this.selectors.logoutButton);
+    return await this.clickElementAndGetUrl('logoutButton');
   }
 
   async clickGroupsAndGetUrl() {
-    return await this.clickElementAndGetUrl(this.selectors.groupsOption);
+    return await this.clickElementAndGetUrl('groupsOption');
   }
 
   async clickMyProfileAndGetUrl() {
-    return await this.clickElementAndGetUrl(this.selectors.myProfileLink);
+    return await this.clickElementAndGetUrl('myProfileLink');
   }
 
   async clickElementAndGetUrl(selectorKey) {
