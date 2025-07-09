@@ -85,11 +85,11 @@ class LoginPage {
   }
 
   async hasUsernameError() {
-    return await this.isShowingValidationMessageWhenBlur(this.selectors.usernameInput, validationMessages.requiredUsername);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.usernameInput, validationMessages.requiredUsername, true);
   }
 
   async hasPasswordError() {
-    return await this.isShowingValidationMessageWhenBlur(this.selectors.passwordInput, validationMessages.requiredPassword);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.passwordInput, validationMessages.requiredPassword, true);
   }
 
   async focusOnUsernameFieldAndTab() {
@@ -159,6 +159,6 @@ class LoginPage {
     const element = await this.domHandler.waitForElementVisible(this.selectors.dashboardTitle);
     return await element.getText();
   }
-  
+
 }
 module.exports = LoginPage;
