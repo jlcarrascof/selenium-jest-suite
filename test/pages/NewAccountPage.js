@@ -129,14 +129,12 @@ async isInvalidEmailShowingMessageWhenBlur(email, errorMesage) {
   async showsPasswordRequiredError(password, expectedValidationMessage) {
     await this.domHandler.fillTextField(this.selectors.passwordInput, password);
 
-    const el = await this.domHandler.findElement(this.selectors.passwordInput);
+    const element = await this.domHandler.findElement(this.selectors.passwordInput);
 
-    await this.driver.executeScript('arguments[0].blur();', el);
-
-    return await this.isShowingValidationMessageWhenBlur(
+    await this.driver.executeScript('arguments[0].blur();', element);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(
       this.selectors.passwordInput,
-      expectedValidationMessage,
-    );
+      expectedValidationMessage);
   }
 
   async enterPasswordAndConfirmation(password, confirmation) {
