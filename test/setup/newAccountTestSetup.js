@@ -1,5 +1,3 @@
-// helpers/newAccountTestSetup.js
-
 const DriverFactory = require('../factories/driverFactory');
 const PageFactory = require('../factories/pagesFactory');
 
