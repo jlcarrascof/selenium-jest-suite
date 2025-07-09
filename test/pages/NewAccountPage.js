@@ -98,7 +98,7 @@ async isInvalidEmailShowingMessageWhenBlur(email, errorMesage) {
    await this.domHandler.fillTextField(this.selectors.emailInput, email);
 
     const result = await this.domHandler.isShowingValidationMessageWhenBlur(
-      newAccountPage.selectors.emailInput ,errorMesage);
+      this.selectors.emailInput ,errorMesage);
 
     return result;
 }

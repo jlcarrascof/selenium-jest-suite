@@ -1,4 +1,4 @@
-const { CONFIG, initPages, driver: getDriver, newAccountPage: getNewAccountPage } = require('./setup/newAccountTestSetup');
+const { CONFIG, initPages } = require('./setup/newAccountTestSetup');
 
 let driver, newAccountPage;
 
@@ -78,7 +78,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     const actualResult = await newAccountPage.isCreateAccountButtonEnabled();
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-*/
+
   test.each([
     ['TC-010', 'only numbers', CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password],
     ['TC-011', 'only letters', CONFIG.INVALID_PASSWORDS.onlyLetters, CONFIG.ERROR_MESSAGES.password],
@@ -90,10 +90,9 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-/*
-  test('TC-009: Confirm Password field should display error message when we type a different Password', async () => {
+  test('TC-013: Confirm Password field should display error message when we type a different Password', async () => {
 
-    await newAccountPage.emterPasswordAndConfirmation(CONFIG.VALID_DATA.password, CONFIG.VALID_DATA.differentPassword );
+    await newAccountPage.enterPasswordAndConfirmation(CONFIG.VALID_DATA.password, CONFIG.VALID_DATA.differentPassword);
 
     const actualResult = await newAccountPage.isConfirmPasswordShowingMessageWhenBlur(CONFIG.ERROR_MESSAGES.confirmPassword);
 
@@ -101,8 +100,8 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-
-  test('TC-010: Email field should display error message when using an invalid email format', async () => {
+*/
+  test('TC-014: Email field should display error message when using an invalid email format', async () => {
 
      await newAccountPage.enterEmail(CONFIG.INVALID_EMAILS.incomplete);
 
@@ -112,8 +111,8 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-
-  test('TC-011: Email field should not display error message when using a valid email format', async () => {
+/*
+  test('TC-015: Email field should not display error message when using a valid email format', async () => {
 
     await newAccountPage.enterEmail(CONFIG.VALID_DATA.email);
 
@@ -124,7 +123,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  test('TC-012: Clicking Login link should redirect to login page', async () => {
+  test('TC-016: Clicking Login link should redirect to login page', async () => {
     await newAccountPage.clickLoginLink();
 
     const expectedUrl = CONFIG.LOGIN_PAGE_URL;
