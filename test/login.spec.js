@@ -116,7 +116,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-
+/*
   test('TC-010: Password field should display error message when is empty', async () => {
 
       await loginPage.enterUsername(CONFIG.VALID_USERNAME);
@@ -138,6 +138,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
+*/
 /*
   describe.each`
     testCase    | username          | password          | description

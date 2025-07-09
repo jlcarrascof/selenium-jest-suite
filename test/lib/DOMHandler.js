@@ -125,6 +125,20 @@ async isShowingValidationMessageWhenBlur(selector, expectedValidation = '', isXP
     }
   }
 
+  async blurAndCheckError(inputSelector, errorSelector, errorIsXPath = false) {
+
+    const input = await this.findElement(inputSelector);
+    await input.click();
+    await this.driver.actions().sendKeys(Key.TAB).perform();
+
+    const locator = errorIsXPath ? By.xpath(errorSelector) : By.css(errorSelector);
+    await this.driver.wait(until.elementLocated(locator), this.timeout);
+    const element = await this.driver.findElement(locator);
+    await this.driver.wait(until.elementIsVisible(element), this.timeout);
+
+    return true;
+  }
+
 }
 
 module.exports = DOMHandler;
