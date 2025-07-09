@@ -21,6 +21,8 @@ class NewAccountPage {
       [this.selectors.confirmPasswordInput]: this.selectors.confirmPasswordError
     };
     this.domHandler = new DOMHandler(driver, timeout);
+    this.domHandler.errorMapping = this.errorMapping;
+    this.domHandler.selectors = this.selectors;
   }
 
   async open() {
@@ -73,7 +75,7 @@ class NewAccountPage {
 
   async requiredErrorVisible(fieldKey, expectedMessage) {
     const selector = this.selectors[fieldKey];
-    return await this.verifyBlurValidation(selector, expectedMessage);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(selector, expectedMessage);
   }
 
 async isConfirmPasswordShowingMessageWhenBlur(validationMessage) {
@@ -96,7 +98,7 @@ async isInvalidEmailShowingMessageWhenBlur(email, errorMesage) {
    await this.domHandler.fillTextField(this.selectors.emailInput, email);
 
     const result = await this.domHandler.isShowingValidationMessageWhenBlur(
-      newAccountPage.selectors.emailInput ,errorMesage);
+      this.selectors.emailInput ,errorMesage);
 
     return result;
 }
@@ -127,14 +129,12 @@ async isInvalidEmailShowingMessageWhenBlur(email, errorMesage) {
   async showsPasswordRequiredError(password, expectedValidationMessage) {
     await this.domHandler.fillTextField(this.selectors.passwordInput, password);
 
-    const el = await this.domHandler.findElement(this.selectors.passwordInput);
+    const element = await this.domHandler.findElement(this.selectors.passwordInput);
 
-    await this.driver.executeScript('arguments[0].blur();', el);
-
-    return await this.isShowingValidationMessageWhenBlur(
+    await this.driver.executeScript('arguments[0].blur();', element);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(
       this.selectors.passwordInput,
-      expectedValidationMessage,
-    );
+      expectedValidationMessage);
   }
 
   async enterPasswordAndConfirmation(password, confirmation) {

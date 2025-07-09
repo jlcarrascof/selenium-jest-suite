@@ -49,7 +49,7 @@ module.exports = {
   CONFIG,
   initPages,
   get driver() {
-    return driver;
+   return driver;
   },
   get newAccountPage() {
     return newAccountPage;
