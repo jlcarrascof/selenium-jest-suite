@@ -2,6 +2,7 @@ const DriverFactory = require('../factories/driverFactory');
 const PageFactory = require('../factories/pagesFactory');
 
 const CONFIG = {
+  BASE_NEW_ACCOUNT_URL: 'https://login.harmonychurchsuite.com/tenant/user-signup?tenant=qa',
   LOGIN_PAGE_URL: 'https://login.harmonychurchsuite.com/tenant/user-signin',
   VALID_DATA: {
     name: 'Javier',
@@ -40,12 +41,18 @@ let driver, newAccountPage;
 const initPages = async () => {
   const driverFactory = new DriverFactory(global.testConfig.currentBrowser, global.testConfig.timeout);
   driver = await driverFactory.initDriver();
-  newAccountPage = PageFactory.createPage('newAccount', driver, global.testConfig.baseNewAccountUrl, global.testConfig.timeout);
+  newAccountPage = PageFactory.createPage('newAccount', driver, CONFIG.BASE_NEW_ACCOUNT_URL, CONFIG.TIMEOUT);
 
   return { driver, newAccountPage };
 };
 
 module.exports = {
   CONFIG,
-  initPages
+  initPages,
+  get driver() {
+    return driver;
+  },
+  get newAccountPage() {
+    return newAccountPage;
+  }
 };
