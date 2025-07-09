@@ -85,7 +85,7 @@ class LoginPage {
   }
 
   async hasUsernameError() {
-    return await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.usernameInput, validationMessages.requiredUsername, true);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.usernameInput, validationMessages.requiredUsername, false);
   }
 
   async hasPasswordError() {
