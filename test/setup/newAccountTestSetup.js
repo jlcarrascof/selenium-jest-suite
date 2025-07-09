@@ -48,10 +48,4 @@ const initPages = async () => {
 module.exports = {
   CONFIG,
   initPages,
-  get driver() {
-    return driver;
-  },
-  get newAccountPage() {
-    return newAccountPage;
-  }
 };
