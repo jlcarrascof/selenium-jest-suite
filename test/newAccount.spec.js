@@ -111,7 +111,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-/*
+
   test('TC-015: Email field should not display error message when using a valid email format', async () => {
 
     await newAccountPage.enterEmail(CONFIG.VALID_DATA.email);
@@ -135,5 +135,4 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedResult);
   });
-*/
 });
