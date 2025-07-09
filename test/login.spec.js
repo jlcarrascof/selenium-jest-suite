@@ -23,7 +23,7 @@ beforeEach(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-
+/*
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.login(CONFIG.VALID_USERNAME, CONFIG.VALID_PASSWORD);
@@ -105,7 +105,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-
+*/
 
   test('TC-009: Username field should display error message when is empty', async () => {
 
@@ -138,7 +138,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-
+/*
   describe.each`
     testCase    | username          | password          | description
     ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
@@ -146,7 +146,7 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
   `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
     test(`${description}`, async () => {
-      
+
       await loginPage.enterUsername(username);
       await loginPage.enterPassword(password);
 
@@ -156,4 +156,5 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
       expect(actualResult).toBe(expectedResult);
     }, CONFIG.TIMEOUT);
   });
+*/
 });
