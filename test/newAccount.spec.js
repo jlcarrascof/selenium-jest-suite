@@ -17,7 +17,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   beforeEach(async () => {
      await newAccountPage.open();
   });
-/*
+
   test('TC-001: Terms and Conditions checkbox should display error message when unchecked', async () => {
     await newAccountPage.submitWithoutTerms();
 
@@ -100,7 +100,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-*/
+
   test('TC-014: Email field should display error message when using an invalid email format', async () => {
 
      await newAccountPage.enterEmail(CONFIG.INVALID_EMAILS.incomplete);
