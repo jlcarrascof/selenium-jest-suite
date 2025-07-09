@@ -1,4 +1,4 @@
-const { CONFIG, initPages } = require('./setup/newAccountTestSetup');
+const { CONFIG, initPages, driver: getDriver, newAccountPage: getNewAccountPage } = require('./setup/newAccountTestSetup');
 
 let driver, newAccountPage;
 
@@ -14,9 +14,9 @@ afterAll(async () => {
 
 describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
-  // beforeEach(async () => {
-  //   await newAccountPage.open();
-  // });
+  beforeEach(async () => {
+     await newAccountPage.open();
+  });
 
   test('TC-001: Terms and Conditions checkbox should display error message when unchecked', async () => {
     await newAccountPage.submitWithoutTerms();
@@ -26,26 +26,26 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   });
-/*
-  test.each([
-    ['TC-002', 'nameInput',    CONFIG.ERROR_MESSAGES.name],
-    ['TC-003', 'surnameInput', CONFIG.ERROR_MESSAGES.surname],
-    ['TC-004', 'emailInput',   CONFIG.ERROR_MESSAGES.email],
-    ['TC-005', 'usernameInput',CONFIG.ERROR_MESSAGES.username],
-    ['TC-006', 'passwordInput',CONFIG.ERROR_MESSAGES.password],
-  ])(
-    '%s: Field [%s] should display error when empty',
-      async (tc, fieldKey, expectedMessage) => {
-      const actualResult = await newAccountPage.requiredErrorVisible(
-        fieldKey,
-        expectedMessage
-      );
-      const expectedResult = true;
 
-      expect(actualResult).toBe(expectedResult);
-    }
-  );
-*/
+  // test.each([
+  //   ['TC-002', 'nameInput',    CONFIG.ERROR_MESSAGES.name],
+  //   ['TC-003', 'surnameInput', CONFIG.ERROR_MESSAGES.surname],
+  //   ['TC-004', 'emailInput',   CONFIG.ERROR_MESSAGES.email],
+  //   ['TC-005', 'usernameInput',CONFIG.ERROR_MESSAGES.username],
+  //   ['TC-006', 'passwordInput',CONFIG.ERROR_MESSAGES.password],
+  // ])(
+  //   '%s: Field [%s] should display error when empty',
+  //     async (tc, fieldKey, expectedMessage) => {
+  //     const actualResult = await newAccountPage.requiredErrorVisible(
+  //       fieldKey,
+  //       expectedMessage
+  //     );
+  //     const expectedResult = true;
+
+  //     expect(actualResult).toBe(expectedResult);
+  //   }
+  // );
+
 /*
   test.each([
     {
