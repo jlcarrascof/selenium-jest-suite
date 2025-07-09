@@ -50,108 +50,108 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     }, CONFIG.TIMEOUT
   );
 
-  // test('TC-005:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
+  test('TC-005:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
 
-  //   await loginPage.clickRecoverPasswordLink();
+    await loginPage.clickRecoverPasswordLink();
 
-  //   const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
+    const expectedUrl = global.testConfig.forgotPasswordRedirectUrl;
 
-  //   const timeout = global.testConfig.contactUsRedirectTimeout;
+    const timeout = global.testConfig.contactUsRedirectTimeout;
 
-  //   await loginPage.ensureRedirectTo(expectedUrl, timeout);
+    await loginPage.ensureRedirectTo(expectedUrl, timeout);
 
-  //   const actualUrl = await loginPage.getCurrentUrl();
+    const actualUrl = await loginPage.getCurrentUrl();
 
-  //   expect(actualUrl).toBe(expectedUrl);
-  // }, CONFIG.TIMEOUT);
+    expect(actualUrl).toBe(expectedUrl);
+  }, CONFIG.TIMEOUT);
 
-  // test('TC-006: Clicking New Account link should redirect to registration page', async () => {
+  test('TC-006: Clicking New Account link should redirect to registration page', async () => {
 
-  //   await loginPage.clickNewAccountLink();
+    await loginPage.clickNewAccountLink();
 
-  //   const expectedUrl = global.testConfig.baseNewAccountUrl;
+    const expectedUrl = global.testConfig.baseNewAccountUrl;
 
-  //   const timeout = global.testConfig.contactUsRedirectTimeout;
+    const timeout = global.testConfig.contactUsRedirectTimeout;
 
-  //   await loginPage.ensureRedirectTo(expectedUrl, timeout);
+    await loginPage.ensureRedirectTo(expectedUrl, timeout);
 
-  //   const actualUrl = await loginPage.getCurrentUrl();
+    const actualUrl = await loginPage.getCurrentUrl();
 
-  //   expect(actualUrl).toBe(expectedUrl);
+    expect(actualUrl).toBe(expectedUrl);
 
-  // }, CONFIG.TIMEOUT);
+  }, CONFIG.TIMEOUT);
 
-  // test('TC-007: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
+  test('TC-007: (To be updated) Clicking Contact Us link should redirect to contact page', async () => {
 
-  //     await loginPage.clickContactUsLink();
+      await loginPage.clickContactUsLink();
 
-  //     const expectedUrl = global.testConfig.contactUsRedirectUrl;
-  //     const timeout = global.testConfig.contactUsRedirectTimeout;
+      const expectedUrl = global.testConfig.contactUsRedirectUrl;
+      const timeout = global.testConfig.contactUsRedirectTimeout;
 
-  //     await loginPage.ensureRedirectTo(expectedUrl, timeout);
+      await loginPage.ensureRedirectTo(expectedUrl, timeout);
 
-  //     const actualUrl = await loginPage.getCurrentUrl();
+      const actualUrl = await loginPage.getCurrentUrl();
 
-  //     expect(actualUrl).toBe(expectedUrl);
-  // }, CONFIG.TIMEOUT);
+      expect(actualUrl).toBe(expectedUrl);
+  }, CONFIG.TIMEOUT);
 
 
-  // test('TC-008: Tab order should follow expected focus sequence', async () => {
+  test('TC-008: Tab order should follow expected focus sequence', async () => {
 
-  //   const actualResult = await loginPage.canPressTabKeysAndNavigateAll();
-  //   const expectedResult = true;
+    const actualResult = await loginPage.canPressTabKeysAndNavigateAll();
+    const expectedResult = true;
 
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
-  // test('TC-009: Username field should display error message when is empty', async () => {
+  test('TC-009: Username field should display error message when is empty', async () => {
 
-  //   await loginPage.focusOnUsernameField();
+    await loginPage.focusOnUsernameField();
 
-  //   const actualResult = await loginPage.hasUsernameError();
-  //   const expectedResult = true;
+    const actualResult = await loginPage.hasUsernameError();
+    const expectedResult = true;
 
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
-  // test('TC-010: Password field should display error message when is empty', async () => {
+  test('TC-010: Password field should display error message when is empty', async () => {
 
-  //     await loginPage.enterUsername(CONFIG.VALID_USERNAME);
-  //     await loginPage.focusOnPasswordField();
+      await loginPage.enterUsername(CONFIG.VALID_USERNAME);
+      await loginPage.focusOnPasswordField();
 
-  //     const actualResult = await loginPage.hasPasswordError();
-  //     const expectedResult = true;
+      const actualResult = await loginPage.hasPasswordError();
+      const expectedResult = true;
 
-  //     expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+      expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
-  // test('TC-011: Username field and Password field should display error messages when both fields are empty', async () => {
+  test('TC-011: Username field and Password field should display error messages when both fields are empty', async () => {
 
-  //   await loginPage.focusOnUsernameFieldAndTab();
-  //   await loginPage.focusOnPasswordField();
+    await loginPage.focusOnUsernameFieldAndTab();
+    await loginPage.focusOnPasswordField();
 
-  //   const actualResult = await loginPage.hasPasswordError();
-  //   const expectedResult = true;
+    const actualResult = await loginPage.hasPasswordError();
+    const expectedResult = true;
 
-  //   expect(actualResult).toBe(expectedResult);
-  // }, CONFIG.TIMEOUT);
+    expect(actualResult).toBe(expectedResult);
+  }, CONFIG.TIMEOUT);
 
-  // describe.each`
-  //   testCase    | username          | password          | description
-  //   ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
-  //   ${'TC-013'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
-  //   ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
-  // `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
-  //   test(`${description}`, async () => {
+  test.each([
+    ['TC-012', 'When username is empty',           CONFIG.EMPTY_USERNAME, CONFIG.VALID_PASSWORD],
+    ['TC-013', 'When password is empty',           CONFIG.VALID_USERNAME, CONFIG.EMPTY_PASSWORD],
+    ['TC-014', 'When username and password are empty', CONFIG.EMPTY_USERNAME, CONFIG.EMPTY_PASSWORD]
+  ])(
+    '%s: Login Submit button should be disabled - %s',
+    async (_testCase, description, username, password) => {
+      await loginPage.open();
+      await loginPage.enterUsername(username);
+      await loginPage.enterPassword(password);
 
-  //     await loginPage.enterUsername(username);
-  //     await loginPage.enterPassword(password);
+      const actualResult   = await loginPage.isSubmitButtonDisabled();
+      const expectedResult = true;
 
-  //     const actualResult = await loginPage.isSubmitButtonDisabled();
-  //     const expectedResult = true;
-
-  //     expect(actualResult).toBe(expectedResult);
-  //   }, CONFIG.TIMEOUT);
-  // });
+      expect(actualResult).toBe(expectedResult);
+    }, CONFIG.TIMEOUT
+  );
 
 });
