@@ -71,9 +71,9 @@ class NewAccountPage {
     return await this.requiredErrorVisible('passwordInput', errorMessage);
   }
 
-async requiredErrorVisible(fieldKey, expectedMessage) {
+  async requiredErrorVisible(fieldKey, expectedMessage) {
     const selector = this.selectors[fieldKey];
-    return await this.domHandler.isShowingValidationMessageWhenBlur(selector, expectedMessage);
+    return await this.verifyBlurValidation(selector, expectedMessage);
   }
 
 async isConfirmPasswordShowingMessageWhenBlur(validationMessage) {

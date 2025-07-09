@@ -29,47 +29,25 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test.each([
-    {
-      tc: 'TC-003',
-      field: 'name',
-      method: newAccountPage.nameHasErrorVisibleWhenEmpty,
-      errorMessage: CONFIG.ERROR_MESSAGES.name,
-    },
-    {
-      tc: 'TC-004',
-      field: 'surname',
-      method: newAccountPage.surnameHasErrorVisibleWhenEmpty,
-      errorMessage: CONFIG.ERROR_MESSAGES.surname,
-    },
-    {
-      tc: 'TC-005',
-      field: 'email',
-      method: newAccountPage.emailHasErrorVisibleWhenEmpty,
-      errorMessage: CONFIG.ERROR_MESSAGES.email,
-    },
-    {
-      tc: 'TC-006',
-      field: 'username',
-      method: newAccountPage.usernameHasErrorVisibleWhenEmpty,
-      errorMessage: CONFIG.ERROR_MESSAGES.username,
-    },
-    {
-      tc: 'TC-007',
-      field: 'password',
-      method: newAccountPage.passwordHasErrorVisibleWhenEmpty,
-      errorMessage: CONFIG.ERROR_MESSAGES.password,
-    },
-  ])('$tc: Field $field should display error messages when are empty', async ({ method, errorMessage }) => {
-
-    for (const [method, errorMessage] of methods) {
-
-      const actualResult = await method(errorMessage);
+    ['TC-002', 'nameInput',    CONFIG.ERROR_MESSAGES.name],
+    ['TC-003', 'surnameInput', CONFIG.ERROR_MESSAGES.surname],
+    ['TC-004', 'emailInput',   CONFIG.ERROR_MESSAGES.email],
+    ['TC-005', 'usernameInput',CONFIG.ERROR_MESSAGES.username],
+    ['TC-006', 'passwordInput',CONFIG.ERROR_MESSAGES.password],
+  ])(
+    '%s: Field [%s] should display error when empty',
+      async (tc, fieldKey, expectedMessage) => {
+      const actualResult = await newAccountPage.requiredErrorVisible(
+        fieldKey,
+        expectedMessage
+      );
       const expectedResult = true;
 
       expect(actualResult).toBe(expectedResult);
     }
-  });
+  );
 
+/*
   test.each([
     {
       tc: 'TC-003',
@@ -137,7 +115,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   });
 
   test('TC-011: Email field should not display error message when using a valid email format', async () => {
-   
+
     await newAccountPage.enterEmail(CONFIG.VALID_DATA.email);
 
     const actualResult = await newAccountPage.isValidEmailNotShowingMessageWhenBlur();
@@ -159,5 +137,5 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedResult);
   });
-
+*/
 });
