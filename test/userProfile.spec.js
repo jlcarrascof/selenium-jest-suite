@@ -1,6 +1,5 @@
 const { CONFIG, initPages } = require('./setup/userProfileTestSetup');
 const { invalidCredentials } = require('./lib/testConfig');
-const { By, until } = require('selenium-webdriver');
 
 let driver, loginPage, profilePage;
 
