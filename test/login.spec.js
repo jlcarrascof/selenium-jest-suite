@@ -23,7 +23,6 @@ beforeEach(async () => {
 });
 
 describe('Test Suite: Login Functionality of Harmony Church', () => {
-
   test('TC-001: Valid credentials should login successfully', async () => {
 
     await loginPage.login(CONFIG.VALID_USERNAME, CONFIG.VALID_PASSWORD);
@@ -34,23 +33,22 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toMatch(expectedResult);
   }, CONFIG.TIMEOUT);
 
-  describe.each`
-    testCase    | username            | password            | description
-    ${'TC-002'} | ${CONFIG.VALID_USERNAME}   | ${CONFIG.INVALID_PASSWORD} | ${'When enter valid username and invalid password'}
-    ${'TC-003'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.VALID_PASSWORD}   | ${'When enter invalid username and valid password'}
-    ${'TC-004'} | ${CONFIG.INVALID_USERNAME} | ${CONFIG.INVALID_PASSWORD} | ${'When enter invalid username and invalid password'}
-  `('$testCase: Invalid credentials should display error message', ({ username, password, description}) => {
-    test(`${description}`, async () => {
-
+  test.each([
+    ['TC-002', 'When enter valid username and invalid password',   CONFIG.VALID_USERNAME,   CONFIG.INVALID_PASSWORD],
+    ['TC-003', 'When enter invalid username and valid password',   CONFIG.INVALID_USERNAME, CONFIG.VALID_PASSWORD],
+    ['TC-004', 'When enter invalid username and invalid password', CONFIG.INVALID_USERNAME, CONFIG.INVALID_PASSWORD]
+  ])(
+    '%s: %s',
+    async (_testCase, description, username, password) => {
+      await loginPage.open();
       await loginPage.login(username, password);
 
-      const actualResult = await loginPage.getModalText();
+      const actualResult   = await loginPage.getModalText();
       const expectedResult = invalidCredentials;
 
       expect(actualResult).toBe(expectedResult);
-    }, CONFIG.TIMEOUT);
-  });
-
+    }, CONFIG.TIMEOUT
+  );
 
   test('TC-005:(To be updated) Clicking Forgot Password link should redirect to recovery page', async () => {
 
@@ -106,7 +104,6 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-
   test('TC-009: Username field should display error message when is empty', async () => {
 
     await loginPage.focusOnUsernameField();
@@ -139,21 +136,22 @@ describe('Test Suite: Login Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
-  describe.each`
-    testCase    | username          | password          | description
-    ${'TC-012'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.VALID_PASSWORD} | ${'When username is empty'}
-    ${'TC-013'} | ${CONFIG.VALID_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When password is empty'}
-    ${'TC-014'} | ${CONFIG.EMPTY_USERNAME} | ${CONFIG.EMPTY_PASSWORD} | ${'When username and password are empty'}
-  `('$testCase: Login Submit button should be disabled', ({ username, password, description }) => {
-    test(`${description}`, async () => {
-      
+  test.each([
+    ['TC-012', 'When username is empty',           CONFIG.EMPTY_USERNAME, CONFIG.VALID_PASSWORD],
+    ['TC-013', 'When password is empty',           CONFIG.VALID_USERNAME, CONFIG.EMPTY_PASSWORD],
+    ['TC-014', 'When username and password are empty', CONFIG.EMPTY_USERNAME, CONFIG.EMPTY_PASSWORD]
+  ])(
+    '%s: Login Submit button should be disabled - %s',
+    async (_testCase, description, username, password) => {
+      await loginPage.open();
       await loginPage.enterUsername(username);
       await loginPage.enterPassword(password);
 
-      const actualResult = await loginPage.isSubmitButtonDisabled();
+      const actualResult   = await loginPage.isSubmitButtonDisabled();
       const expectedResult = true;
 
       expect(actualResult).toBe(expectedResult);
-    }, CONFIG.TIMEOUT);
-  });
+    }, CONFIG.TIMEOUT
+  );
+
 });

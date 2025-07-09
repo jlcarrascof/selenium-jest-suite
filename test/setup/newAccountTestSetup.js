@@ -47,5 +47,11 @@ const initPages = async () => {
 
 module.exports = {
   CONFIG,
-  initPages
+  initPages,
+  get driver() {
+    return driver;
+  },
+  get newAccountPage() {
+    return newAccountPage;
+  }
 };
