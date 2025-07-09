@@ -14,7 +14,13 @@ class LoginPage {
     this.baseUrl = baseUrl;
     this.timeout = timeout;
     this.selectors = selectors;
+    this.errorMapping = {
+      [this.selectors.usernameInput]: this.selectors.usernameError,
+      [this.selectors.passwordInput]: this.selectors.passwordError,
+    };
     this.domHandler = new DOMHandler(driver, timeout);
+    this.domHandler.errorMapping = this.errorMapping;
+    this.domHandler.selectors = this.selectors;
   }
 
   async open() {
@@ -89,7 +95,7 @@ class LoginPage {
   }
 
   async hasPasswordError() {
-    return await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.passwordInput, validationMessages.requiredPassword, true);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.passwordInput, validationMessages.requiredPassword, false);
   }
 
   async focusOnUsernameFieldAndTab() {

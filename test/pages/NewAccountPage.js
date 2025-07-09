@@ -77,7 +77,7 @@ async requiredErrorVisible(fieldKey, expectedMessage) {
   }
 
 async isConfirmPasswordShowingMessageWhenBlur(validationMessage) {
-  
+
     const result = await this.domHandler.isShowingValidationMessageWhenBlur(
      this.selectors.confirmPasswordInput, validationMessage);
 
@@ -85,14 +85,14 @@ async isConfirmPasswordShowingMessageWhenBlur(validationMessage) {
 }
 
 async isValidEmailNotShowingMessageWhenBlur() {
-  
+
     const result = await this.domHandler.isShowingValidationMessageWhenBlur(this.selectors.emailInput, '', false);
 
     return result;
 }
 
 async isInvalidEmailShowingMessageWhenBlur(email, errorMesage) {
-  
+
    await this.domHandler.fillTextField(this.selectors.emailInput, email);
 
     const result = await this.domHandler.isShowingValidationMessageWhenBlur(
@@ -147,7 +147,7 @@ async isInvalidEmailShowingMessageWhenBlur(email, errorMesage) {
   }
 
   async leaveEmailField() {
-    
+
     const element = await this.domHandler.findElement(this.selectors.emailInput);
     await this.domHandler.makeElementLoseFocus(element);
   }

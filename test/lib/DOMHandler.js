@@ -1,10 +1,12 @@
 const { By, until, Key } = require('selenium-webdriver');
+const validationMessages = require('../lib/testConfig');
 const TIMEOUT = 15000;
 class DOMHandler {
 
   constructor(driver, timeout = TIMEOUT) {
     this.driver = driver;
     this.timeout = timeout;
+    
   }
 
   // Form Interactions
