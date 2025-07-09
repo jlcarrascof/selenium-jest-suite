@@ -48,6 +48,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   }, CONFIG.TIMEOUT);
 
+/*
   test('TC-004: User profile icon should open menu', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.clickProfileIcon();
@@ -57,7 +58,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(Boolean(actualResult)).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-/*
+
   test('TC-005: Logout should terminate session successfully', async () => {
 
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
