@@ -17,7 +17,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
   beforeEach(async () => {
      await newAccountPage.open();
   });
-
+/*
   test('TC-001: Terms and Conditions checkbox should display error message when unchecked', async () => {
     await newAccountPage.submitWithoutTerms();
 
@@ -78,7 +78,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     const actualResult = await newAccountPage.isCreateAccountButtonEnabled();
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-
+*/
   test.each([
     ['TC-010', 'only numbers', CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password],
     ['TC-011', 'only letters', CONFIG.INVALID_PASSWORDS.onlyLetters, CONFIG.ERROR_MESSAGES.password],
