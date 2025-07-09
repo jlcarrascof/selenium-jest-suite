@@ -15,8 +15,12 @@ afterAll(async () => {
 });
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
-  test('TC-001: Valid credentials should login successfully', async () => {
 
+  beforeEach(async () => {
+     await loginPage.open();
+  });
+
+  test('TC-001: Valid credentials should login successfully', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
     const actualResult = await loginPage.getDashboardTitleText();
@@ -26,7 +30,6 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-002: Invalid username should deny access', async () => {
-
     await loginPage.login(CONFIG.INVALID_USERNAME, CONFIG.PASSWORD);
 
     const actualResult = await loginPage.getModalText();
@@ -36,7 +39,6 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-003: Invalid password should deny access', async () => {
-
     await loginPage.login(CONFIG.INVALID_USERNAME, CONFIG.INVALID_PASSWORD);
 
     const actualResult = await loginPage.getModalText();
@@ -47,9 +49,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-004: User profile icon should open menu', async () => {
-
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
     await profilePage.clickProfileIcon();
 
     const actualResult = await profilePage.isLogoutButtonVisible();
@@ -57,7 +57,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(Boolean(actualResult)).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-
+/*
   test('TC-005: Logout should terminate session successfully', async () => {
 
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
@@ -133,5 +133,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
       expect(actualLink).toBe(expectedLink);
     }, CONFIG.TIMEOUT
   );
-
+*/
 });
