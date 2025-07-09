@@ -27,43 +27,42 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
-  // test.each([
-  //   ['TC-002', 'nameInput',    CONFIG.ERROR_MESSAGES.name],
-  //   ['TC-003', 'surnameInput', CONFIG.ERROR_MESSAGES.surname],
-  //   ['TC-004', 'emailInput',   CONFIG.ERROR_MESSAGES.email],
-  //   ['TC-005', 'usernameInput',CONFIG.ERROR_MESSAGES.username],
-  //   ['TC-006', 'passwordInput',CONFIG.ERROR_MESSAGES.password],
-  // ])(
-  //   '%s: Field [%s] should display error when empty',
-  //     async (tc, fieldKey, expectedMessage) => {
-  //     const actualResult = await newAccountPage.requiredErrorVisible(
-  //       fieldKey,
-  //       expectedMessage
-  //     );
-  //     const expectedResult = true;
+  test.each([
+    ['TC-002', 'Name', 'nameInput',   CONFIG.ERROR_MESSAGES.name],
+    ['TC-003', 'Surname', 'surnameInput', CONFIG.ERROR_MESSAGES.surname],
+    ['TC-004', 'Email',   'emailInput',   CONFIG.ERROR_MESSAGES.email],
+    ['TC-005', 'Username', 'usernameInput', CONFIG.ERROR_MESSAGES.username],
+    ['TC-006', 'Password', 'passwordInput', CONFIG.ERROR_MESSAGES.password],
+  ])(
+    '%s: %s field should display error when empty',
+      async (tc, description,  fieldKey, expectedMessage) => {
+      const actualResult = await newAccountPage.requiredErrorVisible(
+        fieldKey,
+        expectedMessage
+      );
+      const expectedResult = true;
 
-  //     expect(actualResult).toBe(expectedResult);
-  //   }
-  // );
+      expect(actualResult).toBe(expectedResult);
+    }
+  , CONFIG.TIMEOUT);
 
-/*
   test.each([
     {
-      tc: 'TC-003',
+      tc: 'TC-007',
       description: 'Create Account button should be disabled when fields are empty and Terms & Conditions checkbox is unchecked',
       fillFields: false,
       acceptTerms: false,
       expectedResult: false
     },
     {
-      tc: 'TC-004',
+      tc: 'TC-008',
       description: 'Create Account button should be enabled when all fields are valid and Terms & Conditions checkbox is checked',
       fillFields: true,
       acceptTerms: true,
       expectedResult: true
     },
     {
-      tc: 'TC-005',
+      tc: 'TC-009',
       description: 'Create Account button should be disabled when all fields are valid but Terms & Conditions checkbox is unchecked',
       fillFields: true,
       acceptTerms: false,
@@ -78,12 +77,12 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
 
     const actualResult = await newAccountPage.isCreateAccountButtonEnabled();
     expect(actualResult).toBe(expectedResult);
-  });
+  }, CONFIG.TIMEOUT);
 
   test.each([
-    ['TC-006', 'only numbers', CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password],
-    ['TC-007', 'only letters', CONFIG.INVALID_PASSWORDS.onlyLetters, CONFIG.ERROR_MESSAGES.password],
-    ['TC-008', 'short length (< 8 chars)', CONFIG.INVALID_PASSWORDS.shortLength, CONFIG.ERROR_MESSAGES.password],
+    ['TC-010', 'only numbers', CONFIG.INVALID_PASSWORDS.onlyNumbers, CONFIG.ERROR_MESSAGES.password],
+    ['TC-011', 'only letters', CONFIG.INVALID_PASSWORDS.onlyLetters, CONFIG.ERROR_MESSAGES.password],
+    ['TC-012', 'short length (< 8 chars)', CONFIG.INVALID_PASSWORDS.shortLength, CONFIG.ERROR_MESSAGES.password],
   ])('%s: Password field should display error message when using %s', async (tc, desc, inputPassword, expectedMessage) => {
     const actualResult = await newAccountPage.showsPasswordRequiredError(inputPassword, expectedMessage);
     const expectedResult = true;
@@ -91,6 +90,7 @@ describe('Test Suite: New Account Functionality of Harmony Church', () => {
     expect(actualResult).toBe(expectedResult);
   });
 
+/*
   test('TC-009: Confirm Password field should display error message when we type a different Password', async () => {
 
     await newAccountPage.emterPasswordAndConfirmation(CONFIG.VALID_DATA.password, CONFIG.VALID_DATA.differentPassword );

@@ -21,6 +21,8 @@ class NewAccountPage {
       [this.selectors.confirmPasswordInput]: this.selectors.confirmPasswordError
     };
     this.domHandler = new DOMHandler(driver, timeout);
+    this.domHandler.errorMapping = this.errorMapping;
+    this.domHandler.selectors = this.selectors;
   }
 
   async open() {
@@ -73,7 +75,7 @@ class NewAccountPage {
 
   async requiredErrorVisible(fieldKey, expectedMessage) {
     const selector = this.selectors[fieldKey];
-    return await this.verifyBlurValidation(selector, expectedMessage);
+    return await this.domHandler.isShowingValidationMessageWhenBlur(selector, expectedMessage);
   }
 
 async isConfirmPasswordShowingMessageWhenBlur(validationMessage) {
