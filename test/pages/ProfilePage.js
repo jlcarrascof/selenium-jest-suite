@@ -1,4 +1,4 @@
-// tests/pages/LoginPage.js
+// tests/pages/ProfilePage.js
 const { By, until, Key } = require('selenium-webdriver');
 const selectors = require("../selectors/profileSelector");
 const DOMHandler = require('../lib/DOMHandler');
@@ -69,6 +69,14 @@ class ProfilePage {
     );
 
     await profileIcon.click();
+  }
+
+  async openUserMenu() {
+    await this.domHandler.clickWhenReady(this.selectors.profileIcon);
+
+    const logoutLocator = this.selectors.logoutButton;
+
+    return await this.domHandler.waitForVisibility(logoutLocator, true);
   }
 
   async isLogoutButtonVisible() {
