@@ -73,8 +73,9 @@ class ProfilePage {
 
   async openUserMenu() {
     await this.domHandler.clickWhenReady(this.selectors.profileIcon);
+    await this.domHandler.waitForElementVisible(this.selectors.logoutButton, true);
 
-    return await this.domHandler.waitForElementVisible(this.selectors.logoutButton, true);
+    return true;
   }
 
   async isLogoutButtonVisible() {
