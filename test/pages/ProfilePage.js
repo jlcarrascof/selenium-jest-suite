@@ -62,14 +62,14 @@ class ProfilePage {
     return !(await submitBtn.isEnabled());
   }
 
-  async clickProfileIcon() {
-    const profileIcon = await this.driver.wait(
-      until.elementLocated(By.css(this.selectors.profileIcon)),
-      this.timeout
-    );
+  // async clickProfileIcon() {
+  //   const profileIcon = await this.driver.wait(
+  //     until.elementLocated(By.css(this.selectors.profileIcon)),
+  //     this.timeout
+  //   );
 
-    await profileIcon.click();
-  }
+  //   await profileIcon.click();
+  // }
 
   async openUserMenu() {
     await this.domHandler.clickWhenReady(this.selectors.profileIcon);
@@ -78,14 +78,14 @@ class ProfilePage {
     return true;
   }
 
-  async isLogoutButtonVisible() {
-    const logoutButton = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.logoutButton)),
-      this.timeout
-    );
+  // async isLogoutButtonVisible() {
+  //   const logoutButton = await this.driver.wait(
+  //     until.elementLocated(By.xpath(this.selectors.logoutButton)),
+  //     this.timeout
+  //   );
 
-    return await this.driver.wait(until.elementIsVisible(logoutButton), this.timeout);
-  }
+  //   return await this.driver.wait(until.elementIsVisible(logoutButton), this.timeout);
+  // }
 
   async clickLogout() {
     const logoutButton = await this.driver.wait(
