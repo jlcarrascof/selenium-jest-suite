@@ -77,13 +77,9 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualMenuState).toBe(expectedMenuState);
   }, CONFIG.TIMEOUT);
 
-/*
-  test('TC-007: Click on Groups should redirect to Groups URL', async () => {
-
+  test.only('TC-007: Click on Groups should redirect to Groups URL', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    await profilePage.openMainMenu();
-    await profilePage.seeGroupsOption();
+    await profilePage.openMainMenuAndSeeGroupsOption();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
     const expectedUrl = CONFIG.GROUPS_URL;
@@ -126,5 +122,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
       expect(actualLink).toBe(expectedLink);
     }, CONFIG.TIMEOUT
   );
-*/
+
 });

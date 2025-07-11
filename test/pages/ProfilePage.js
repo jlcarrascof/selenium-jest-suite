@@ -109,7 +109,7 @@ class ProfilePage {
   }
 
   async clickGroupsAndGetUrl() {
-    return await this.clickElementAndGetUrl('groupsOption');
+    return await this.domHandler.clickAndGetUrl(this.selectors.groupsOption, true);
   }
 
   async clickMyProfileAndGetUrl() {
