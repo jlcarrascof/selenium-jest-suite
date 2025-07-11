@@ -1,6 +1,6 @@
 // tests/pages/LoginPage.js
 const { By, until, Key } = require('selenium-webdriver');
-const { resource } = require('selenium-webdriver/http');
+// const { resource } = require('selenium-webdriver/http');
 const WAIT_TIME = 1000;
 const selectors = require("../selectors/groupSelector");
 const DOMHandler = require('../lib/DOMHandler');
@@ -11,12 +11,10 @@ class GroupsPage {
     this.baseUrl = baseUrl;
     this.timeout = timeout;
     this.selectors = selectors;
-
-    this.selectors = {
-
-    };
+    this.domHandler = new DOMHandler(driver, timeout);
   }
 
+  /*
   async enterUsername(username) {
     const usernameField = await this.driver.findElement(
       By.css(this.selectors.usernameInput)
@@ -89,7 +87,7 @@ class GroupsPage {
 
     return currentUrl.startsWith(this.baseUrl);
   }
-
+*/
   async clickElementAndGetUrl(selectorKey) {
     const selector = this.selectors[selectorKey];
     const element = await this.driver.wait(
