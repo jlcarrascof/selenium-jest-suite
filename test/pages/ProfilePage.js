@@ -25,14 +25,6 @@ class ProfilePage {
     this.domHandler = new DOMHandler(driver, timeout);
   }
 
-  async isSubmitButtonDisabled() {
-    const submitBtn = await this.driver.findElement(
-      By.css(this.selectors.submitButton)
-    );
-
-    return !(await submitBtn.isEnabled());
-  }
-
   async openUserMenu() {
     await this.domHandler.clickWhenReady(this.selectors.profileIcon);
     await this.domHandler.waitForElementVisible(this.selectors.logoutButton, true);
@@ -56,24 +48,6 @@ class ProfilePage {
     return true;
   }
 
-  async clickLogout() {
-    const logoutButton = await this.driver.wait(
-      until.elementLocated(By.xpath(this.selectors.logoutButton)),
-      this.timeout
-    );
-
-    await logoutButton.click();
-    await this.driver.sleep(WAIT_TIME);
-  }
-
-  async isOnLoginPage() {
-    await this.driver.sleep(WAIT_TIME);
-
-    const currentUrl = await this.driver.getCurrentUrl();
-
-    return currentUrl.startsWith(this.baseUrl);
-  }
-
   async clickLogoutAndGetUrl() {
     return await this.domHandler.clickAndGetUrl(this.selectors.logoutButton, true);
   }
@@ -84,22 +58,6 @@ class ProfilePage {
 
   async clickMyProfileAndGetUrl() {
     return await this.domHandler.clickAndGetUrl(this.selectors.myProfileLink, true);
-  }
-
-  async clickElementAndGetUrl(selectorKey) {
-    const selector = this.selectors[selectorKey];
-    const element = await this.driver.wait(
-      until.elementLocated(By.xpath(selector)),
-      this.timeout
-    );
-
-    await element.click();
-
-    await this.driver.sleep(WAIT_TIME);
-
-    const url = await this.driver.getCurrentUrl();
-
-    return url;
   }
 
   async openSectionAndGetUrl(sectionKey) {
@@ -120,15 +78,6 @@ class ProfilePage {
     return await this.driver.getCurrentUrl();
   }
 
-  async navigateToSection(sectionKey) {
-    const selector = this.sectionMap[sectionKey];
-
-    if (!selector) {
-      throw new Error(`Unknown sectionKey: "${sectionKey}"`);
-    }
-
-    return await this.domHandler.clickAndGetUrl(selector, true);
-  }
 }
 
 module.exports = ProfilePage;
