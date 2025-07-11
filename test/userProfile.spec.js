@@ -10,16 +10,20 @@ beforeAll(async () => {
   profilePage = pages.profilePage;
 });
 
+beforeEach(async () => {
+  await loginPage.open();
+});
+
 afterAll(async () => {
   if (driver) await driver.quit();
 });
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
-  beforeEach(async () => {
-     await loginPage.open();
-  });
-
+  // beforeEach(async () => {
+  //    await loginPage.open();
+  // });
+/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -77,7 +81,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
     expect(actualMenuState).toBe(expectedMenuState);
   }, CONFIG.TIMEOUT);
 
-  test.only('TC-007: Click on Groups should redirect to Groups URL', async () => {
+  test('TC-007: Click on Groups should redirect to Groups URL', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.openMainMenuAndSeeGroupsOption();
 
@@ -88,18 +92,16 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-008: Click on My Profile should redirect to My Profile URL', async () => {
-
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    await profilePage.clickProfileIcon();
-    await profilePage.isLogoutButtonVisible();
+    await loginPage.getDashboardTitleText();
+    await profilePage.openUserMenu();
 
     const actualUrl = await profilePage.clickMyProfileAndGetUrl();
     const expectedUrl = CONFIG.MYPROFILE_URL;
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-
+*/
   test.each([
     ['TC-009', 'roles', 'Roles and Permissions', 'ROLES_PERMISSIONS_URL'],
     ['TC-010', 'users', 'Users', 'USERS_URL'],

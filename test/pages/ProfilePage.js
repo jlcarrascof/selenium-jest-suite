@@ -113,7 +113,7 @@ class ProfilePage {
   }
 
   async clickMyProfileAndGetUrl() {
-    return await this.clickElementAndGetUrl('myProfileLink');
+    return await this.domHandler.clickAndGetUrl(this.selectors.myProfileLink, true);
   }
 
   async clickElementAndGetUrl(selectorKey) {
