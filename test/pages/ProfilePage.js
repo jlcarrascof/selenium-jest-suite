@@ -104,28 +104,6 @@ class ProfilePage {
     return currentUrl.startsWith(this.baseUrl);
   }
 
-  // async openMainMenu() {
-  //   const appsButton = await this.driver.wait(
-  //     until.elementLocated(By.xpath(this.selectors.appsButton)),
-  //     this.timeout
-  //   );
-  //   await appsButton.click();
-  // }
-
-  // async seeGroupsOption() {
-  //   try {
-  //     const groupsOption = await this.driver.wait(
-  //       until.elementLocated(By.xpath(this.selectors.groupsOption)),
-  //       this.timeout
-  //     );
-  //     await this.driver.wait(until.elementIsVisible(groupsOption), this.timeout);
-  //     return true;
-  //   } catch (error) {
-  //     console.error('Error verifying Groups option visibility:', error.message);
-  //     return false;
-  //   }
-  // }
-
   async clickLogoutAndGetUrl() {
     return await this.domHandler.clickAndGetUrl(this.selectors.logoutButton, true);
   }
