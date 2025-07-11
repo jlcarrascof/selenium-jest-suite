@@ -111,8 +111,7 @@ class ProfilePage {
   }
 
   async clickLogoutAndGetUrl() {
-    // return await this.clickElementAndGetUrl('logoutButton');
-    return await this.clickElementAndGetUrl(this.selectors.logoutButton);
+    return await this.domHandler.clickAndGetUrl(this.selectors.logoutButton, true);
   }
 
   async clickGroupsAndGetUrl() {
