@@ -48,7 +48,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   }, CONFIG.TIMEOUT);
 
-  test.only('TC-004: User profile icon should open menu', async () => {
+  test('TC-004: User profile icon should open menu', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await loginPage.getDashboardTitleText();
 
@@ -57,13 +57,10 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
-/*
-  test('TC-005: Logout should terminate session successfully', async () => {
 
+  test.only('TC-005: Logout should terminate session successfully', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    await profilePage.clickProfileIcon();
-
+    await loginPage.getDashboardTitleText();
     await profilePage.isLogoutButtonVisible();
 
     const actualUrl = await profilePage.clickLogoutAndGetUrl();
@@ -133,5 +130,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
       expect(actualLink).toBe(expectedLink);
     }, CONFIG.TIMEOUT
   );
-*/
+
 });
