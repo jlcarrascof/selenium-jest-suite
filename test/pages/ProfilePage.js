@@ -25,6 +25,7 @@ class ProfilePage {
     this.domHandler = new DOMHandler(driver, timeout);
   }
 
+  /*
   async enterUsername(username) {
     const usernameField = await this.driver.findElement(
       By.css(this.selectors.usernameInput)
@@ -53,7 +54,7 @@ class ProfilePage {
     await this.driver.wait(until.elementIsEnabled(submitBtn), this.timeout);
     await submitBtn.click();
   }
-
+*/
   async isSubmitButtonDisabled() {
     const submitBtn = await this.driver.findElement(
       By.css(this.selectors.submitButton)
@@ -62,32 +63,12 @@ class ProfilePage {
     return !(await submitBtn.isEnabled());
   }
 
-  // async clickProfileIcon() {
-  //   const profileIcon = await this.driver.wait(
-  //     until.elementLocated(By.css(this.selectors.profileIcon)),
-  //     this.timeout
-  //   );
-
-  //   await profileIcon.click();
-  // }
-
   async openUserMenu() {
-
     await this.domHandler.clickWhenReady(this.selectors.profileIcon);
-    await this.driver.sleep(WAIT_TIME);
-    await this.domHandler.waitForElementVisible(this.selectors.logoutButton,true);
+    await this.domHandler.waitForElementVisible(this.selectors.logoutButton, true);
 
     return true;
   }
-
-  // async isLogoutButtonVisible() {
-  //   const logoutButton = await this.driver.wait(
-  //     until.elementLocated(By.xpath(this.selectors.logoutButton)),
-  //     this.timeout
-  //   );
-
-  //   return await this.driver.wait(until.elementIsVisible(logoutButton), this.timeout);
-  // }
 
   async clickLogout() {
     const logoutButton = await this.driver.wait(
@@ -130,7 +111,8 @@ class ProfilePage {
   }
 
   async clickLogoutAndGetUrl() {
-    return await this.clickElementAndGetUrl('logoutButton');
+    // return await this.clickElementAndGetUrl('logoutButton');
+    return await this.clickElementAndGetUrl(this.selectors.logoutButton);
   }
 
   async clickGroupsAndGetUrl() {

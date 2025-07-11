@@ -61,7 +61,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   test.only('TC-005: Logout should terminate session successfully', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await loginPage.getDashboardTitleText();
-    await profilePage.isLogoutButtonVisible();
+    await profilePage.openUserMenu();
 
     const actualUrl = await profilePage.clickLogoutAndGetUrl();
     const expectedUrl = CONFIG.BASE_URL;

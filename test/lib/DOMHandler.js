@@ -1,12 +1,13 @@
 const { By, until, Key } = require('selenium-webdriver');
 const validationMessages = require('../lib/testConfig');
 const TIMEOUT = 15000;
+const SHORT_TIMEOUT = 2000;
+
 class DOMHandler {
 
   constructor(driver, timeout = TIMEOUT) {
     this.driver = driver;
     this.timeout = timeout;
-
   }
 
   // Form Interactions
@@ -125,6 +126,16 @@ class DOMHandler {
         console.error(`Error verifying onBlur for ${selector}:`, error.message);
         return false;
       }
+  }
+
+  async clickAndGetUrl(selector, isXPath = false, waitTime = SHORT_TIMEOUT) {
+    const locator = isXPath ? By.xpath(selector) : By.css(selector);
+    const element = await this.driver.wait(until.elementLocated(locator), this.timeout);
+
+    await element.click();
+    await this.driver.sleep(waitTime);
+
+    return await this.getCurrentUrl();
   }
 }
 
