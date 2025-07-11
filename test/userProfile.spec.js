@@ -10,15 +10,15 @@ beforeAll(async () => {
   profilePage = pages.profilePage;
 });
 
+beforeEach(async () => {
+  await loginPage.open();
+});
+
 afterAll(async () => {
   if (driver) await driver.quit();
 });
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
-
-  beforeEach(async () => {
-     await loginPage.open();
-  });
 
   test('TC-001: Valid credentials should login successfully', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
@@ -48,24 +48,20 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   }, CONFIG.TIMEOUT);
 
-/*
   test('TC-004: User profile icon should open menu', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-    await profilePage.clickProfileIcon();
+    await loginPage.getDashboardTitleText();
 
-    const actualResult = await profilePage.isLogoutButtonVisible();
+    const actualResult = await profilePage.openUserMenu();
     const expectedResult = true;
 
-    expect(Boolean(actualResult)).toBe(expectedResult);
+    expect(actualResult).toBe(expectedResult);
   }, CONFIG.TIMEOUT);
 
   test('TC-005: Logout should terminate session successfully', async () => {
-
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    await profilePage.clickProfileIcon();
-
-    await profilePage.isLogoutButtonVisible();
+    await loginPage.getDashboardTitleText();
+    await profilePage.openUserMenu();
 
     const actualUrl = await profilePage.clickLogoutAndGetUrl();
     const expectedUrl = CONFIG.BASE_URL;
@@ -74,24 +70,16 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-006: Clicking on the Apps button should display the main menu options', async () => {
-
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    await profilePage.openMainMenu();
-
-    const actualMenuState = await profilePage.seeGroupsOption();
+    const actualMenuState = await profilePage.openMainMenuAndSeeGroupsOption();
     const expectedMenuState = true;
 
     expect(actualMenuState).toBe(expectedMenuState);
   }, CONFIG.TIMEOUT);
 
-
   test('TC-007: Click on Groups should redirect to Groups URL', async () => {
-
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    await profilePage.openMainMenu();
-    await profilePage.seeGroupsOption();
+    await profilePage.openMainMenuAndSeeGroupsOption();
 
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
     const expectedUrl = CONFIG.GROUPS_URL;
@@ -100,11 +88,9 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
   }, CONFIG.TIMEOUT);
 
   test('TC-008: Click on My Profile should redirect to My Profile URL', async () => {
-
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
-
-    await profilePage.clickProfileIcon();
-    await profilePage.isLogoutButtonVisible();
+    await loginPage.getDashboardTitleText();
+    await profilePage.openUserMenu();
 
     const actualUrl = await profilePage.clickMyProfileAndGetUrl();
     const expectedUrl = CONFIG.MYPROFILE_URL;
@@ -134,5 +120,5 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
       expect(actualLink).toBe(expectedLink);
     }, CONFIG.TIMEOUT
   );
-*/
+
 });
