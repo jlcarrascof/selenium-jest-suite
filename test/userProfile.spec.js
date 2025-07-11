@@ -50,6 +50,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
   test.only('TC-004: User profile icon should open menu', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+    await loginPage.getDashboardTitleText();
 
     const actualResult = await profilePage.openUserMenu();
     const expectedResult = true;
