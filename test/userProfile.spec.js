@@ -20,10 +20,6 @@ afterAll(async () => {
 
 describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
-  // beforeEach(async () => {
-  //    await loginPage.open();
-  // });
-/*
   test('TC-001: Valid credentials should login successfully', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
 
@@ -101,7 +97,7 @@ describe('Test Suite: User Profile Functionality of Harmony Church', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-*/
+
   test.each([
     ['TC-009', 'roles', 'Roles and Permissions', 'ROLES_PERMISSIONS_URL'],
     ['TC-010', 'users', 'Users', 'USERS_URL'],

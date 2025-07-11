@@ -25,36 +25,6 @@ class ProfilePage {
     this.domHandler = new DOMHandler(driver, timeout);
   }
 
-  /*
-  async enterUsername(username) {
-    const usernameField = await this.driver.findElement(
-      By.css(this.selectors.usernameInput)
-    );
-
-    await usernameField.clear();
-    await usernameField.sendKeys(username);
-  }
-
-  async enterPassword(password) {
-    const passwordField = await this.driver.findElement(
-      By.css(this.selectors.passwordInput)
-    );
-
-    await passwordField.clear();
-    await passwordField.sendKeys(password);
-  }
-
-  async clickSubmit() {
-    const submitBtn = await this.driver.wait(
-      until.elementLocated(By.css(this.selectors.submitButton)),
-      this.timeout
-    );
-
-    await this.driver.wait(until.elementIsVisible(submitBtn), this.timeout);
-    await this.driver.wait(until.elementIsEnabled(submitBtn), this.timeout);
-    await submitBtn.click();
-  }
-*/
   async isSubmitButtonDisabled() {
     const submitBtn = await this.driver.findElement(
       By.css(this.selectors.submitButton)
@@ -148,6 +118,16 @@ class ProfilePage {
     await this.driver.sleep(WAIT_TIME);
 
     return await this.driver.getCurrentUrl();
+  }
+
+  async navigateToSection(sectionKey) {
+    const selector = this.sectionMap[sectionKey];
+
+    if (!selector) {
+      throw new Error(`Unknown sectionKey: "${sectionKey}"`);
+    }
+
+    return await this.domHandler.clickAndGetUrl(selector, true);
   }
 }
 
