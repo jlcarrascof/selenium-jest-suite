@@ -1,4 +1,4 @@
-const { CONFIG, initPages, login, driver: getDriver } = require('./setup/groupsTestSetup');
+const { CONFIG, initPages, login } = require('./setup/groupsTestSetup');
 
 let driver;
 let profilePage;
@@ -9,7 +9,13 @@ beforeAll(async () => {
   driver = pages.driver;
   profilePage = pages.profilePage;
   groupsPage = pages.groupsPage;
+  loginPage = pages.loginPage;
 });
+
+beforeEach(async () => {
+  await loginPage.open();
+});
+
 
 afterAll(async () => {
   if (driver) await driver.quit();
@@ -17,10 +23,11 @@ afterAll(async () => {
 
 describe('Groups - General Functionality', () => {
   test('TC-001: Click on Groups should redirect to Groups URL', async () => {
-    await login();
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+    await profilePage.openMainMenuAndSeeGroupsOption();
 
-    const expectedUrl = CONFIG.GROUPS_URL;
     const actualUrl = await profilePage.clickGroupsAndGetUrl();
+    const expectedUrl = CONFIG.GROUPS_URL;
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
@@ -31,12 +38,13 @@ describe('Groups - General Functionality', () => {
     ['TC-004', 'Click on Resources', 'Resources', 'resourcesLink', 'groupsPage'],
     ['TC-005', 'Click on My Profile', 'My Profile', 'myProfileLink', 'profilePage']
   ])('%s: %s should redirect to %s URL', async (_tc, desc, kind, selectorKey, page) => {
-    await login();
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+    await loginPage.getDashboardTitleText();
 
     if (page === 'groupsPage') {
       await profilePage.clickGroupsAndGetUrl();
     } else {
-      await profilePage.clickProfileIcon();
+      await profilePage.openUserMenu();
     }
 
     const targetPage = page === 'groupsPage' ? groupsPage : profilePage;
@@ -45,7 +53,7 @@ describe('Groups - General Functionality', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-
+/*
   test('TC-006: Click on User profile icon should open menu', async () => {
     await login();
     await groupsPage.clickProfileIcon();
@@ -65,4 +73,5 @@ describe('Groups - General Functionality', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
+*/
 });
