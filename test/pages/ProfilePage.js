@@ -78,6 +78,10 @@ class ProfilePage {
     return await this.driver.getCurrentUrl();
   }
 
+  async clickProfileIcon() {
+    return await this.openUserMenu();
+  }
+
 }
 
 module.exports = ProfilePage;

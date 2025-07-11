@@ -22,7 +22,6 @@ afterAll(async () => {
 });
 
 describe('Groups - General Functionality', () => {
-/*
   test('TC-001: Click on Groups should redirect to Groups URL', async () => {
     await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
     await profilePage.openMainMenuAndSeeGroupsOption();
@@ -32,19 +31,20 @@ describe('Groups - General Functionality', () => {
 
     expect(actualUrl).toBe(expectedUrl);
   }, CONFIG.TIMEOUT);
-*/
+
   test.each([
     ['TC-002', 'Click on Reports', 'Reports', 'reportsLink', 'groupsPage'],
     ['TC-003', 'Click on Calendar', 'Calendar', 'calendarLink', 'groupsPage'],
     ['TC-004', 'Click on Resources', 'Resources', 'resourcesLink', 'groupsPage'],
     ['TC-005', 'Click on My Profile', 'My Profile', 'myProfileLink', 'profilePage']
   ])('%s: %s should redirect to %s URL', async (_tc, desc, kind, selectorKey, page) => {
-    await login();
+    await loginPage.login(CONFIG.USERNAME, CONFIG.PASSWORD);
+    await loginPage.getDashboardTitleText();
 
     if (page === 'groupsPage') {
       await profilePage.clickGroupsAndGetUrl();
     } else {
-      await profilePage.clickProfileIcon();
+      await profilePage.openUserMenu();
     }
 
     const targetPage = page === 'groupsPage' ? groupsPage : profilePage;
